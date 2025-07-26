@@ -1,9 +1,9 @@
-run = "./gradlew assembleDebugn"
+run = "./gradlew assembleDebug"
 [nix]
 channel = "stable-25_05"
 
 [deployment]
-run = ["sh", "-c", "./gradlew assembleDebugn"]
+run = ["sh", "-c", "./gradlew assembleDebug"]
 
 [workflows]
 runButton = "Build APK"
