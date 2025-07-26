@@ -4,3 +4,15 @@ channel = "stable-25_05"
 
 [deployment]
 run = ["sh", "-c", "./gradlew assembleDebugn"]
+
+[workflows]
+runButton = "Build APK"
+
+[[workflows.workflow]]
+name = "Build APK"
+author = 45582021
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "./gradlew assembleDebug"
