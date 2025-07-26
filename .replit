@@ -1,6 +1,10 @@
-run = "./gradlew assembleDebug"
+run = "export JAVA_HOME=$(dirname $(dirname $(which java))) && ./gradlew assembleDebug"
 [nix]
 channel = "stable-25_05"
+
+[env]
+JAVA_HOME = "/nix/store/path-to-java"
+ANDROID_HOME = "/nix/store/path-to-android"
 
 [deployment]
 run = ["sh", "-c", "./gradlew assembleDebug"]
@@ -15,4 +19,4 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "./gradlew assembleDebug"
+args = "export JAVA_HOME=$(dirname $(dirname $(which java))) && ./gradlew assembleDebug"
