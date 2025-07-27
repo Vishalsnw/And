@@ -1,107 +1,282 @@
+
 package com.example.goalguru.ui.screens.dashboard
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.goalguru.data.model.Goal
 import com.example.goalguru.ui.components.GoalCard
-import com.example.goalguru.ui.components.TodayTaskCard
-
-private val sampleGoals = listOf(
-    SampleGoal("Learn Kotlin", "Master Android development with Kotlin", 40f, 25),
-    SampleGoal("Lose 5kg", "Get fit and healthy", 20f, 45),
-    SampleGoal("Read 12 Books", "Expand knowledge and skills", 75f, 120)
-)
-
-private data class SampleGoal(
-    val title: String,
-    val description: String,
-    val progress: Float,
-    val daysLeft: Int
-)
+import com.example.goalguru.ui.components.ProgressIndicator
+import com.example.goalguru.ui.components.WelcomeCard
+import com.example.goalguru.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
     onCreateGoal: () -> Unit,
-    onSettings: () -> Unit
+    onSettings: () -> Unit,
+    viewModel: DashboardViewModel = viewModel()
 ) {
+    val goals by viewModel.goals.collectAsState()
+    val userName by viewModel.userName.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+    
+    LaunchedEffect(Unit) {
+        viewModel.loadGoals()
+        viewModel.loadUserSettings()
+    }
+    
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Dashboard") },
+                title = { 
+                    Text(
+                        "GoalGuru",
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                },
                 actions = {
                     IconButton(onClick = onSettings) {
-                        Icon(Icons.Default.Settings, contentDescription = "Settings")
+                        Icon(
+                            Icons.Default.Settings,
+                            contentDescription = "Settings",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                )
             )
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = onCreateGoal
+                onClick = onCreateGoal,
+                containerColor = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(56.dp)
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Create Goal")
+                Icon(
+                    Icons.Default.Add,
+                    contentDescription = "Add Goal",
+                    tint = Color.White
+                )
             }
         }
     ) { paddingValues ->
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(16.dp)
         ) {
-            item {
-                TodayTaskCard(
-                    title = "Today's Focus",
-                    tasks = listOf(
-                        "Complete Kotlin lesson",
-                        "30-min workout",
-                        "Read 20 pages"
-                    )
-                )
+            // Welcome Card
+            WelcomeCard(
+                userName = userName.ifEmpty { "Goal Achiever" },
+                modifier = Modifier.fillMaxWidth()
+            )
+            
+            Spacer(modifier = Modifier.height(24.dp))
+            
+            // Progress Overview
+            if (goals.isNotEmpty()) {
+                ProgressOverview(goals = goals)
+                Spacer(modifier = Modifier.height(24.dp))
             }
-
-            item {
+            
+            // Goals Section
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(
                     text = "Your Goals",
                     style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
+                
+                if (goals.isNotEmpty()) {
+                    Text(
+                        text = "${goals.size} active",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+                    )
+                }
             }
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // Goals List or Empty State
+            if (isLoading) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            } else if (goals.isEmpty()) {
+                EmptyStateCard(onCreateGoal = onCreateGoal)
+            } else {
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(goals) { goal ->
+                        GoalCard(
+                            goal = goal,
+                            onClick = { /* Navigate to goal details */ }
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
 
-            items(sampleGoals) { goal ->
-                GoalCard(
-                    title = goal.title,
-                    description = goal.description,
-                    progress = goal.progress,
-                    daysLeft = goal.daysLeft,
-                    onClick = { }
+@Composable
+private fun ProgressOverview(goals: List<Goal>) {
+    val totalGoals = goals.size
+    val completedGoals = goals.count { it.progress >= 100f }
+    val overallProgress = if (totalGoals > 0) goals.sumOf { it.progress.toDouble() } / totalGoals else 0.0
+    
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(20.dp)
+        ) {
+            Text(
+                text = "Overall Progress",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column {
+                    Text(
+                        text = "${overallProgress.toInt()}%",
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Text(
+                        text = "Average Progress",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
+                    )
+                }
+                
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(
+                        text = "$completedGoals/$totalGoals",
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Text(
+                        text = "Goals Completed",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
+                    )
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            LinearProgressIndicator(
+                progress = (overallProgress / 100).toFloat(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(8.dp)
+                    .clip(RoundedCornerShape(4.dp)),
+                color = MaterialTheme.colorScheme.primary,
+                trackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
+            )
+        }
+    }
+}
+
+@Composable
+private fun EmptyStateCard(onCreateGoal: () -> Unit) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "🎯",
+                fontSize = 48.sp
+            )
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            Text(
+                text = "Start Your Journey",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            Text(
+                text = "Create your first goal and let AI help you achieve it with personalized roadmaps and daily tasks.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                textAlign = TextAlign.Center
+            )
+            
+            Spacer(modifier = Modifier.height(24.dp))
+            
+            Button(
+                onClick = onCreateGoal,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
                 )
-            }
-
-            item {
-                Spacer(modifier = Modifier.height(80.dp))
+            ) {
+                Icon(
+                    Icons.Default.Add,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Create First Goal")
             }
         }
     }
