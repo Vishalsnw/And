@@ -38,9 +38,9 @@ jobs:
       - name: Clean Project
         run: ./gradlew clean
 
-      - name: Build APK with Logs
+      - name: Build Debug APK with Logs
         run: |
-          ./gradlew assembleRelease --stacktrace --info > build_output.txt 2>&1 || true
+          ./gradlew assembleDebug --stacktrace --info > build_output.txt 2>&1 || true
           grep -E "error:|Exception|Unresolved reference|cannot find symbol|resource linking failed|Execution failed" build_output.txt > errors_only.txt || true
 
       - name: Upload Logs
@@ -57,4 +57,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: MyApp-APK
-          path: app/build/outputs/apk/release/*.apk
+          path: app/build/outputs/apk/debug/*.apk
