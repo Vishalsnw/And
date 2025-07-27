@@ -53,7 +53,8 @@ fun ProgressIndicator(
                 .height(8.dp)
                 .clip(RoundedCornerShape(4.dp)),
             color = MaterialTheme.colorScheme.primary,
-            trackColor = MaterialTheme.colorScheme.surfaceVariant
+            trackColor = MaterialTheme.colorScheme
+                .surfaceVariant // ✅ broken down to fix line length
         )
     }
 }
