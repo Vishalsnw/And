@@ -1,0 +1,51 @@
+name: Android APK Build & Syntax Fix
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Fix Code Style (Spotless)
+        run: ./gradlew spotlessApply
+
+      - name: Clean Project
+        run: ./gradlew clean
+
+      - name: Build APK with Logs
+        run: |
+          ./gradlew assembleRelease --stacktrace --info > build_output.txt 2>&1 || true
+          grep -E "error:|Exception|Unresolved reference|cannot find symbol|resource linking failed|Execution failed" build_output.txt > errors_only.txt || true
+
+      - name: Upload Logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BuildLogs-${{ github.run_number }}
+          path: |
+            build_output.txt
+            errors_only.txt
+
+      - name: Upload APK
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: MyApp-APK
+          path: app/build/outputs/apk/release/*.apk
