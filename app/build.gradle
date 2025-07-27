@@ -3,7 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.gms.google-services'
-    id 'com.diffplug.spotless' // ✅ Added Spotless plugin
+    id 'com.diffplug.spotless' // ✅ Spotless plugin
 }
 
 android {
@@ -117,9 +117,20 @@ dependencies {
 spotless {
     kotlin {
         target '**/*.kt'
-        ktlint('0.50.0') // Use latest available version if needed
+        ktlint('0.50.0')
+
+        trimTrailingWhitespace()
+        endWithNewline()
+
+        // ✅ Disallow wildcard imports
+        editorConfigOverride([
+            'ij_kotlin_allowWildcardImports': 'false',
+            'ktlint_no-wildcard-imports': 'true'
+        ])
     }
+
     kotlinGradle {
         target '*.gradle.kts'
+        ktlint()
     }
 }
