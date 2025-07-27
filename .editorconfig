@@ -1,0 +1,10 @@
+# .editorconfig
+root = true
+
+[*.kt]
+ij_kotlin_allowWildcardImports = false
+ktlint_no-wildcard-imports = true
+indent_size = 4
+max_line_length = 120
+insert_final_newline = true
+trim_trailing_whitespace = true
