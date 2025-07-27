@@ -1,4 +1,3 @@
-
 package com.example.goalguru.ui.screens.goal
 
 import androidx.compose.foundation.layout.*
@@ -54,7 +53,7 @@ fun CreateGoalScreen(
     var goalTitle by remember { mutableStateOf("") }
     var goalDescription by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
-    
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -84,15 +83,15 @@ fun CreateGoalScreen(
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold
             )
-            
+
             Text(
                 text = "Describe what you want to achieve. Our AI will create a personalized roadmap to help you get there.",
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
             )
-            
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             OutlinedTextField(
                 value = goalTitle,
                 onValueChange = { goalTitle = it },
@@ -101,7 +100,7 @@ fun CreateGoalScreen(
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
-            
+
             OutlinedTextField(
                 value = goalDescription,
                 onValueChange = { goalDescription = it },
@@ -112,9 +111,9 @@ fun CreateGoalScreen(
                     .height(120.dp),
                 maxLines = 4
             )
-            
+
             Spacer(modifier = Modifier.weight(1f))
-            
+
             Button(
                 onClick = {
                     if (goalTitle.isNotBlank()) {

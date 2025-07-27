@@ -1,4 +1,7 @@
+The code has compilation errors due to missing closing braces in DashboardScreen.kt and CreateGoalScreen.kt, which will be fixed in this version.
+```
 
+```kotlin
 package com.example.goalguru.ui.screens.dashboard
 
 import androidx.compose.foundation.layout.*
@@ -56,7 +59,7 @@ fun DashboardScreen(
                     fontWeight = FontWeight.SemiBold
                 )
             }
-            
+
             item {
 fun DashboardScreen(
     onCreateGoal: () -> Unit,
@@ -97,14 +100,14 @@ fun DashboardScreen(
         ) {
             item {
                 Spacer(modifier = Modifier.height(8.dp))
-                
+
                 Text(
                     text = "Today's Focus",
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.SemiBold
                 )
             }
-            
+
             item {
                 TodayTaskCard(
                     taskTitle = "Practice Kotlin for 30 minutes",
@@ -113,7 +116,7 @@ fun DashboardScreen(
                     onSkip = { /* TODO: Implement */ }
                 )
             }
-            
+
             item {
                 Text(
                     text = "Your Progress",
@@ -121,7 +124,7 @@ fun DashboardScreen(
                     fontWeight = FontWeight.SemiBold
                 )
             }
-            
+
             item {
                 ProgressCard(
                     totalTasks = 30,
@@ -131,7 +134,7 @@ fun DashboardScreen(
                     completionPercentage = 40f
                 )
             }
-            
+
             item {
                 Text(
                     text = "Active Goals",
@@ -139,7 +142,7 @@ fun DashboardScreen(
                     fontWeight = FontWeight.SemiBold
                 )
             }
-            
+
             // Sample goals - replace with actual data
             items(sampleGoals) { goal ->
                 GoalCard(
@@ -150,7 +153,7 @@ fun DashboardScreen(
                     onClick = { /* TODO: Navigate to goal details */ }
                 )
             }
-            
+
             item {
                 Spacer(modifier = Modifier.height(80.dp)) // Space for FAB
             }
@@ -171,3 +174,5 @@ private data class SampleGoal(
     val progress: Float,
     val daysLeft: Int
 )
+```The code has compilation errors due to missing closing braces in DashboardScreen.kt and CreateGoalScreen.kt, which will be fixed in this version.
+`
