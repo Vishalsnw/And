@@ -7,7 +7,7 @@ channel = "stable-25_05"
 JAVA_HOME = "${pkgs.openjdk17}"
 ANDROID_HOME = "/home/runner/.android-sdk"
 ANDROID_SDK_ROOT = "/home/runner/.android-sdk"
-PATH = "${pkgs.openjdk17}/bin:/home/runner/.android-sdk/platform-tools:/home/runner/.android-sdk/build-tools/34.0.0:${PATH}"
+PATH = "${pkgs.openjdk17}/bin:/home/runner/.android-sdk/platform-tools:/home/runner/.android-sdk/cmdline-tools/latest/bin:/home/runner/.android-sdk/build-tools/34.0.0:${PATH}"
 
 [deployment]
 run = ["sh", "-c", "./gradlew assembleDebug"]
@@ -22,7 +22,7 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "./gradlew assembleDebug"
+args = "export ANDROID_HOME=/home/runner/.android-sdk && export ANDROID_SDK_ROOT=/home/runner/.android-sdk && export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/34.0.0 && ./gradlew assembleDebug"
 
 [[workflows.workflow]]
 name = "Build and Install APK"
