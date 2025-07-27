@@ -1,11 +1,7 @@
 name: 🚀 Build Android APK
 
 on:
-  workflow_dispatch:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+  workflow_dispatch:  # ✅ Only manual trigger enabled
 
 jobs:
   build:
