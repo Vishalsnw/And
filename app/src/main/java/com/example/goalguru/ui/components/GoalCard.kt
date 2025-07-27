@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.example.goalguru.data.model.Goal
 import com.example.goalguru.data.model.Priority
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -85,7 +85,6 @@ fun GoalCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Progress Section
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -119,7 +118,6 @@ fun GoalCard(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Footer Info
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -127,7 +125,7 @@ fun GoalCard(
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
-                        Icons.Default.Schedule,
+                        imageVector = Icons.Default.Schedule,
                         contentDescription = null,
                         modifier = Modifier.size(16.dp),
                         tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
@@ -142,7 +140,7 @@ fun GoalCard(
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
-                        Icons.Default.TrendingUp,
+                        imageVector = Icons.Default.TrendingUp,
                         contentDescription = null,
                         modifier = Modifier.size(16.dp),
                         tint = MaterialTheme.colorScheme.primary
