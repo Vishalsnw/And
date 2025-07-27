@@ -38,10 +38,8 @@ jobs:
       - name: Clean Project
         run: ./gradlew clean
 
-      - name: Build Debug APK with Logs
-        run: |
-          ./gradlew assembleDebug --stacktrace --info > build_output.txt 2>&1 || true
-          grep -E "error:|Exception|Unresolved reference|cannot find symbol|resource linking failed|Execution failed" build_output.txt > errors_only.txt || true
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
 
       - name: Upload Logs
         if: always()
@@ -49,6 +47,8 @@ jobs:
         with:
           name: BuildLogs-${{ github.run_number }}
           path: |
+            app/build/reports/
+            app/build/outputs/logs/
             build_output.txt
             errors_only.txt
 
