@@ -173,5 +173,4 @@ data class SampleGoal(
     val description: String,
     val progress: Float,
     val daysLeft: Int
-)nt
 )
