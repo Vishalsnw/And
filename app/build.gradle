@@ -1,4 +1,3 @@
-
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
@@ -26,29 +25,34 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    
+
     buildFeatures {
         compose true
         viewBinding true
     }
-    
+
     composeOptions {
         kotlinCompilerExtensionVersion '1.5.4'
     }
-    
+
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
+    }
+
+    // Optional fallback for JitPack if project build fails
+    repositories {
+        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -56,7 +60,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.10.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    
+
     // Jetpack Compose BOM
     implementation platform('androidx.compose:compose-bom:2023.10.01')
     implementation 'androidx.compose.ui:ui'
@@ -65,44 +69,45 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.8.1'
     implementation 'androidx.compose.ui:ui-tooling'
     implementation 'androidx.compose.runtime:runtime-livedata'
-    
+
     // Navigation
     implementation 'androidx.navigation:navigation-compose:2.7.5'
-    
+
     // ViewModel
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.7.0'
-    
-    // Firebase
-    implementation 'com.google.firebase:firebase-firestore-ktx:24.9.1'
-    implementation 'com.google.firebase:firebase-auth-ktx:22.3.0'
-    implementation 'com.google.firebase:firebase-messaging-ktx:23.4.0'
-    implementation 'com.google.firebase:firebase-analytics-ktx:21.5.0'
+
+    // Firebase (with BOM)
     implementation platform('com.google.firebase:firebase-bom:32.7.0')
-    
-    // HTTP client
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    // HTTP Client
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
-    
-    // Room Database
+
+    // Room DB
     implementation 'androidx.room:room-runtime:2.6.1'
     implementation 'androidx.room:room-ktx:2.6.1'
     kapt 'androidx.room:room-compiler:2.6.1'
-    
+
     // DataStore
     implementation 'androidx.datastore:datastore-preferences:1.0.0'
-    
-    // Charts
+
+    // Charts (MPAndroidChart)
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-    
+
     // Animations
     implementation 'com.google.accompanist:accompanist-systemuicontroller:0.32.0'
     implementation 'com.airbnb.android:lottie-compose:6.1.0'
-    
+
     // Work Manager
     implementation 'androidx.work:work-runtime-ktx:2.9.0'
-    
+
+    // Testing
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
