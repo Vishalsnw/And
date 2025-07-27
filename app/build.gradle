@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.gms.google-services'
+    id 'com.diffplug.spotless' // ✅ Added Spotless plugin
 }
 
 android {
@@ -110,4 +111,15 @@ dependencies {
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
+}
+
+// ✅ Spotless plugin configuration
+spotless {
+    kotlin {
+        target '**/*.kt'
+        ktlint('0.50.0') // Use latest available version if needed
+    }
+    kotlinGradle {
+        target '*.gradle.kts'
+    }
 }
