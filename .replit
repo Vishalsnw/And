@@ -3,8 +3,8 @@ run = "./gradlew assembleDebug"
 channel = "stable-25_05"
 
 [env]
-JAVA_HOME = "/nix/store/q8s1kzk1w7w1s1x1j1v1l1w1s1q1s1k1-openjdk-17.0.2+8/lib/openjdk"
-PATH = "${JAVA_HOME}/bin:${PATH}"
+JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64"
+PATH = "/usr/lib/jvm/java-17-openjdk-amd64/bin:${PATH}"
 
 [deployment]
 run = ["sh", "-c", "./gradlew assembleDebug"]
