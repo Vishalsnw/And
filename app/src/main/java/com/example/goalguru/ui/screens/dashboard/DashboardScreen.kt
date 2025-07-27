@@ -1,4 +1,3 @@
-
 package com.example.goalguru.ui.screens.dashboard
 
 import androidx.compose.foundation.layout.*
@@ -17,18 +16,13 @@ import com.example.goalguru.ui.components.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
-    onNavigateToCreateGoal: () -> Unit,
-    onNavigateToSettings: () -> Unit
+    onNavigateToCreateGoal: () -> Unit = {},
+    onNavigateToSettings: () -> Unit = {}
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { 
-                    Text(
-                        "GoalGuru",
-                        fontWeight = FontWeight.Bold
-                    )
-                },
+                title = { Text("Dashboard") },
                 actions = {
                     IconButton(onClick = onNavigateToSettings) {
                         Icon(Icons.Default.Settings, contentDescription = "Settings")
@@ -38,8 +32,7 @@ fun DashboardScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = onNavigateToCreateGoal,
-                modifier = Modifier.padding(16.dp)
+                onClick = onNavigateToCreateGoal
             ) {
                 Icon(Icons.Default.Add, contentDescription = "Add Goal")
             }
@@ -53,15 +46,7 @@ fun DashboardScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item {
-                Spacer(modifier = Modifier.height(8.dp))
-            }
-
-            item {
-                Text(
-                    text = "Good morning! 👋",
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
+                Spacer(modifier = Modifier.height(16.dp))
             }
 
             item {
@@ -118,5 +103,5 @@ private data class SampleGoal(
     val title: String,
     val description: String,
     val progress: Float,
-    val daysLeft: Intt
+    val daysLeft: Int
 )

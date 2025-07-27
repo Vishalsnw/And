@@ -1,3 +1,4 @@
+
 package com.example.goalguru.ui.components
 
 import androidx.compose.foundation.layout.*
@@ -110,7 +111,7 @@ fun GoalCard(
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold
             )
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = description,
                 style = MaterialTheme.typography.bodyMedium,

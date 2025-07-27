@@ -1,7 +1,6 @@
-
 package com.example.goalguru.ui.screens.onboarding
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -9,7 +8,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -17,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(
     onOnboardingComplete: () -> Unit
@@ -73,33 +72,11 @@ fun OnboardingScreen(
                     Text("Previous")
                 }
             } else {
-                Spacer(modifier = Modifier.width(72.dp))
-            }
-
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                repeat(pages.size) { index ->
-                    Box(
-                        modifier = Modifier
-                            .size(8.dp)
-                            .padding(2.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        androidx.compose.foundation.Canvas(
-                            modifier = Modifier.size(6.dp)
-                        ) {
-                            drawCircle(
-                                color = if (index == pagerState.currentPage) 
-                                    Color.Blue else Color.Gray
-                            )
-                        }
-                    }
-                }
+                Spacer(modifier = Modifier.width(80.dp))
             }
 
             if (pagerState.currentPage < pages.size - 1) {
-                TextButton(
+                Button(
                     onClick = {
                         coroutineScope.launch {
                             pagerState.animateScrollToPage(pagerState.currentPage + 1)
@@ -109,7 +86,7 @@ fun OnboardingScreen(
                     Text("Next")
                 }
             } else {
-                TextButton(
+                Button(
                     onClick = onOnboardingComplete
                 ) {
                     Text("Get Started")
@@ -132,18 +109,18 @@ private fun OnboardingPageContent(page: OnboardingPage) {
             modifier = Modifier.size(120.dp),
             tint = MaterialTheme.colorScheme.primary
         )
-        
+
         Spacer(modifier = Modifier.height(32.dp))
-        
+
         Text(
             text = page.title,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         )
-        
+
         Spacer(modifier = Modifier.height(16.dp))
-        
+
         Text(
             text = page.description,
             fontSize = 16.sp,

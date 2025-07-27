@@ -1,3 +1,4 @@
+
 package com.example.goalguru.ui.screens.goal
 
 import androidx.compose.foundation.layout.*
@@ -15,21 +16,18 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateGoalScreen(
-    onNavigateBack: () -> Unit
+    onNavigateBack: () -> Unit = {},
+    onGoalCreated: () -> Unit = {}
 ) {
-    var goalTitle by remember { mutableStateOf("") }
-    var goalDescription by remember { mutableStateOf("") }
+    var title by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
+    var category by remember { mutableStateOf("") }
     var targetDays by remember { mutableStateOf("") }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { 
-                    Text(
-                        "Create New Goal",
-                        fontWeight = FontWeight.Bold
-                    )
-                },
+                title = { Text("Create Goal") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
@@ -46,20 +44,28 @@ fun CreateGoalScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             OutlinedTextField(
-                value = goalTitle,
-                onValueChange = { goalTitle = it },
+                value = title,
+                onValueChange = { title = it },
                 label = { Text("Goal Title") },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true
+                placeholder = { Text("Enter your goal") }
             )
 
             OutlinedTextField(
-                value = goalDescription,
-                onValueChange = { goalDescription = it },
+                value = description,
+                onValueChange = { description = it },
                 label = { Text("Description") },
                 modifier = Modifier.fillMaxWidth(),
-                minLines = 3,
-                maxLines = 5
+                placeholder = { Text("Describe your goal") },
+                minLines = 3
+            )
+
+            OutlinedTextField(
+                value = category,
+                onValueChange = { category = it },
+                label = { Text("Category") },
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text("e.g., Health, Learning, Career") }
             )
 
             OutlinedTextField(
@@ -67,21 +73,22 @@ fun CreateGoalScreen(
                 onValueChange = { targetDays = it },
                 label = { Text("Target Days") },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
+                placeholder = { Text("Number of days to complete") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
 
             Spacer(modifier = Modifier.weight(1f))
 
             Button(
-                onClick = {
-                    // TODO: Save goal logic
-                    onNavigateBack()
-                },
+                onClick = onGoalCreated,
                 modifier = Modifier.fillMaxWidth(),
-                enabled = goalTitle.isNotEmpty() && goalDescription.isNotEmpty() && targetDays.isNotEmpty()
+                enabled = title.isNotBlank() && description.isNotBlank()
             ) {
-                Text("Create Goal")
+                Text(
+                    text = "Create Goal",
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.SemiBold
+                )
             }
         }
     }

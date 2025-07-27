@@ -58,15 +58,13 @@ class GoalGuruMessagingService : FirebaseMessagingService() {
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        // Create notification channel for Android O and above
+        // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
-                "Goal Reminders",
+                "GoalGuru Notifications",
                 NotificationManager.IMPORTANCE_DEFAULT
-            ).apply {
-                description = "Notifications for daily goal reminders"
-            }
+            )
             notificationManager.createNotificationChannel(channel)
         }
 
