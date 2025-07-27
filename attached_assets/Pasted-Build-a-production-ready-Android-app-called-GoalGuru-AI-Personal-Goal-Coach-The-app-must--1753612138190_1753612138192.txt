@@ -1,0 +1,72 @@
+Build a **production-ready Android app** called **GoalGuru – AI Personal Goal Coach**. The app must have a professional, elegant UI (like Headspace, Notion, or Google Fit). Use Material 3 (Material You), smooth animations, modern layouts, and a clean color palette.
+
+---
+
+### 🧠 Key Features:
+
+1. **AI-Powered Goal Roadmap**
+   - User enters a goal (e.g. "Learn Kotlin", "Lose 5kg")
+   - AI generates structured daily roadmap (DeepSeek API)
+   - Roadmap stored in Firebase Firestore
+   - Show step-by-step daily goals to user
+
+2. **Daily Task Engine**
+   - Display today's task with CTA buttons (Complete / Skip)
+   - Auto-update streak and progress
+   - Cache task for offline access
+
+3. **Roast Notifications (FCM Push)**
+   - If task not completed by chosen time, send roast-style FCM notification
+   - Notification content varies by user’s roast level, language, and gender
+   - Example: “Bhai, goal complete karna hai ya procrastinate hi karte rehna hai?”
+
+4. **Progress & Streak Dashboard**
+   - Show:
+     - Total tasks
+     - Completed tasks
+     - Completion %
+     - Current + Best Streak
+   - Use charts or cards with animations (like MPAndroidChart or Compose equivalents)
+
+5. **User Settings Panel**
+   - Roast Level (Mild, Spicy, Extra-Spicy)
+   - Language (English / Hindi)
+   - Gender (Male / Female / Other)
+   - Notification time picker
+   - Theme toggle (Light / Dark / System)
+
+---
+
+### 🎨 UI & UX Requirements:
+
+- Use **Jetpack Compose + Material 3 (M3)**  
+- Follow modern UI design: rounded cards, shadows, clean typography, iconography
+- Include **onboarding flow** for first-time users
+- Add **animations using Accompanist / MotionLayout**
+- Support light & dark themes
+
+---
+
+### 📦 Architecture & Tools:
+
+| Layer | Tool |
+|-------|------|
+| UI | Jetpack Compose + Material 3 |
+| State | MVVM (ViewModel + LiveData or StateFlow) |
+| Database | Firebase Firestore |
+| Auth | Firebase Anonymous Auth |
+| Notifications | Firebase Cloud Messaging (FCM) |
+| Storage | SharedPreferences / DataStore |
+| Analytics | Optional: Firebase Analytics |
+| Build | Gradle (KTS preferred), Android SDK 34 |
+
+---
+
+### ⚙️ Extra Requirements:
+
+- All data must be synced with Firebase
+- User should see a confirmation toast/snackbar on all actions
+- App must handle offline gracefully using Room or caching
+- Code must be modular, readable, and production-ready (no hardcoded strings)
+
+⚠️ Important: This app should **feel like a premium app** — not a student project. Smooth, stable, beautiful, and ready for Play Store.
