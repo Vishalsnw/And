@@ -1,3 +1,4 @@
+
 package com.example.goalguru.fcm
 
 import android.app.NotificationChannel
@@ -14,6 +15,10 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
 class GoalGuruMessagingService : FirebaseMessagingService() {
+
+    companion object {
+        private const val TAG = "GoalGuruMessaging"
+    }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
@@ -40,7 +45,6 @@ class GoalGuruMessagingService : FirebaseMessagingService() {
 
     private fun sendRegistrationToServer(token: String) {
         // TODO: Implement sending token to your server
-        Log.d(TAG, "Token sent to server: $token")
     }
 
     private fun sendNotification(title: String, body: String) {
@@ -64,20 +68,16 @@ class GoalGuruMessagingService : FirebaseMessagingService() {
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        // Since android Oreo notification channel is needed
+        // Create notification channel for Android O and above
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
-                "Goal Notifications",
+                "GoalGuru Notifications",
                 NotificationManager.IMPORTANCE_DEFAULT
             )
             notificationManager.createNotificationChannel(channel)
         }
 
         notificationManager.notify(0, notificationBuilder.build())
-    }
-
-    companion object {
-        private const val TAG = "GoalGuruFCM"
     }
 }
