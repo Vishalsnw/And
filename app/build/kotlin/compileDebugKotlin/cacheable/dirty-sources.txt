@@ -1,0 +1,15 @@
+/home/runner/workspace/app/src/main/java/com/example/goalguru/data/model/Goal.kt
+/home/runner/workspace/app/src/main/java/com/example/goalguru/ui/theme/Color.kt
+/home/runner/workspace/app/src/main/java/com/example/goalguru/ui/navigation/GoalGuruNavigation.kt
+/home/runner/workspace/app/src/main/java/com/example/goalguru/fcm/GoalGuruMessagingService.kt
+/home/runner/workspace/app/src/main/java/com/example/goalguru/ui/theme/Theme.kt
+/home/runner/workspace/app/src/main/java/com/example/goalguru/ui/screens/dashboard/DashboardScreen.kt
+/home/runner/workspace/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt
+/home/runner/workspace/app/src/main/java/com/example/goalguru/ui/components/Cards.kt
+/home/runner/workspace/app/src/main/java/com/example/goalguru/MainActivity.kt
+/home/runner/workspace/app/src/main/java/com/example/goalguru/ui/screens/onboarding/OnboardingScreen.kt
+/home/runner/workspace/app/src/main/java/com/example/goalguru/ui/screens/settings/SettingsScreen.kt
+/home/runner/workspace/app/src/main/java/com/example/goalguru/ui/theme/Type.kt
+/home/runner/workspace/app/src/main/java/com/example/goalguru/data/model/User.kt
+/home/runner/workspace/app/src/main/java/com/example/goalguru/firebase/FirebaseConfig.kt
+/home/runner/workspace/app/src/main/java/com/example/goalguru/GoalGuruApplication.kt
