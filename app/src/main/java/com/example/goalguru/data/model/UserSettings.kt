@@ -1,4 +1,3 @@
-
 package com.example.goalguru.data.model
 
 import androidx.room.Entity
@@ -25,13 +24,3 @@ enum class Gender {
 enum class MotivationStyle {
     MILD, MODERATE, HARSH
 }
-package com.example.goalguru.data.model
-
-data class UserSettings(
-    val deepSeekApiKey: String = "",
-    val name: String = "",
-    val age: Int = 25,
-    val gender: String = "",
-    val notificationsEnabled: Boolean = true,
-    val notificationStyle: String = "Mild"
-)

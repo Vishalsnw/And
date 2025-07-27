@@ -28,5 +28,5 @@ class GoalGuruApplication : Application(), Configuration.Provider {
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
             .setMinimumLoggingLevel(Log.INFO)
-            .build()ld()
+            .build()
 }
