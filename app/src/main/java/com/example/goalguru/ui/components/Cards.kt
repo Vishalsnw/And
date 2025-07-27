@@ -87,9 +87,9 @@ fun GoalCard(
     modifier: Modifier = Modifier
 ) {
     Card(
-        onClick = onClick,
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(12.dp),
+        onClick = onClick
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -106,10 +106,12 @@ fun GoalCard(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Spacer(modifier = Modifier.height(12.dp))
+
             LinearProgressIndicator(
                 progress = progress / 100f,
                 modifier = Modifier.fillMaxWidth()
             )
+
             Spacer(modifier = Modifier.height(8.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -129,3 +131,10 @@ fun GoalCard(
         }
     }
 }
+
+data class SampleGoal(
+    val title: String,
+    val description: String,
+    val progress: Float,
+    val daysLeft: Int
+)
