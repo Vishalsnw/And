@@ -9,13 +9,10 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.goalguru.ui.components.ProgressCard
-import com.example.goalguru.ui.components.TodayTaskCard
-import com.example.goalguru.ui.components.GoalCard
+import com.example.goalguru.ui.components.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

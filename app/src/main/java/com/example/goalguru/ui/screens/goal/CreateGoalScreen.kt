@@ -15,13 +15,11 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateGoalScreen(
-    onNavigateBack: () -> Unit,
-    onGoalCreated: () -> Unit
+    onNavigateBack: () -> Unit
 ) {
     var goalTitle by remember { mutableStateOf("") }
     var goalDescription by remember { mutableStateOf("") }
     var targetDays by remember { mutableStateOf("") }
-    var category by remember { mutableStateOf("Personal") }
 
     Scaffold(
         topBar = {
@@ -29,7 +27,7 @@ fun CreateGoalScreen(
                 title = { 
                     Text(
                         "Create New Goal",
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.Bold
                     )
                 },
                 navigationIcon = {
@@ -69,38 +67,21 @@ fun CreateGoalScreen(
                 onValueChange = { targetDays = it },
                 label = { Text("Target Days") },
                 modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                singleLine = true
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
 
-            OutlinedTextField(
-                value = category,
-                onValueChange = { category = it },
-                label = { Text("Category") },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.weight(1f))
 
             Button(
                 onClick = {
-                    if (goalTitle.isNotBlank() && goalDescription.isNotBlank() && targetDays.isNotBlank()) {
-                        // TODO: Save goal to database
-                        onGoalCreated()
-                    }
+                    // TODO: Save goal logic
+                    onNavigateBack()
                 },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = goalTitle.isNotBlank() && goalDescription.isNotBlank() && targetDays.isNotBlank()
+                enabled = goalTitle.isNotEmpty() && goalDescription.isNotEmpty() && targetDays.isNotEmpty()
             ) {
                 Text("Create Goal")
-            }
-
-            OutlinedButton(
-                onClick = onNavigateBack,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Cancel")
             }
         }
     }
