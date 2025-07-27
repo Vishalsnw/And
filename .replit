@@ -3,10 +3,10 @@ run = "./gradlew assembleDebug"
 channel = "stable-25_05"
 
 [env]
-JAVA_HOME = "/nix/store/xad649j61kwkh0id5wvyiab5rliprp4d-openjdk-17.0.15+6"
+JAVA_HOME = "$NIX_PROFILES/lib/openjdk"
 ANDROID_HOME = "/home/runner/.android-sdk"
 ANDROID_SDK_ROOT = "/home/runner/.android-sdk"
-PATH = "/nix/store/xad649j61kwkh0id5wvyiab5rliprp4d-openjdk-17.0.15+6/bin:/home/runner/.android-sdk/platform-tools:/home/runner/.android-sdk/build-tools/34.0.0:${PATH}"
+PATH = "$NIX_PROFILES/bin:/home/runner/.android-sdk/platform-tools:/home/runner/.android-sdk/build-tools/34.0.0:${PATH}"
 
 [deployment]
 run = ["sh", "-c", "./gradlew assembleDebug"]

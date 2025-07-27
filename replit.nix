@@ -2,10 +2,13 @@
 { pkgs }: {
   deps = [
     pkgs.openjdk17
-    pkgs.android-tools
     pkgs.gradle
-    pkgs.androidenv.androidPkgs_9_0.platform-tools
-    pkgs.androidenv.androidPkgs_9_0.build-tools_30_0_3
-    pkgs.androidenv.androidPkgs_9_0.platforms.android-34
+    pkgs.android-tools
   ];
+  
+  env = {
+    JAVA_HOME = "${pkgs.openjdk17}";
+    ANDROID_HOME = "/home/runner/.android-sdk";
+    PATH = "${pkgs.openjdk17}/bin:${pkgs.android-tools}/bin:$PATH";
+  };
 }
