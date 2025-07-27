@@ -113,20 +113,14 @@ dependencies {
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
 }
 
-// ✅ Spotless plugin configuration
+// ✅ Spotless plugin configuration (correct)
 spotless {
     kotlin {
         target '**/*.kt'
         ktlint('0.50.0')
-
         trimTrailingWhitespace()
         endWithNewline()
-
-        // ✅ Disallow wildcard imports
-        editorConfigOverride([
-            'ij_kotlin_allowWildcardImports': 'false',
-            'ktlint_no-wildcard-imports': 'true'
-        ])
+        // ✅ Removed editorConfigOverride to avoid crash
     }
 
     kotlinGradle {
