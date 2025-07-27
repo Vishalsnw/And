@@ -6,7 +6,7 @@ channel = "stable-25_05"
 run = ["sh", "-c", "./gradlew assembleDebug"]
 
 [workflows]
-runButton = "Build APK"
+runButton = "Build and Install APK"
 
 [[workflows.workflow]]
 name = "Build APK"
@@ -16,3 +16,16 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "./gradlew assembleDebug"
+
+[[workflows.workflow]]
+name = "Build and Install APK"
+author = 45600381
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "./gradlew assembleDebug"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"APK built successfully! Find it in: app/build/outputs/apk/debug/\""
