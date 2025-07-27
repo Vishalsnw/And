@@ -15,51 +15,20 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateGoalScreen(
-    onBackClick: () -> Unit,
+    onNavigateBack: () -> Unit,
     onGoalCreated: () -> Unit
 ) {
     var goalTitle by remember { mutableStateOf("") }
     var goalDescription by remember { mutableStateOf("") }
-    var isLoading by remember { mutableStateOf(false) }
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Create Goal") },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                }
-            )
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Text(
-                text = "What goal would you like to achieve?",
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold
-            )
-fun CreateGoalScreen(
-    onGoalCreated: () -> Unit,
-    onNavigateBack: () -> Unit
-) {
-    var goalTitle by remember { mutableStateOf("") }
-    var goalDescription by remember { mutableStateOf("") }
-    var isLoading by remember { mutableStateOf(false) }
+    var targetDays by remember { mutableStateOf("") }
+    var category by remember { mutableStateOf("Personal") }
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { 
                     Text(
-                        "Create Goal",
+                        "Create New Goal",
                         fontWeight = FontWeight.SemiBold
                     )
                 },
@@ -78,25 +47,10 @@ fun CreateGoalScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text(
-                text = "What's your goal?",
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold
-            )
-
-            Text(
-                text = "Describe what you want to achieve. Our AI will create a personalized roadmap to help you get there.",
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
             OutlinedTextField(
                 value = goalTitle,
                 onValueChange = { goalTitle = it },
                 label = { Text("Goal Title") },
-                placeholder = { Text("e.g., Learn Kotlin Programming") },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -104,35 +58,49 @@ fun CreateGoalScreen(
             OutlinedTextField(
                 value = goalDescription,
                 onValueChange = { goalDescription = it },
-                label = { Text("Description (Optional)") },
-                placeholder = { Text("Add more details about your goal...") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp),
-                maxLines = 4
+                label = { Text("Description") },
+                modifier = Modifier.fillMaxWidth(),
+                minLines = 3,
+                maxLines = 5
             )
 
-            Spacer(modifier = Modifier.weight(1f))
+            OutlinedTextField(
+                value = targetDays,
+                onValueChange = { targetDays = it },
+                label = { Text("Target Days") },
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                singleLine = true
+            )
+
+            OutlinedTextField(
+                value = category,
+                onValueChange = { category = it },
+                label = { Text("Category") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
 
             Button(
                 onClick = {
-                    if (goalTitle.isNotBlank()) {
-                        isLoading = true
-                        // TODO: Create goal and generate roadmap
+                    if (goalTitle.isNotBlank() && goalDescription.isNotBlank() && targetDays.isNotBlank()) {
+                        // TODO: Save goal to database
                         onGoalCreated()
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = goalTitle.isNotBlank() && !isLoading
+                enabled = goalTitle.isNotBlank() && goalDescription.isNotBlank() && targetDays.isNotBlank()
             ) {
-                if (isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(16.dp),
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                }
-                Text("Create Goal & Generate Roadmap")
+                Text("Create Goal")
+            }
+
+            OutlinedButton(
+                onClick = onNavigateBack,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Cancel")
             }
         }
     }
