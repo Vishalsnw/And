@@ -118,5 +118,5 @@ private data class SampleGoal(
     val title: String,
     val description: String,
     val progress: Float,
-    val daysLeft: Int
+    val daysLeft: Intt
 )
