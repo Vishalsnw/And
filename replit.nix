@@ -1,13 +1,12 @@
 
 { pkgs }: {
   deps = [
-    pkgs.openjdk17
+    pkgs.graalvm17-ce
+    pkgs.android-studio
     pkgs.android-tools
-    pkgs.curl
-    pkgs.unzip
   ];
-  
   env = {
-    JAVA_HOME = "${pkgs.openjdk17}/lib/openjdk";
+    ANDROID_HOME = "${pkgs.android-studio}/libexec/android-studio/sdk";
+    ANDROID_SDK_ROOT = "${pkgs.android-studio}/libexec/android-studio/sdk";
   };
 }
