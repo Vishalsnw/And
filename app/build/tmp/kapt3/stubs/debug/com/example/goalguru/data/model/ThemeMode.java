@@ -5,18 +5,18 @@ public enum ThemeMode {
     /*public static final*/ LIGHT /* = new LIGHT(null) */,
     /*public static final*/ DARK /* = new DARK(null) */,
     /*public static final*/ SYSTEM /* = new SYSTEM(null) */;
-    @org.jetbrains.annotations.NotNull
+    @org.jetbrains.annotations.NotNull()
     private final java.lang.String displayName = null;
     
     ThemeMode(java.lang.String displayName) {
     }
     
-    @org.jetbrains.annotations.NotNull
+    @org.jetbrains.annotations.NotNull()
     public final java.lang.String getDisplayName() {
         return null;
     }
     
-    @org.jetbrains.annotations.NotNull
+    @org.jetbrains.annotations.NotNull()
     public static kotlin.enums.EnumEntries<com.example.goalguru.data.model.ThemeMode> getEntries() {
         return null;
     }

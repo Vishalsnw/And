@@ -7,7 +7,7 @@ public final class GoalGuruApplication extends android.app.Application {
         super();
     }
     
-    @java.lang.Override
+    @java.lang.Override()
     public void onCreate() {
     }
 }

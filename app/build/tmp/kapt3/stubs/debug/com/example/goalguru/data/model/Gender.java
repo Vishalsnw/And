@@ -5,18 +5,18 @@ public enum Gender {
     /*public static final*/ MALE /* = new MALE(null) */,
     /*public static final*/ FEMALE /* = new FEMALE(null) */,
     /*public static final*/ OTHER /* = new OTHER(null) */;
-    @org.jetbrains.annotations.NotNull
+    @org.jetbrains.annotations.NotNull()
     private final java.lang.String displayName = null;
     
     Gender(java.lang.String displayName) {
     }
     
-    @org.jetbrains.annotations.NotNull
+    @org.jetbrains.annotations.NotNull()
     public final java.lang.String getDisplayName() {
         return null;
     }
     
-    @org.jetbrains.annotations.NotNull
+    @org.jetbrains.annotations.NotNull()
     public static kotlin.enums.EnumEntries<com.example.goalguru.data.model.Gender> getEntries() {
         return null;
     }

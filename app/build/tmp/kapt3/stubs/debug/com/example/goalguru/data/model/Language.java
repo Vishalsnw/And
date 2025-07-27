@@ -4,25 +4,25 @@ package com.example.goalguru.data.model;
 public enum Language {
     /*public static final*/ ENGLISH /* = new ENGLISH(null, null) */,
     /*public static final*/ HINDI /* = new HINDI(null, null) */;
-    @org.jetbrains.annotations.NotNull
+    @org.jetbrains.annotations.NotNull()
     private final java.lang.String displayName = null;
-    @org.jetbrains.annotations.NotNull
+    @org.jetbrains.annotations.NotNull()
     private final java.lang.String code = null;
     
     Language(java.lang.String displayName, java.lang.String code) {
     }
     
-    @org.jetbrains.annotations.NotNull
+    @org.jetbrains.annotations.NotNull()
     public final java.lang.String getDisplayName() {
         return null;
     }
     
-    @org.jetbrains.annotations.NotNull
+    @org.jetbrains.annotations.NotNull()
     public final java.lang.String getCode() {
         return null;
     }
     
-    @org.jetbrains.annotations.NotNull
+    @org.jetbrains.annotations.NotNull()
     public static kotlin.enums.EnumEntries<com.example.goalguru.data.model.Language> getEntries() {
         return null;
     }

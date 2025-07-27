@@ -5,18 +5,18 @@ public enum RoastLevel {
     /*public static final*/ MILD /* = new MILD(null) */,
     /*public static final*/ SPICY /* = new SPICY(null) */,
     /*public static final*/ EXTRA_SPICY /* = new EXTRA_SPICY(null) */;
-    @org.jetbrains.annotations.NotNull
+    @org.jetbrains.annotations.NotNull()
     private final java.lang.String displayName = null;
     
     RoastLevel(java.lang.String displayName) {
     }
     
-    @org.jetbrains.annotations.NotNull
+    @org.jetbrains.annotations.NotNull()
     public final java.lang.String getDisplayName() {
         return null;
     }
     
-    @org.jetbrains.annotations.NotNull
+    @org.jetbrains.annotations.NotNull()
     public static kotlin.enums.EnumEntries<com.example.goalguru.data.model.RoastLevel> getEntries() {
         return null;
     }

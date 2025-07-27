@@ -4,7 +4,7 @@
             "outputFile": "com.example.goalguru.app-mergeDebugResources-82:/values-v16/values-v16.xml",
             "map": [
                 {
-                    "source": "/home/runner/.gradle/caches/transforms-3/f50f0129ccceaf32b276e3be5e01bf24/transformed/core-1.10.0/res/values-v16/values-v16.xml",
+                    "source": "/home/runner/.gradle/caches/transforms-3/ff37df29e9d1fa943f9260726dc38f37/transformed/core-1.10.0/res/values-v16/values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -14,7 +14,7 @@
                     }
                 },
                 {
-                    "source": "/home/runner/.gradle/caches/transforms-3/3c05f59656720fb1472d4b1eed7592e4/transformed/appcompat-1.6.1/res/values-v16/values-v16.xml",
+                    "source": "/home/runner/.gradle/caches/transforms-3/6c91b3806c6ff99bc85a75a2dd6ae87b/transformed/appcompat-1.6.1/res/values-v16/values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

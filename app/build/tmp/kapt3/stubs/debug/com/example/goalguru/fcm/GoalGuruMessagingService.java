@@ -7,13 +7,13 @@ public final class GoalGuruMessagingService extends com.google.firebase.messagin
         super();
     }
     
-    @java.lang.Override
-    public void onMessageReceived(@org.jetbrains.annotations.NotNull
+    @java.lang.Override()
+    public void onMessageReceived(@org.jetbrains.annotations.NotNull()
     com.google.firebase.messaging.RemoteMessage remoteMessage) {
     }
     
-    @java.lang.Override
-    public void onNewToken(@org.jetbrains.annotations.NotNull
+    @java.lang.Override()
+    public void onNewToken(@org.jetbrains.annotations.NotNull()
     java.lang.String token) {
     }
     
