@@ -31,7 +31,7 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "./gradlew assembleDebug"
+args = "export ANDROID_HOME=/home/runner/.android-sdk && export ANDROID_SDK_ROOT=/home/runner/.android-sdk && export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/34.0.0 && ./gradlew assembleDebug"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
