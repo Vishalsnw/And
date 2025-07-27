@@ -30,11 +30,11 @@
             android:theme="@style/Theme.GoalGuru">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!-- Firebase Messaging Service -->
         <service
             android:name=".fcm.GoalGuruMessagingService"
             android:exported="false">
