@@ -1,4 +1,3 @@
-
 package com.example.goalguru.data.model
 
 import androidx.room.Entity
@@ -50,30 +49,4 @@ data class Progress(
     val bestStreak: Int = 0,
     val completionPercentage: Float = 0f,
     val lastUpdated: Date = Date()
-)
-package com.example.goalguru.data.model
-
-data class Goal(
-    val id: String = "",
-    val title: String = "",
-    val description: String = "",
-    val targetDays: Int = 0,
-    val progress: Float = 0f,
-    val createdAt: Long = System.currentTimeMillis(),
-    val isCompleted: Boolean = false
-)
-
-data class Task(
-    val id: String = "",
-    val goalId: String = "",
-    val title: String = "",
-    val isCompleted: Boolean = false,
-    val dueDate: Long? = null
-)
-
-data class UserProfile(
-    val id: String = "",
-    val name: String = "",
-    val email: String = "",
-    val joinedAt: Long = System.currentTimeMillis()
 )
