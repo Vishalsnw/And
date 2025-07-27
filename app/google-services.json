@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "655564345934",
+    "firebase_url": "https://goalguru-e0e30-default-rtdb.firebaseio.com",
+    "project_id": "goalguru-e0e30",
+    "storage_bucket": "goalguru-e0e30.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:655564345934:android:954c2d97ba9636ce78291f",
+        "android_client_info": {
+          "package_name": "com.example.goalguru"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "655564345934-stv90cf9ck8kekmh3oule1nj7ulp2smu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCw92TX6PI9k9cwSkXwM75-4fWy0koVdg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "655564345934-stv90cf9ck8kekmh3oule1nj7ulp2smu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
