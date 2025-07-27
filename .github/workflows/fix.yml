@@ -23,8 +23,17 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Fix Code Style (Spotless)
+      - name: Run Spotless Auto Fix
         run: ./gradlew spotlessApply
+
+      - name: Commit Spotless Fixes (if any)
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add .
+          git diff --quiet && git diff --staged --quiet || git commit -am "🔧 Spotless auto-format applied"
+          git push origin main || echo "No changes to commit"
+        continue-on-error: true
 
       - name: Clean Project
         run: ./gradlew clean
