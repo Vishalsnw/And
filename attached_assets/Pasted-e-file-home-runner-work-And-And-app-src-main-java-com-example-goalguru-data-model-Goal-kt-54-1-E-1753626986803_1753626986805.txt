@@ -1,0 +1,28 @@
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/model/Goal.kt:54:1 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/model/Goal.kt:54:9 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/model/Goal.kt:54:12 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/model/Goal.kt:54:13 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/model/Goal.kt:54:20 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/model/Goal.kt:54:21 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/model/Goal.kt:54:29 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/model/Goal.kt:54:34 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/model/Goal.kt:54:35 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/navigation/GoalGuruNavigation.kt:53:1 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/navigation/GoalGuruNavigation.kt:53:9 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/navigation/GoalGuruNavigation.kt:53:12 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/navigation/GoalGuruNavigation.kt:53:13 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/navigation/GoalGuruNavigation.kt:53:20 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/navigation/GoalGuruNavigation.kt:53:21 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/navigation/GoalGuruNavigation.kt:53:29 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/navigation/GoalGuruNavigation.kt:53:30 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/navigation/GoalGuruNavigation.kt:53:32 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/navigation/GoalGuruNavigation.kt:53:33 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/navigation/GoalGuruNavigation.kt:53:43 imports are only allowed in the beginning of file
+Execution failed for task ':app:kaptGenerateStubsReleaseKotlin'.
+* Exception is:
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:kaptGenerateStubsReleaseKotlin'.
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionException: A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilation error. See log for more details
+	at org.jetbrains.kotlin.gradle.tasks.TasksUtilsKt.throwExceptionIfCompilationFailed(tasksUtils.kt:22)
