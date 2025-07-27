@@ -53,10 +53,10 @@ import com.example.goalguru.data.model.Goal
 import com.example.goalguru.ui.components.GoalCard
 import com.example.goalguru.ui.components.ProgressIndicator
 import com.example.goalguru.ui.components.WelcomeCard
-import com.example.goalguru.ui.theme.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.compose.material3.*
 import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)

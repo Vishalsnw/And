@@ -1,12 +1,26 @@
-
 package com.example.goalguru.ui.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.TrendingUp
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,7 +67,7 @@ fun GoalCard(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-                    
+
                     if (goal.description.isNotEmpty()) {
                         Text(
                             text = goal.description,
@@ -65,12 +79,12 @@ fun GoalCard(
                         )
                     }
                 }
-                
+
                 PriorityChip(priority = goal.priority)
             }
-            
+
             Spacer(modifier = Modifier.height(16.dp))
-            
+
             // Progress Section
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -82,7 +96,7 @@ fun GoalCard(
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 )
-                
+
                 Text(
                     text = "${goal.progress.toInt()}%",
                     style = MaterialTheme.typography.bodySmall,
@@ -90,9 +104,9 @@ fun GoalCard(
                     color = MaterialTheme.colorScheme.primary
                 )
             }
-            
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             LinearProgressIndicator(
                 progress = goal.progress / 100f,
                 modifier = Modifier
@@ -102,9 +116,9 @@ fun GoalCard(
                 color = MaterialTheme.colorScheme.primary,
                 trackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
             )
-            
+
             Spacer(modifier = Modifier.height(12.dp))
-            
+
             // Footer Info
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -125,7 +139,7 @@ fun GoalCard(
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                     )
                 }
-                
+
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         Icons.Default.TrendingUp,
@@ -153,7 +167,7 @@ private fun PriorityChip(priority: Priority) {
         Priority.HIGH -> Pair(MaterialTheme.colorScheme.tertiary, "High")
         Priority.URGENT -> Pair(MaterialTheme.colorScheme.error, "Urgent")
     }
-    
+
     Surface(
         shape = RoundedCornerShape(12.dp),
         color = color.copy(alpha = 0.1f),

@@ -55,7 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.goalguru.data.model.Priority
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
