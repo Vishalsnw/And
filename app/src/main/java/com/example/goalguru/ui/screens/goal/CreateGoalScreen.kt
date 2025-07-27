@@ -1,4 +1,3 @@
-
 package com.example.goalguru.ui.screens.goal
 
 import androidx.compose.foundation.layout.*
@@ -16,13 +15,12 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateGoalScreen(
-    onNavigateBack: () -> Unit = {},
-    onGoalCreated: () -> Unit = {}
+    onGoalCreated: () -> Unit,
+    onNavigateBack: () -> Unit
 ) {
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var category by remember { mutableStateOf("") }
-    var targetDays by remember { mutableStateOf("") }
 
     Scaffold(
         topBar = {
@@ -47,8 +45,7 @@ fun CreateGoalScreen(
                 value = title,
                 onValueChange = { title = it },
                 label = { Text("Goal Title") },
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("Enter your goal") }
+                modifier = Modifier.fillMaxWidth()
             )
 
             OutlinedTextField(
@@ -56,25 +53,14 @@ fun CreateGoalScreen(
                 onValueChange = { description = it },
                 label = { Text("Description") },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("Describe your goal") },
-                minLines = 3
+                maxLines = 3
             )
 
             OutlinedTextField(
                 value = category,
                 onValueChange = { category = it },
                 label = { Text("Category") },
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("e.g., Health, Learning, Career") }
-            )
-
-            OutlinedTextField(
-                value = targetDays,
-                onValueChange = { targetDays = it },
-                label = { Text("Target Days") },
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text("Number of days to complete") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.weight(1f))
@@ -84,11 +70,7 @@ fun CreateGoalScreen(
                 modifier = Modifier.fillMaxWidth(),
                 enabled = title.isNotBlank() && description.isNotBlank()
             ) {
-                Text(
-                    text = "Create Goal",
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.SemiBold
-                )
+                Text("Create Goal")
             }
         }
     }

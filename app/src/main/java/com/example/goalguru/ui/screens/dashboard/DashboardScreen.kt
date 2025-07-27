@@ -1,3 +1,4 @@
+
 package com.example.goalguru.ui.screens.dashboard
 
 import androidx.compose.foundation.layout.*
@@ -13,18 +14,31 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.goalguru.ui.components.*
 
+private val sampleGoals = listOf(
+    SampleGoal("Learn Kotlin", "Master Android development with Kotlin", 40f, 25),
+    SampleGoal("Lose 5kg", "Get fit and healthy", 20f, 45),
+    SampleGoal("Read 12 Books", "Expand knowledge and skills", 75f, 120)
+)
+
+private data class SampleGoal(
+    val title: String,
+    val description: String,
+    val progress: Float,
+    val daysLeft: Int
+)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
-    onNavigateToCreateGoal: () -> Unit = {},
-    onNavigateToSettings: () -> Unit = {}
+    onCreateGoal: () -> Unit,
+    onSettings: () -> Unit
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Dashboard") },
                 actions = {
-                    IconButton(onClick = onNavigateToSettings) {
+                    IconButton(onClick = onSettings) {
                         Icon(Icons.Default.Settings, contentDescription = "Settings")
                     }
                 }
@@ -32,9 +46,9 @@ fun DashboardScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = onNavigateToCreateGoal
+                onClick = onCreateGoal
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Goal")
+                Icon(Icons.Default.Add, contentDescription = "Create Goal")
             }
         }
     ) { paddingValues ->
@@ -45,18 +59,6 @@ fun DashboardScreen(
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-
-            item {
-                ProgressCard(
-                    title = "Overall Progress",
-                    progress = 65f,
-                    subtitle = "Keep going!"
-                )
-            }
-
             item {
                 TodayTaskCard(
                     title = "Today's Focus",
@@ -92,16 +94,3 @@ fun DashboardScreen(
         }
     }
 }
-
-private val sampleGoals = listOf(
-    SampleGoal("Learn Kotlin", "Master Android development with Kotlin", 40f, 25),
-    SampleGoal("Lose 5kg", "Get fit and healthy", 20f, 45),
-    SampleGoal("Read 12 Books", "Expand knowledge and skills", 75f, 120)
-)
-
-private data class SampleGoal(
-    val title: String,
-    val description: String,
-    val progress: Float,
-    val daysLeft: Int
-)

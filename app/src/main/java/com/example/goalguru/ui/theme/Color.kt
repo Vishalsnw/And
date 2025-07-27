@@ -1,4 +1,3 @@
-
 package com.example.goalguru.ui.theme
 
 import androidx.compose.ui.graphics.Color
@@ -29,16 +28,5 @@ val NeutralGray400 = Color(0xFFBDBDBD)
 val NeutralGray500 = Color(0xFF9E9E9E)
 val NeutralGray600 = Color(0xFF757575)
 val NeutralGray700 = Color(0xFF616161)
-val NeutralGray800 = Color(0xFF424242)
-val NeutralGray900 = Color(0xFF212121)
-package com.example.goalguru.ui.theme
-
-import androidx.compose.ui.graphics.Color
-
-val PrimaryGreen = Color(0xFF4CAF50)
-val SecondaryBlue = Color(0xFF2196F3)
-val AccentOrange = Color(0xFFFF9800)
-
-val NeutralGray100 = Color(0xFFF5F5F5)
 val NeutralGray800 = Color(0xFF424242)
 val NeutralGray900 = Color(0xFF212121)

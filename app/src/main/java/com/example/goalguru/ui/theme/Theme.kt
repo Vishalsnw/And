@@ -1,4 +1,3 @@
-
 package com.example.goalguru.ui.theme
 
 import android.app.Activity
@@ -13,33 +12,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
+importandroidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = PrimaryGreen,
-    secondary = SecondaryBlue,
-    tertiary = AccentOrange,
-    background = NeutralGray900,
-    surface = NeutralGray800,
-    onPrimary = NeutralGray100,
-    onSecondary = NeutralGray100,
-    onTertiary = NeutralGray100,
-    onBackground = NeutralGray100,
-    onSurface = NeutralGray100,
+    primary = Purple80,
+    secondary = PurpleGrey80,
+    tertiary = Pink80
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = PrimaryGreen,
-    secondary = SecondaryBlue,
-    tertiary = AccentOrange,
-    background = NeutralGray50,
-    surface = NeutralGray100,
-    onPrimary = NeutralGray100,
-    onSecondary = NeutralGray100,
-    onTertiary = NeutralGray100,
-    onBackground = NeutralGray900,
-    onSurface = NeutralGray900,
+    primary = Purple40,
+    secondary = PurpleGrey40,
+    tertiary = Pink40
 )
 
 @Composable
