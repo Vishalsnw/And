@@ -20,26 +20,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    @Provides
-    @Singleton
-    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
-        return AppDatabase.getDatabase(context)
-    }
-
-    @Provides
-    fun provideGoalDao(database: AppDatabase): GoalDao {
-        return database.goalDao()
-    }
-
-    @Provides
-    fun provideTaskDao(database: AppDatabase): TaskDao {
-        return database.taskDao()
-    }
-
-    @Provides
-    fun provideUserDao(database: AppDatabase): UserDao {
-        return database.userDao()
-    }
+    // Using Firebase Firestore as primary database
+    // Room database removed to avoid conflicts
 
     @Provides
     @Singleton
