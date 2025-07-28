@@ -1,4 +1,3 @@
-
 package com.example.goalguru.ui.screens.goal
 
 import androidx.compose.foundation.layout.*
@@ -22,89 +21,101 @@ import com.example.goalguru.data.model.Task
 fun GoalDetailScreen(
     goalId: String,
     onBackPressed: () -> Unit,
-    onEditGoal: (String) -> Unit,
     viewModel: GoalDetailViewModel = hiltViewModel()
 ) {
     val goal by viewModel.goal.collectAsState()
     val tasks by viewModel.tasks.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
 
     LaunchedEffect(goalId) {
         viewModel.loadGoal(goalId)
-        viewModel.loadTasks(goalId)
     }
 
-    goal?.let { currentGoal ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-        ) {
-            // Header
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(onClick = onBackPressed) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "Back"
-                    )
-                }
-
-                IconButton(onClick = { onEditGoal(goalId) }) {
-                    Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = "Edit Goal"
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Goal Information
-            GoalInfoCard(goal = currentGoal)
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Tasks Section
-            Text(
-                text = "Tasks",
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            if (tasks.isEmpty()) {
-                EmptyTasksView()
-            } else {
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(tasks) { task ->
-                        TaskItem(
-                            task = task,
-                            onToggleCompletion = { isCompleted ->
-                                viewModel.toggleTaskCompletion(task.id, isCompleted)
-                            }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Goal Details") },
+                navigationIcon = {
+                    IconButton(onClick = onBackPressed) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { /* TODO: Edit goal */ }) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = "Edit"
                         )
                     }
                 }
-            }
+            )
         }
-    } ?: run {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
+    ) { paddingValues ->
+        if (isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        } else {
+            goal?.let { goalData ->
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    item {
+                        GoalHeader(goal = goalData)
+                    }
+
+                    item {
+                        ProgressSection(goal = goalData)
+                    }
+
+                    item {
+                        Text(
+                            text = "Tasks",
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
+                    items(tasks) { task ->
+                        TaskItem(task = task)
+                    }
+                }
+            }
         }
     }
 }
 
 @Composable
-private fun GoalInfoCard(goal: Goal) {
+private fun GoalHeader(goal: Goal) {
+    Column {
+        Text(
+            text = goal.title,
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold
+        )
+
+        if (goal.description.isNotBlank()) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = goal.description,
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
+    }
+}
+
+@Composable
+private fun ProgressSection(goal: Goal) {
     Card(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -112,50 +123,30 @@ private fun GoalInfoCard(goal: Goal) {
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                text = goal.title,
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = goal.description,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(
-                text = "Progress: ${goal.progress.toInt()}%",
-                style = MaterialTheme.typography.titleSmall,
+                text = "Progress",
+                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Medium
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             LinearProgressIndicator(
-                progress = goal.progress / 100f,
+                progress = goal.progress,
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = "Target Date: ${goal.targetDate}",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                text = "${(goal.progress * 100).toInt()}% Complete",
+                style = MaterialTheme.typography.labelMedium
             )
         }
     }
 }
 
 @Composable
-private fun TaskItem(
-    task: Task,
-    onToggleCompletion: (Boolean) -> Unit
-) {
+private fun TaskItem(task: Task) {
     Card(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -167,50 +158,25 @@ private fun TaskItem(
         ) {
             Checkbox(
                 checked = task.isCompleted,
-                onCheckedChange = onToggleCompletion
+                onCheckedChange = { /* TODO: Toggle task completion */ }
             )
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = task.title,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = if (task.isCompleted) FontWeight.Normal else FontWeight.Medium
+                    style = MaterialTheme.typography.bodyLarge
                 )
 
-                if (task.description.isNotEmpty()) {
+                if (task.description.isNotBlank()) {
                     Text(
                         text = task.description,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                     )
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun EmptyTasksView() {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "No tasks yet",
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = "Break down your goal into smaller tasks",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
-        )
     }
 }

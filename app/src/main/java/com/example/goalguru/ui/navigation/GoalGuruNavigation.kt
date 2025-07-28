@@ -1,3 +1,4 @@
+
 package com.example.goalguru.ui.navigation
 
 import androidx.compose.runtime.Composable
@@ -9,6 +10,7 @@ import com.example.goalguru.ui.screens.dashboard.DashboardScreen
 import com.example.goalguru.ui.screens.create.CreateGoalScreen
 import com.example.goalguru.ui.screens.settings.SettingsScreen
 import com.example.goalguru.ui.screens.onboarding.OnboardingScreen
+import com.example.goalguru.ui.screens.goal.GoalDetailScreen
 
 @Composable
 fun GoalGuruNavigation(
@@ -25,6 +27,9 @@ fun GoalGuruNavigation(
                 },
                 onSettings = {
                     navController.navigate("settings")
+                },
+                onGoalClick = { goalId ->
+                    navController.navigate("goal_detail/$goalId")
                 }
             )
         }
@@ -40,10 +45,30 @@ fun GoalGuruNavigation(
             )
         }
 
+        composable("goal_detail/{goalId}") { backStackEntry ->
+            val goalId = backStackEntry.arguments?.getString("goalId") ?: ""
+            GoalDetailScreen(
+                goalId = goalId,
+                onBackPressed = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
         composable("settings") {
             SettingsScreen(
                 onBackPressed = {
                     navController.popBackStack()
+                }
+            )
+        }
+
+        composable("onboarding") {
+            OnboardingScreen(
+                onComplete = {
+                    navController.navigate("dashboard") {
+                        popUpTo("onboarding") { inclusive = true }
+                    }
                 }
             )
         }

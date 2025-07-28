@@ -59,7 +59,7 @@ class GoalGuruMessagingService : FirebaseMessagingService() {
 
         val channelId = "goal_guru_notifications"
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.ic_notification)
+            .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setContentTitle(title)
             .setContentText(body)
             .setAutoCancel(true)

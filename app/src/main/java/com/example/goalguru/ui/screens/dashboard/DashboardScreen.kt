@@ -21,6 +21,7 @@ import com.example.goalguru.ui.components.GoalCard
 fun DashboardScreen(
     onCreateGoal: () -> Unit,
     onSettings: () -> Unit,
+    onGoalClick: (String) -> Unit,
     viewModel: DashboardViewModel = hiltViewModel()
 ) {
     val goals by viewModel.goals.collectAsState()
@@ -95,13 +96,14 @@ fun DashboardScreen(
                 EmptyGoalsView(onCreateGoal = onCreateGoal)
             }
             else -> {
+                // Goals List
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(goals) { goal ->
                         GoalCard(
                             goal = goal,
-                            onGoalClick = { /* TODO: Navigate to goal detail */ }
+                            onGoalClick = { onGoalClick(goal.id) }
                         )
                     }
                 }

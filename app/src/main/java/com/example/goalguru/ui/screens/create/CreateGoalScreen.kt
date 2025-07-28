@@ -1,21 +1,28 @@
+
 package com.example.goalguru.ui.screens.create
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateGoalScreen(
     onGoalCreated: () -> Unit,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    viewModel: CreateGoalViewModel = hiltViewModel()
 ) {
-    var goalTitle by remember { mutableStateOf("") }
-    var goalDescription by remember { mutableStateOf("") }
+    var title by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
+    val isLoading by viewModel.isLoading.collectAsState()
 
     Scaffold(
         topBar = {
@@ -23,7 +30,10 @@ fun CreateGoalScreen(
                 title = { Text("Create Goal") },
                 navigationIcon = {
                     IconButton(onClick = onBackPressed) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back"
+                        )
                     }
                 }
             )
@@ -37,28 +47,50 @@ fun CreateGoalScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             OutlinedTextField(
-                value = goalTitle,
-                onValueChange = { goalTitle = it },
+                value = title,
+                onValueChange = { title = it },
                 label = { Text("Goal Title") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Sentences,
+                    imeAction = ImeAction.Next
+                ),
+                singleLine = true
             )
 
             OutlinedTextField(
-                value = goalDescription,
-                onValueChange = { goalDescription = it },
-                label = { Text("Goal Description") },
+                value = description,
+                onValueChange = { description = it },
+                label = { Text("Description (Optional)") },
                 modifier = Modifier.fillMaxWidth(),
-                minLines = 3
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Sentences,
+                    imeAction = ImeAction.Done
+                ),
+                minLines = 3,
+                maxLines = 5
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.weight(1f))
 
             Button(
-                onClick = onGoalCreated,
+                onClick = {
+                    if (title.isNotBlank()) {
+                        viewModel.createGoal(title.trim(), description.trim())
+                        onGoalCreated()
+                    }
+                },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = goalTitle.isNotBlank()
+                enabled = title.isNotBlank() && !isLoading
             ) {
-                Text("Create Goal")
+                if (isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(16.dp),
+                        strokeWidth = 2.dp
+                    )
+                } else {
+                    Text("Create Goal")
+                }
             }
         }
     }
