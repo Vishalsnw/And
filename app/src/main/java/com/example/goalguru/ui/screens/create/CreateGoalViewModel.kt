@@ -86,9 +86,9 @@ class CreateGoalViewModel @Inject constructor(
             } finally {
                 _isLoading.value = false
             }
-import androidx.lifecycle.viewModelScope
-import com.example.goalguru.data.model.Goal
-import com.example.goalguru.data.repository.AIRepository
+        }
+    }
+}
 import com.example.goalguru.data.repository.GoalRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
