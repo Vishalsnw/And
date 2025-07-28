@@ -17,4 +17,3 @@ data class Task(
     val createdAt: Date = Date(),
     val updatedAt: Date = Date()
 )
-`
