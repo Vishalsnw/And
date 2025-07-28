@@ -23,6 +23,35 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Create fix_wildcards.sh
+        run: |
+          cat <<'EOF' > fix_wildcards.sh
+          #!/bin/bash
+          SRC_DIR="app/src/main/java/com/example/goalguru"
+          find "$SRC_DIR" -name "*.kt" | while read file; do
+              echo "🔍 Checking: $file"
+              grep 'import .*\\*' "$file" > /dev/null || continue
+              PACKAGE_LIST=$(grep '^import .*\\*' "$file" | sed 's/import //' | sed 's/\\*//' | sort | uniq)
+              for pkg in $PACKAGE_LIST; do
+                  USED=$(grep -oP "${pkg//./\\.}[A-Z][A-Za-z0-9_]*" "$file" | sort | uniq)
+                  if [ -z "$USED" ]; then
+                      echo "⚠️ No usages found for $pkg, skipping."
+                      continue
+                  fi
+                  sed -i "/import ${pkg}\\*/d" "$file"
+                  for cls in $USED; do
+                      echo "✅ Adding import $cls"
+                      echo "import $cls" >> "$file"
+                  done
+                  sort -u "$file" -o "$file"
+              done
+          done
+          EOF
+          chmod +x fix_wildcards.sh
+
+      - name: Run Wildcard Import Fix
+        run: ./fix_wildcards.sh
+
       - name: Run Spotless Auto Fix
         run: ./gradlew spotlessApply
 
@@ -31,7 +60,7 @@ jobs:
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
           git add .
-          git diff --quiet && git diff --staged --quiet || git commit -am "🔧 Spotless auto-format applied"
+          git diff --quiet && git diff --staged --quiet || git commit -am "🔧 Spotless + wildcard imports fixed"
           git push origin main || echo "No changes to commit"
         continue-on-error: true
 
