@@ -99,3 +99,21 @@ class AIRepository @Inject constructor() {
         }
     }
 }
+package com.example.goalguru.data.repository
+
+import javax.inject.Inject
+import javax.inject.Singleton
+
+@Singleton
+class AIRepository @Inject constructor() {
+    
+    suspend fun generateGoalSuggestions(description: String): List<String> {
+        // TODO: Implement AI goal suggestions
+        return emptyList()
+    }
+    
+    suspend fun analyzeProgress(goalId: String): String {
+        // TODO: Implement AI progress analysis
+        return ""
+    }
+}

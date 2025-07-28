@@ -26,3 +26,20 @@ enum class Gender {
 enum class MotivationStyle {
     MILD, MODERATE, HARSH
 }
+package com.example.goalguru.data.model
+
+data class UserSettings(
+    val name: String = "",
+    val email: String = "",
+    val notificationsEnabled: Boolean = true,
+    val reminderFrequency: ReminderFrequency = ReminderFrequency.DAILY,
+    val theme: AppTheme = AppTheme.SYSTEM
+)
+
+enum class ReminderFrequency {
+    DAILY, WEEKLY, MONTHLY, NEVER
+}
+
+enum class AppTheme {
+    LIGHT, DARK, SYSTEM
+}

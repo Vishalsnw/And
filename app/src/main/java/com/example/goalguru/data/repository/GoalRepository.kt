@@ -39,3 +39,33 @@ class GoalRepository @Inject constructor() {
         return _goals.value.find { it.id == goalId }
     }
 }
+package com.example.goalguru.data.repository
+
+import com.example.goalguru.data.model.Goal
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+import javax.inject.Inject
+import javax.inject.Singleton
+
+@Singleton
+class GoalRepository @Inject constructor() {
+    
+    val goals: Flow<List<Goal>> = flowOf(emptyList())
+    
+    suspend fun addGoal(goal: Goal) {
+        // TODO: Implement goal addition
+    }
+    
+    suspend fun updateGoal(goal: Goal) {
+        // TODO: Implement goal update
+    }
+    
+    suspend fun deleteGoal(goalId: String) {
+        // TODO: Implement goal deletion
+    }
+    
+    suspend fun getGoal(goalId: String): Goal? {
+        // TODO: Implement goal retrieval
+        return null
+    }
+}

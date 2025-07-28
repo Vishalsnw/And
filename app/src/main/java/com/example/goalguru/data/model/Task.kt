@@ -18,3 +18,17 @@ data class Task(
     val dueDate: Date? = null,
     val priority: Priority = Priority.MEDIUM
 )
+package com.example.goalguru.data.model
+
+import java.util.Date
+
+data class Task(
+    val id: String = "",
+    val goalId: String = "",
+    val title: String = "",
+    val description: String = "",
+    val isCompleted: Boolean = false,
+    val dueDate: Date? = null,
+    val createdAt: Date = Date(),
+    val updatedAt: Date = Date()
+)

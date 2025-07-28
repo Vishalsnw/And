@@ -28,3 +28,28 @@ enum class Priority {
 enum class GoalStatus {
     ACTIVE, COMPLETED, PAUSED, ARCHIVED
 }
+package com.example.goalguru.data.model
+
+import java.util.Date
+
+data class Goal(
+    val id: String = "",
+    val title: String = "",
+    val description: String = "",
+    val category: String = "",
+    val priority: Priority = Priority.MEDIUM,
+    val status: GoalStatus = GoalStatus.ACTIVE,
+    val targetDate: Date? = null,
+    val createdAt: Date = Date(),
+    val updatedAt: Date = Date(),
+    val progress: Float = 0.0f,
+    val isCompleted: Boolean = false
+)
+
+enum class Priority {
+    LOW, MEDIUM, HIGH
+}
+
+enum class GoalStatus {
+    ACTIVE, COMPLETED, PAUSED, ARCHIVED
+}
