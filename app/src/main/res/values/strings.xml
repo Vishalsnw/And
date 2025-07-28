@@ -14,7 +14,7 @@
     <string name="onboarding_desc_3">Receive personalized roast-style notifications to keep you accountable and motivated.</string>
 
     <!-- Dashboard -->
-    <string name="dashboard_today_focus">Today&#39;s Focus</string>
+    <string name="dashboard_today_focus">Today's Focus</string>
     <string name="dashboard_your_progress">Your Progress</string>
     <string name="dashboard_active_goals">Active Goals</string>
     <string name="dashboard">Dashboard</string>
@@ -48,11 +48,11 @@
 
     <!-- Roast Messages English -->
     <string name="roast_mild_en_male">Hey, your daily task is waiting for you!</string>
-    <string name="roast_mild_en_female">Your goal won&#39;t achieve itself. Let&#39;s do this!</string>
+    <string name="roast_mild_en_female">Your goal won't achieve itself. Let's do this!</string>
     <string name="roast_spicy_en_male">Bro, goals complete karna hai ya procrastinate hi karte rehna hai?</string>
     <string name="roast_spicy_en_female">Girl, you said you wanted this. Time to prove it!</string>
     <string name="roast_extra_spicy_en_male">Champions complete tasks, not excuses. What are you?</string>
-    <string name="roast_extra_spicy_en_female">Queens don&#39;t quit. Are you a queen or not?</string>
+    <string name="roast_extra_spicy_en_female">Queens don't quit. Are you a queen or not?</string>
 
     <!-- Roast Messages Hindi -->
     <string name="roast_mild_hi_male">आपका आज का काम आपका इंतजार कर रहा है!</string>
