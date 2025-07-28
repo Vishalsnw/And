@@ -7,9 +7,6 @@ import com.example.goalguru.data.api.Message
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
-import javax.inject.Singleton
-
-@Singleton
 package com.example.goalguru.data.repository
 
 import com.example.goalguru.data.api.DeepSeekApiService
@@ -18,7 +15,9 @@ import com.example.goalguru.data.api.Message
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class AIRepository @Inject constructor() {
     
     private val apiService: DeepSeekApiService by lazy {
