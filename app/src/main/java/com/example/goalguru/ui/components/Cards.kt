@@ -65,44 +65,4 @@ fun GoalCard(
     }
 }
 
-@Composable
-fun ProgressIndicator(
-    progress: Float,
-    modifier: Modifier = Modifier,
-    showPercentage: Boolean = true
-) {
-    Column(modifier = modifier) {
-        if (showPercentage) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Progress",
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium
-                )
-                Text(
-                    text = "${(progress * 100).toInt()}%",
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-
-        val progressModifier = Modifier
-            .fillMaxWidth()
-            .height(8.dp)
-            .clip(RoundedCornerShape(4.dp))
-
-        LinearProgressIndicator(
-            progress = progress,
-            modifier = progressModifier,
-            color = MaterialTheme.colorScheme.primary,
-            trackColor = MaterialTheme.colorScheme.surfaceVariant
-        )
-    }
-}
+// ProgressIndicator function moved to ProgressIndicator.kt to avoid duplication
