@@ -1,13 +1,8 @@
 buildscript {
-    repositories {
-        google()
-        mavenCentral()
-        maven { url 'https://jitpack.io' } // ✅ JitPack added
-    }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.1.2'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22'
-        classpath 'com.google.gms:google-services:4.4.1' // ✅ Updated to 4.4.1 as required
+        classpath 'com.google.gms:google-services:4.4.1'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.48'
     }
@@ -16,15 +11,7 @@ buildscript {
 plugins {
     id 'com.android.application' version '8.1.2' apply false
     id 'org.jetbrains.kotlin.android' version '1.9.22' apply false
-    id 'com.diffplug.spotless' version '6.25.0' apply false // ✅ Spotless plugin upgraded
-}
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        maven { url 'https://jitpack.io' }
-    }
+    id 'com.diffplug.spotless' version '6.25.0' apply false
 }
 
 task clean(type: Delete) {
