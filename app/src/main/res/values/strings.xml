@@ -53,3 +53,17 @@
     <string name="roast_extra_spicy_hi_male">Champions task complete करते हैं, बहाने नहीं। तुम क्या हो?</string>
     <string name="roast_extra_spicy_hi_female">Queens हार नहीं मानतीं। तुम queen हो या नहीं?</string>
 </resources>
+<resources>
+    <string name="app_name">GoalGuru</string>
+    <string name="welcome_message">Welcome to GoalGuru</string>
+    <string name="get_started">Get Started</string>
+    <string name="create_goal">Create Goal</string>
+    <string name="settings">Settings</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="goal_title">Goal Title</string>
+    <string name="goal_description">Goal Description</string>
+    <string name="target_date">Target Date</string>
+    <string name="progress">Progress</string>
+    <string name="notifications">Notifications</string>
+    <string name="dark_mode">Dark Mode</string>
+</resources>

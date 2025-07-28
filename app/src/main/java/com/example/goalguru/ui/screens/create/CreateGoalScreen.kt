@@ -16,13 +16,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateGoalScreen(
-    onGoalCreated: () -> Unit,
     onBackPressed: () -> Unit,
+    onGoalCreated: () -> Unit,
     viewModel: CreateGoalViewModel = hiltViewModel()
 ) {
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    val isLoading by viewModel.isLoading.collectAsState()
+    var targetDate by remember { mutableStateOf("") }
 
     Scaffold(
         topBar = {
@@ -30,10 +30,7 @@ fun CreateGoalScreen(
                 title = { Text("Create Goal") },
                 navigationIcon = {
                     IconButton(onClick = onBackPressed) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back"
-                        )
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
                 }
             )
@@ -54,43 +51,42 @@ fun CreateGoalScreen(
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Sentences,
                     imeAction = ImeAction.Next
-                ),
-                singleLine = true
+                )
             )
 
             OutlinedTextField(
                 value = description,
                 onValueChange = { description = it },
-                label = { Text("Description (Optional)") },
+                label = { Text("Description") },
                 modifier = Modifier.fillMaxWidth(),
+                minLines = 3,
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Sentences,
+                    imeAction = ImeAction.Next
+                )
+            )
+
+            OutlinedTextField(
+                value = targetDate,
+                onValueChange = { targetDate = it },
+                label = { Text("Target Date (YYYY-MM-DD)") },
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done
-                ),
-                minLines = 3,
-                maxLines = 5
+                )
             )
 
             Spacer(modifier = Modifier.weight(1f))
 
             Button(
                 onClick = {
-                    if (title.isNotBlank()) {
-                        viewModel.createGoal(title.trim(), description.trim())
-                        onGoalCreated()
-                    }
+                    viewModel.createGoal(title, description, targetDate)
+                    onGoalCreated()
                 },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = title.isNotBlank() && !isLoading
+                enabled = title.isNotBlank() && description.isNotBlank()
             ) {
-                if (isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(16.dp),
-                        strokeWidth = 2.dp
-                    )
-                } else {
-                    Text("Create Goal")
-                }
+                Text("Create Goal")
             }
         }
     }
