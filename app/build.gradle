@@ -5,7 +5,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
-    id 'com.diffplug.spotless' // ✅ Spotless plugin
+    id 'com.diffplug.spotless'
 }
 
 kapt {
@@ -31,17 +31,15 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
-            // ✅ Crashlytics config
             firebaseCrashlytics {
                 nativeSymbolUploadEnabled true
                 unstrippedNativeLibsDir 'build/intermediates/merged_native_libs/release/out/lib'
             }
         }
         debug {
-            // ✅ Crashlytics can collect debug crashes too
+            // 🛑 Fix: Crashlytics mapping upload disabled for debug
             firebaseCrashlytics {
-                mappingFileUploadEnabled true
+                mappingFileUploadEnabled = false
             }
         }
     }
@@ -98,7 +96,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-messaging-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx' // ✅ Crashlytics SDK added
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
     // HTTP Client
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -132,7 +130,7 @@ dependencies {
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
 
-    // Hilt for dependency injection
+    // Hilt for DI
     implementation "com.google.dagger:hilt-android:2.48"
     kapt "com.google.dagger:hilt-compiler:2.48"
     implementation 'androidx.hilt:hilt-navigation-compose:1.1.0'
@@ -140,17 +138,12 @@ dependencies {
     kapt 'androidx.hilt:hilt-compiler:1.1.0'
 }
 
-// ✅ Spotless plugin configuration (correct)
 spotless {
     kotlin {
         target '**/*.kt'
         ktlint('0.50.0')
         trimTrailingWhitespace()
         endWithNewline()
-    }
-
-    kotlinGradle {
-        target '*.gradle.kts'
-        ktlint()
+        // no-wildcard-import rule already enabled by default
     }
 }
