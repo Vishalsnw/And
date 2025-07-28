@@ -88,39 +88,3 @@ class CreateGoalViewModel @Inject constructor(
         }
     }
 }
-package com.example.goalguru.ui.screens.create
-
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.goalguru.data.model.Goal
-import com.example.goalguru.data.repository.GoalRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
-import java.time.LocalDate
-import javax.inject.Inject
-
-@HiltViewModel
-class CreateGoalViewModel @Inject constructor(
-    private val goalRepository: GoalRepository
-) : ViewModel() {
-
-    fun createGoal(title: String, description: String, targetDate: String) {
-        viewModelScope.launch {
-            try {
-                val goal = Goal(
-                    id = "",
-                    title = title.trim(),
-                    description = description.trim(),
-                    targetDate = targetDate,
-                    createdAt = System.currentTimeMillis(),
-                    progress = 0f,
-                    isCompleted = false,
-                    tasks = emptyList()
-                )
-                goalRepository.createGoal(goal)
-            } catch (e: Exception) {
-                // Handle error
-            }
-        }
-    }
-}
