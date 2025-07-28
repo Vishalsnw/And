@@ -1,5 +1,7 @@
 package com.example.goalguru.ui.screens.create
 
+package com.example.goalguru.ui.screens.create
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
