@@ -15,13 +15,14 @@ import com.example.goalguru.data.model.UserSettings
 import com.example.goalguru.data.repository.GoalRepository
 import com.example.goalguru.data.repository.UserRepository
 import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.first
 
 @HiltWorker
 class NotificationWorker @AssistedInject constructor(
-    @Assisted context: Context,
-    @Assisted params: WorkerParameters,
+    @Assisted private val context: Context,
+    @Assisted private val params: WorkerParameters,
     private val goalRepository: GoalRepository,
     private val userRepository: UserRepository
 ) : CoroutineWorker(context, params) {
@@ -45,7 +46,6 @@ class NotificationWorker @AssistedInject constructor(
     }
 
     private fun showNotification(userSettings: UserSettings, incompleteCount: Int) {
-        val context = applicationContext
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -85,7 +85,7 @@ class NotificationWorker @AssistedInject constructor(
         }
     }
 
-    @dagger.assisted.AssistedFactory
+    @AssistedFactory
     interface Factory {
         fun create(context: Context, params: WorkerParameters): NotificationWorker
     }
