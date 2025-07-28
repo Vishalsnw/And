@@ -1,4 +1,6 @@
+
 package com.example.goalguru.notification
+
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -81,32 +83,24 @@ class NotificationWorker @AssistedInject constructor(
         return when (userSettings.notificationStyle) {
             "Harsh" -> when {
                 userSettings.age < 25 -> "Hey $name! Still slacking? You have $incompleteCount " +
-                    "incomplete goals. Time to hustle! 💪"
+                        "incomplete goals. Time to hustle! 💪"
 
                 userSettings.gender.name == "FEMALE" -> "Queen $name, your goals are waiting! " +
-                    "$incompleteCount tasks need your attention. Show them who's boss! 👑"
+                        "$incompleteCount tasks need your attention. Show them who's boss! 👑"
 
                 else -> "Bro $name, seriously? $incompleteCount goals are incomplete. " +
-                    "Stop making excuses and get to work! 🔥"
+                        "Stop making excuses and get to work! 🔥"
             }
 
             else -> when {
                 userSettings.age < 25 -> "Hi $name! You've got this! $incompleteCount goals " +
-                    "are waiting for your magic touch! ✨"
+                        "are waiting for your magic touch ✨"
 
                 userSettings.gender.name == "FEMALE" -> "Hello beautiful $name! Time to shine " +
-                    "with your $incompleteCount pending goals 🌟"
+                        "with your $incompleteCount pending goals 🌟"
 
                 else -> "Hey $name! Ready to conquer those $incompleteCount goals? " +
-                    "You're doing great! 🎯"
-            }
-        } touch ✨"
-
-                userSettings.gender == "Female" -> "Hello beautiful $name! Time to shine " +
-                    "with your $incompleteCount pending goals 🌟"
-
-                else -> "Hey $name! Ready to conquer those $incompleteCount goals? " +
-                    "You're doing great! 🎯"
+                        "You're doing great! 🎯"
             }
         }
     }
@@ -133,15 +127,22 @@ object NotificationScheduler {
     }
 
     private fun calculateInitialDelay(): Long {
-        val now = System.currentTimeMillis()
-        val calendar = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 21)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            if (timeInMillis <= now) {
-                add(Calendar.DAY_OF_YEAR, 1)
-            }
+        val calendar = Calendar.getInstance()
+        val now = calendar.timeInMillis
+
+        // Set to 9 PM today
+        calendar.set(Calendar.HOUR_OF_DAY, 21)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+
+        var scheduledTime = calendar.timeInMillis
+
+        // If 9 PM has already passed today, schedule for tomorrow
+        if (scheduledTime <= now) {
+            scheduledTime += 24 * 60 * 60 * 1000 // Add 24 hours
         }
-        return calendar.timeInMillis - now
+
+        return scheduledTime - now
     }
 }
