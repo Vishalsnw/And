@@ -30,28 +30,17 @@ jobs:
           SRC_DIR="app/src/main/java/com/example/goalguru"
 
           find "$SRC_DIR" -name "*.kt" | while read file; do
-              echo "🔍 Checking: $file"
               WILDCARDS=$(grep -E '^import .*\.\*$' "$file" || true)
-
-              if [ -z "$WILDCARDS" ]; then
-                  echo "✅ No wildcard imports in $file"
-                  continue
-              fi
-
+              if [ -z "$WILDCARDS" ]; then continue; fi
               IMPORTS=""
               echo "$WILDCARDS" | while read import_line; do
                   base_pkg=$(echo "$import_line" | sed -E 's/import (.*)\.\*/\1/')
                   used_classes=$(grep -oP "${base_pkg//./\\.}\\.[A-Z][A-Za-z0-9_]*" "$file" | sort | uniq | sed "s|$base_pkg\.||g")
-
-                  echo "🚫 Removing wildcard: $import_line"
                   sed -i "\|$import_line|d" "$file"
-
                   for cls in $used_classes; do
                       IMPORTS+="import $base_pkg.$cls"$'\n'
-                      echo "✅ Adding import $base_pkg.$cls"
                   done
               done
-
               if [ -n "$IMPORTS" ]; then
                   tmpfile=$(mktemp)
                   awk -v new_imports="$IMPORTS" '
@@ -88,19 +77,20 @@ jobs:
       - name: Clean Project
         run: ./gradlew clean
 
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug
+      - name: Build Debug APK and Save Logs
+        run: ./gradlew assembleDebug --stacktrace --info > build_output.txt 2>&1
 
-      - name: Upload Logs
+      - name: Extract Build Errors
+        run: |
+          grep -iE "error|exception|failed|Caused by|not found|unresolved|compilation|kapt|spotless" build_output.txt > error_summary.txt || true
+          if [ ! -s error_summary.txt ]; then echo "✅ No critical build errors detected." > error_summary.txt; fi
+
+      - name: Upload Error Summary
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: BuildLogs-${{ github.run_number }}
-          path: |
-            app/build/reports/
-            app/build/outputs/logs/
-            build_output.txt
-            errors_only.txt
+          name: ErrorSummary-${{ github.run_number }}
+          path: error_summary.txt
 
       - name: Upload APK
         if: success()
