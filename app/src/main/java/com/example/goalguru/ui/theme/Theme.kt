@@ -64,7 +64,6 @@ fun GoalGuruTheme(
         content = content
     )
 }
-package com.example.goalguru.ui.theme
 
 import android.app.Activity
 import android.os.Build
