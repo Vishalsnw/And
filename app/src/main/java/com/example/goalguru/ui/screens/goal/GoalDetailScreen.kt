@@ -1,5 +1,12 @@
 package com.example.goalguru.ui.screens.goal
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -51,11 +58,12 @@ import com.example.goalguru.data.model.Goal
 import com.example.goalguru.data.model.Task
 
 @Composable
+@Composable
 fun GoalDetailScreen(
     goalId: String,
     onNavigateBack: () -> Unit,
     onEditGoal: (String) -> Unit,
-    viewModel: GoalDetailViewModel = viewModel()
+    viewModel: GoalDetailViewModel = hiltViewModel()
 ) {
     val goal by viewModel.goal.collectAsState()
     val tasks by viewModel.tasks.collectAsState()

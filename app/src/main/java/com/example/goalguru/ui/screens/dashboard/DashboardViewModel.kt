@@ -1,4 +1,3 @@
-
 package com.example.goalguru.ui.screens.dashboard
 
 import androidx.lifecycle.ViewModel
@@ -20,22 +19,22 @@ class DashboardViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val aiRepository: AIRepository
 ) : ViewModel() {
-    
+
     private val _goals = MutableStateFlow<List<Goal>>(emptyList())
     val goals: StateFlow<List<Goal>> = _goals.asStateFlow()
-    
+
     private val _userName = MutableStateFlow("")
     val userName: StateFlow<String> = _userName.asStateFlow()
-    
+
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
-    
+
     fun loadGoals() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                goalRepository.getAllGoals().collect { goalsList ->
-                    _goals.value = goalsList
+                goalRepository.goals.collect { goalList ->
+                    _goals.value = goalList
                 }
             } catch (e: Exception) {
                 // Handle error
@@ -44,13 +43,12 @@ class DashboardViewModel @Inject constructor(
             }
         }
     }
-    
+
     fun loadUserSettings() {
         viewModelScope.launch {
             try {
-                userRepository.getUserSettings()?.let { settings ->
-                    _userName.value = settings.userName
-                }
+                val settings = userRepository.getUserSettings()
+                _userName.value = settings.name
             } catch (e: Exception) {
                 // Handle error
             }
