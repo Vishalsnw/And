@@ -27,9 +27,7 @@ class GoalDetailViewModel @Inject constructor(
     fun loadGoal(goalId: String) {
         viewModelScope.launch {
             try {
-                goalRepository.goals.collect { goals ->
-                    _goal.value = goals.find { it.id == goalId }
-                }
+                _goal.value = goalRepository.getGoalById(goalId)
             } catch (e: Exception) {
                 // Handle error
             }

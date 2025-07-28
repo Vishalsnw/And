@@ -1,10 +1,8 @@
-
 package com.example.goalguru.ui.screens.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.goalguru.data.model.UserSettings
-import com.example.goalguru.data.model.Gender
 import com.example.goalguru.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,100 +11,68 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class SettingsUiState(
-    val deepSeekApiKey: String = "",
-    val name: String = "",
-    val age: Int = 0,
-    val gender: String = "",
-    val notificationsEnabled: Boolean = true,
-    val notificationStyle: String = "Mild",
-    val isLoading: Boolean = false,
-    val message: String = ""
-)
-
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(SettingsUiState())
-    val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
+    private val _userSettings = MutableStateFlow(UserSettings())
+    val userSettings: StateFlow<UserSettings> = _userSettings.asStateFlow()
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
     init {
-        loadSettings()
+        loadUserSettings()
     }
 
-    private fun loadSettings() {
+    private fun loadUserSettings() {
         viewModelScope.launch {
             try {
-                val settings = userRepository.getUserSettings()
-                _uiState.value = _uiState.value.copy(
-                    deepSeekApiKey = settings.deepSeekApiKey,
-                    name = settings.name,
-                    age = settings.age,
-                    gender = settings.gender.name,
-                    notificationsEnabled = settings.notificationsEnabled,
-                    notificationStyle = settings.notificationStyle
-                )
+                _isLoading.value = true
+                userRepository.getUserSettings().collect { settings ->
+                    _userSettings.value = settings
+                }
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    message = "Failed to load settings"
-                )
+                // Handle error
+            } finally {
+                _isLoading.value = false
             }
         }
     }
 
-    fun updateDeepSeekApiKey(apiKey: String) {
-        _uiState.value = _uiState.value.copy(deepSeekApiKey = apiKey)
-    }
-
-    fun updateName(name: String) {
-        _uiState.value = _uiState.value.copy(name = name)
-    }
-
-    fun updateAge(age: Int) {
-        _uiState.value = _uiState.value.copy(age = age)
-    }
-
-    fun updateGender(gender: String) {
-        _uiState.value = _uiState.value.copy(gender = gender)
-    }
-
     fun updateNotificationsEnabled(enabled: Boolean) {
-        _uiState.value = _uiState.value.copy(notificationsEnabled = enabled)
-    }
-
-    fun updateNotificationStyle(style: String) {
-        _uiState.value = _uiState.value.copy(notificationStyle = style)
-    }
-
-    fun saveSettings() {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true, message = "")
-
             try {
-                val currentState = _uiState.value
-                val settings = UserSettings(
-                    deepSeekApiKey = currentState.deepSeekApiKey,
-                    name = currentState.name,
-                    age = currentState.age,
-                    gender = Gender.valueOf(currentState.gender.uppercase()),
-                    notificationsEnabled = currentState.notificationsEnabled,
-                    notificationStyle = currentState.notificationStyle
-                )
-
-                userRepository.saveUserSettings(settings)
-
-                _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    message = "Settings saved successfully!"
-                )
-
+                val updatedSettings = _userSettings.value.copy(notificationsEnabled = enabled)
+                userRepository.updateUserSettings(updatedSettings)
+                _userSettings.value = updatedSettings
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    isLoading = false,
-                    message = "Failed to save settings: ${e.message}"
-                )
+                // Handle error
+            }
+        }
+    }
+
+    fun updateDarkModeEnabled(enabled: Boolean) {
+        viewModelScope.launch {
+            try {
+                val updatedSettings = _userSettings.value.copy(darkModeEnabled = enabled)
+                userRepository.updateUserSettings(updatedSettings)
+                _userSettings.value = updatedSettings
+            } catch (e: Exception) {
+                // Handle error
+            }
+        }
+    }
+
+    fun updateReminderTime(time: String) {
+        viewModelScope.launch {
+            try {
+                val updatedSettings = _userSettings.value.copy(reminderTime = time)
+                userRepository.updateUserSettings(updatedSettings)
+                _userSettings.value = updatedSettings
+            } catch (e: Exception) {
+                // Handle error
             }
         }
     }
