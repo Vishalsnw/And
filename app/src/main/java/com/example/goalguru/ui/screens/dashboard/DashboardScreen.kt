@@ -51,6 +51,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.goalguru.data.model.Goal
 import com.example.goalguru.ui.components.GoalCard
 import com.example.goalguru.ui.components.WelcomeCard
+import androidx.compose.runtime.*
+import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
