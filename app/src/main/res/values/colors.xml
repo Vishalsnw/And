@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Basic Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    
+
     <!-- GoalGuru Brand Colors -->
     <color name="primary_green">#FF4CAF50</color>
     <color name="primary_green_dark">#FF388E3C</color>
@@ -11,10 +12,10 @@
     <color name="error_red">#FFE53E3E</color>
     <color name="warning_yellow">#FFFFC107</color>
     <color name="success_green">#FF4CAF50</color>
-    
+
     <!-- Notification -->
-    <color name="notification_color">@color/primary_green</color>
-    
+    <color name="notification_color">#FF4CAF50</color>
+
     <!-- Neutral Grays -->
     <color name="neutral_gray_50">#FFFAFAFA</color>
     <color name="neutral_gray_100">#FFF5F5F5</color>
@@ -26,15 +27,11 @@
     <color name="neutral_gray_700">#FF616161</color>
     <color name="neutral_gray_800">#FF424242</color>
     <color name="neutral_gray_900">#FF212121</color>
-</resources>
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
+
+    <!-- Material Colors -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="notification_color">#FF4CAF50</color>
 </resources>
