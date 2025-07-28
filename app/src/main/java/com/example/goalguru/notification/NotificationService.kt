@@ -81,25 +81,25 @@ class NotificationWorker @AssistedInject constructor(
 
         return when (userSettings.notificationStyle) {
             "Harsh" -> when {
-                userSettings.age < 25 ->
-                    "Hey $name! Still slacking? You have $incompleteCount incomplete goals. Time to hustle! 💪"
+                userSettings.age < 25 -> "Hey $name! Still slacking? You have $incompleteCount " +
+                    "incomplete goals. Time to hustle! 💪"
 
-                userSettings.gender == "Female" ->
-                    "Queen $name, your goals are waiting! $incompleteCount tasks need your attention. Show them who's boss! 👑"
+                userSettings.gender == "Female" -> "Queen $name, your goals are waiting! " +
+                    "$incompleteCount tasks need your attention. Show them who's boss! 👑"
 
-                else ->
-                    "Bro $name, seriously? $incompleteCount goals are incomplete. Stop making excuses and get to work! 🔥"
+                else -> "Bro $name, seriously? $incompleteCount goals are incomplete. " +
+                    "Stop making excuses and get to work! 🔥"
             }
 
             else -> when {
-                userSettings.age < 25 ->
-                    "Hi $name! You've got this! $incompleteCount goals are waiting for your magic touch ✨"
+                userSettings.age < 25 -> "Hi $name! You've got this! $incompleteCount goals " +
+                    "are waiting for your magic touch ✨"
 
-                userSettings.gender == "Female" ->
-                    "Hello beautiful $name! Time to shine with your $incompleteCount pending goals 🌟"
+                userSettings.gender == "Female" -> "Hello beautiful $name! Time to shine " +
+                    "with your $incompleteCount pending goals 🌟"
 
-                else ->
-                    "Hey $name! Ready to conquer those $incompleteCount goals? You're doing great! 🎯"
+                else -> "Hey $name! Ready to conquer those $incompleteCount goals? " +
+                    "You're doing great! 🎯"
             }
         }
     }
