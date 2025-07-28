@@ -1,4 +1,3 @@
-
 package com.example.goalguru.ui.screens.settings
 
 import androidx.lifecycle.ViewModel
@@ -27,14 +26,14 @@ data class SettingsUiState(
 class SettingsViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
-    
+
     private val _uiState = MutableStateFlow(SettingsUiState())
     val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
-    
+
     init {
         loadSettings()
     }
-    
+
     private fun loadSettings() {
         viewModelScope.launch {
             try {
@@ -54,35 +53,35 @@ class SettingsViewModel @Inject constructor(
             }
         }
     }
-    
+
     fun updateDeepSeekApiKey(apiKey: String) {
         _uiState.value = _uiState.value.copy(deepSeekApiKey = apiKey)
     }
-    
+
     fun updateName(name: String) {
         _uiState.value = _uiState.value.copy(name = name)
     }
-    
+
     fun updateAge(age: Int) {
         _uiState.value = _uiState.value.copy(age = age)
     }
-    
+
     fun updateGender(gender: String) {
         _uiState.value = _uiState.value.copy(gender = gender)
     }
-    
+
     fun updateNotificationsEnabled(enabled: Boolean) {
         _uiState.value = _uiState.value.copy(notificationsEnabled = enabled)
     }
-    
+
     fun updateNotificationStyle(style: String) {
         _uiState.value = _uiState.value.copy(notificationStyle = style)
     }
-    
+
     fun saveSettings() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, message = "")
-            
+
             try {
                 val currentState = _uiState.value
                 val settings = UserSettings(
@@ -93,14 +92,14 @@ class SettingsViewModel @Inject constructor(
                     notificationsEnabled = currentState.notificationsEnabled,
                     notificationStyle = currentState.notificationStyle
                 )
-                
+
                 userRepository.saveUserSettings(settings)
-                
+
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
                     message = "Settings saved successfully!"
                 )
-                
+
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
