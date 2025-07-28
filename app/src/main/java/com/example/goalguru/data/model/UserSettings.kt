@@ -1,3 +1,4 @@
+
 package com.example.goalguru.data.model
 
 import androidx.room.Entity
@@ -7,12 +8,13 @@ import androidx.room.PrimaryKey
 data class UserSettings(
     @PrimaryKey
     val id: Int = 1,
-    val userName: String,
-    val age: Int,
-    val gender: Gender,
-    val notificationEnabled: Boolean = true,
+    val deepSeekApiKey: String = "",
+    val name: String = "",
+    val age: Int = 0,
+    val gender: Gender = Gender.OTHER,
+    val notificationsEnabled: Boolean = true,
+    val notificationStyle: String = "Mild",
     val notificationTime: String = "21:00", // 9 PM IST
-    val motivationStyle: MotivationStyle = MotivationStyle.MILD,
     val darkModeEnabled: Boolean = false,
     val language: String = "en"
 )

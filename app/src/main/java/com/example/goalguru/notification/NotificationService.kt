@@ -83,7 +83,7 @@ class NotificationWorker @AssistedInject constructor(
                 userSettings.age < 25 -> "Hey $name! Still slacking? You have $incompleteCount " +
                     "incomplete goals. Time to hustle! 💪"
 
-                userSettings.gender == "Female" -> "Queen $name, your goals are waiting! " +
+                userSettings.gender.name == "FEMALE" -> "Queen $name, your goals are waiting! " +
                     "$incompleteCount tasks need your attention. Show them who's boss! 👑"
 
                 else -> "Bro $name, seriously? $incompleteCount goals are incomplete. " +
@@ -92,7 +92,15 @@ class NotificationWorker @AssistedInject constructor(
 
             else -> when {
                 userSettings.age < 25 -> "Hi $name! You've got this! $incompleteCount goals " +
-                    "are waiting for your magic touch ✨"
+                    "are waiting for your magic touch! ✨"
+
+                userSettings.gender.name == "FEMALE" -> "Hello beautiful $name! Time to shine " +
+                    "with your $incompleteCount pending goals 🌟"
+
+                else -> "Hey $name! Ready to conquer those $incompleteCount goals? " +
+                    "You're doing great! 🎯"
+            }
+        } touch ✨"
 
                 userSettings.gender == "Female" -> "Hello beautiful $name! Time to shine " +
                     "with your $incompleteCount pending goals 🌟"

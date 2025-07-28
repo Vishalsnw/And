@@ -1,8 +1,10 @@
+
 package com.example.goalguru.ui.screens.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.goalguru.data.model.UserSettings
+import com.example.goalguru.data.model.Gender
 import com.example.goalguru.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,7 +44,7 @@ class SettingsViewModel @Inject constructor(
                     deepSeekApiKey = settings.deepSeekApiKey,
                     name = settings.name,
                     age = settings.age,
-                    gender = settings.gender,
+                    gender = settings.gender.name,
                     notificationsEnabled = settings.notificationsEnabled,
                     notificationStyle = settings.notificationStyle
                 )
@@ -88,7 +90,7 @@ class SettingsViewModel @Inject constructor(
                     deepSeekApiKey = currentState.deepSeekApiKey,
                     name = currentState.name,
                     age = currentState.age,
-                    gender = currentState.gender,
+                    gender = Gender.valueOf(currentState.gender.uppercase()),
                     notificationsEnabled = currentState.notificationsEnabled,
                     notificationStyle = currentState.notificationStyle
                 )
