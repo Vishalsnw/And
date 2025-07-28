@@ -28,23 +28,49 @@ jobs:
           cat <<'EOF' > fix_wildcards.sh
           #!/bin/bash
           SRC_DIR="app/src/main/java/com/example/goalguru"
+
           find "$SRC_DIR" -name "*.kt" | while read file; do
               echo "🔍 Checking: $file"
-              grep 'import .*\\*' "$file" > /dev/null || continue
-              PACKAGE_LIST=$(grep '^import .*\\*' "$file" | sed 's/import //' | sed 's/\\*//' | sort | uniq)
-              for pkg in $PACKAGE_LIST; do
-                  USED=$(grep -oP "${pkg//./\\.}[A-Z][A-Za-z0-9_]*" "$file" | sort | uniq)
-                  if [ -z "$USED" ]; then
-                      echo "⚠️ No usages found for $pkg, skipping."
+              WILDCARDS=$(grep -E '^import .*\.\*$' "$file" || true)
+              
+              if [ -z "$WILDCARDS" ]; then
+                  echo "✅ No wildcard imports in $file"
+                  continue
+              fi
+              
+              # Collect used class names
+              IMPORTS=""
+              echo "$WILDCARDS" | while read import_line; do
+                  base_pkg=$(echo "$import_line" | sed -E 's/import (.*)\.\*/\1/')
+                  used_classes=$(grep -oP "$base_pkg\.[A-Z][A-Za-z0-9_]*" "$file" | sort | uniq | sed "s|$base_pkg\.||g")
+                  
+                  if [ -z "$used_classes" ]; then
+                      echo "⚠️ No usages found for $base_pkg, skipping..."
                       continue
                   fi
-                  sed -i "/import ${pkg}\\*/d" "$file"
-                  for cls in $USED; do
-                      echo "✅ Adding import $cls"
-                      echo "import $cls" >> "$file"
+
+                  # Remove the wildcard import
+                  sed -i "\|$import_line|d" "$file"
+                  
+                  for cls in $used_classes; do
+                      IMPORTS+="import $base_pkg.$cls"$'\n'
+                      echo "✅ Found usage: $cls from $base_pkg"
                   done
-                  sort -u "$file" -o "$file"
               done
+
+              # Insert the resolved imports just after the package line
+              tmpfile=$(mktemp)
+              awk -v new_imports="$IMPORTS" '
+              BEGIN { done=0 }
+              {
+                  print $0
+                  if (!done && /^package /) {
+                      print ""
+                      print new_imports
+                      done=1
+                  }
+              }' "$file" > "$tmpfile"
+              mv "$tmpfile" "$file"
           done
           EOF
           chmod +x fix_wildcards.sh
