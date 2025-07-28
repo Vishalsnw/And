@@ -1,3 +1,4 @@
+
 package com.example.goalguru.ui.screens.settings
 
 import androidx.compose.foundation.background
@@ -23,7 +24,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-importandroidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -110,33 +111,19 @@ fun SettingsScreen(
                 // DeepSeek API Key
                 OutlinedTextField(
                     value = uiState.deepSeekApiKey,
-                    onValueChange = viewModel::updateDeepSeekApiKey,
+                    onValueChange = { viewModel.updateDeepSeekApiKey(it) },
                     label = { Text("DeepSeek API Key") },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
-
-                if (uiState.isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
-                    )
-                }
-
-                if (uiState.message.isNotEmpty()) {
-                    Text(
-                        text = uiState.message,
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.padding(top = 8.dp)
-                    )
-                }
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Personal Information Section
+        // User Profile Section
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp)
@@ -145,7 +132,7 @@ fun SettingsScreen(
                 modifier = Modifier.padding(16.dp)
             ) {
                 Text(
-                    text = "Personal Information",
+                    text = "User Profile",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -155,7 +142,7 @@ fun SettingsScreen(
                 // Name
                 OutlinedTextField(
                     value = uiState.name,
-                    onValueChange = viewModel::updateName,
+                    onValueChange = { viewModel.updateName(it) },
                     label = { Text("Name") },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
@@ -165,9 +152,9 @@ fun SettingsScreen(
 
                 // Age
                 OutlinedTextField(
-                    value = if (uiState.age > 0) uiState.age.toString() else "",
-                    onValueChange = { value ->
-                        val age = value.toIntOrNull() ?: 0
+                    value = if (uiState.age == 0) "" else uiState.age.toString(),
+                    onValueChange = { 
+                        val age = it.toIntOrNull() ?: 0
                         viewModel.updateAge(age)
                     },
                     label = { Text("Age") },
@@ -179,18 +166,20 @@ fun SettingsScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Gender Dropdown
-                var genderExpanded by remember { mutableStateOf(false) }
+                var expanded by remember { mutableStateOf(false) }
+                val genderOptions = listOf("Male", "Female", "Other")
+
                 ExposedDropdownMenuBox(
-                    expanded = genderExpanded,
-                    onExpandedChange = { genderExpanded = !genderExpanded }
+                    expanded = expanded,
+                    onExpandedChange = { expanded = !expanded }
                 ) {
                     OutlinedTextField(
                         value = uiState.gender,
-                        onValueChange = {},
+                        onValueChange = { },
                         readOnly = true,
                         label = { Text("Gender") },
                         trailingIcon = {
-                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = genderExpanded)
+                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -198,15 +187,15 @@ fun SettingsScreen(
                     )
 
                     ExposedDropdownMenu(
-                        expanded = genderExpanded,
-                        onDismissRequest = { genderExpanded = false }
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
                     ) {
-                        listOf("MALE", "FEMALE", "OTHER").forEach { gender ->
+                        genderOptions.forEach { gender ->
                             DropdownMenuItem(
                                 text = { Text(gender) },
                                 onClick = {
                                     viewModel.updateGender(gender)
-                                    genderExpanded = false
+                                    expanded = false
                                 }
                             )
                         }
@@ -217,7 +206,7 @@ fun SettingsScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Notifications Section
+        // Notification Settings Section
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp)
@@ -233,7 +222,7 @@ fun SettingsScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Enable Notifications
+                // Notifications Toggle
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -242,30 +231,34 @@ fun SettingsScreen(
                     Text("Enable Notifications")
                     Switch(
                         checked = uiState.notificationsEnabled,
-                        onCheckedChange = viewModel::updateNotificationsEnabled
+                        onCheckedChange = { viewModel.updateNotificationsEnabled(it) }
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                if (uiState.notificationsEnabled) {
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                // Notification Style
-                Text(
-                    text = "Notification Style",
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium
-                )
+                    // Notification Style
+                    Text(
+                        text = "Motivation Style",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Medium
+                    )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
 
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    listOf("Mild", "Moderate", "Harsh").forEach { style ->
-                        FilterChip(
-                            selected = uiState.notificationStyle == style,
-                            onClick = { viewModel.updateNotificationStyle(style) },
-                            label = { Text(style) }
-                        )
+                    val notificationStyles = listOf("Mild", "Moderate", "Harsh")
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        notificationStyles.forEach { style ->
+                            FilterChip(
+                                selected = uiState.notificationStyle == style,
+                                onClick = { viewModel.updateNotificationStyle(style) },
+                                label = { Text(style) }
+                            )
+                        }
                     }
                 }
             }
@@ -275,11 +268,36 @@ fun SettingsScreen(
 
         // Save Button
         Button(
-            onClick = viewModel::saveSettings,
+            onClick = { viewModel.saveSettings() },
             modifier = Modifier.fillMaxWidth(),
             enabled = !uiState.isLoading
         ) {
+            if (uiState.isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(16.dp),
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+            }
             Text("Save Settings")
         }
+
+        // Message display
+        if (uiState.message.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = uiState.message,
+                style = MaterialTheme.typography.bodyMedium,
+                color = if (uiState.message.contains("Error")) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
+            )
+        }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SettingsScreenPreview() {
+    SettingsScreen(
+        onNavigateBack = { }
+    )
 }
