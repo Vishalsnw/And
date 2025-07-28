@@ -38,39 +38,38 @@ jobs:
                   continue
               fi
               
-              # Collect used class names
               IMPORTS=""
               echo "$WILDCARDS" | while read import_line; do
                   base_pkg=$(echo "$import_line" | sed -E 's/import (.*)\.\*/\1/')
-                  used_classes=$(grep -oP "$base_pkg\.[A-Z][A-Za-z0-9_]*" "$file" | sort | uniq | sed "s|$base_pkg\.||g")
+                  used_classes=$(grep -oP "${base_pkg//./\\.}\\.[A-Z][A-Za-z0-9_]*" "$file" | sort | uniq | sed "s|$base_pkg\.||g")
                   
                   if [ -z "$used_classes" ]; then
-                      echo "⚠️ No usages found for $base_pkg, skipping..."
+                      echo "⚠️ No usages found for $base_pkg, skipping removal."
                       continue
                   fi
 
-                  # Remove the wildcard import
                   sed -i "\|$import_line|d" "$file"
-                  
+
                   for cls in $used_classes; do
                       IMPORTS+="import $base_pkg.$cls"$'\n'
-                      echo "✅ Found usage: $cls from $base_pkg"
+                      echo "✅ Adding import $base_pkg.$cls"
                   done
               done
 
-              # Insert the resolved imports just after the package line
-              tmpfile=$(mktemp)
-              awk -v new_imports="$IMPORTS" '
-              BEGIN { done=0 }
-              {
-                  print $0
-                  if (!done && /^package /) {
-                      print ""
-                      print new_imports
-                      done=1
-                  }
-              }' "$file" > "$tmpfile"
-              mv "$tmpfile" "$file"
+              if [ -n "$IMPORTS" ]; then
+                  tmpfile=$(mktemp)
+                  awk -v new_imports="$IMPORTS" '
+                  BEGIN { done=0 }
+                  {
+                      print $0
+                      if (!done && /^package /) {
+                          print ""
+                          print new_imports
+                          done=1
+                      }
+                  }' "$file" > "$tmpfile"
+                  mv "$tmpfile" "$file"
+              fi
           done
           EOF
           chmod +x fix_wildcards.sh
