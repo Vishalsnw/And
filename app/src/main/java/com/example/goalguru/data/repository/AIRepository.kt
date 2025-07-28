@@ -7,9 +7,6 @@ import com.example.goalguru.data.api.Message
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
-import com.example.goalguru.data.api.DeepSeekRequest
-import com.example.goalguru.data.api.Message
-import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 import javax.inject.Singleton

@@ -46,4 +46,14 @@ class GoalDetailViewModel @Inject constructor(
             }
         }
     }
+
+    fun toggleTaskCompletion(taskId: String, isCompleted: Boolean) {
+        viewModelScope.launch {
+            try {
+                // TODO: Implement task completion toggle when task repository is available
+            } catch (e: Exception) {
+                // Handle error
+            }
+        }
+    }
 }
