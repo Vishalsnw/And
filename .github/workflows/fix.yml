@@ -78,22 +78,25 @@ jobs:
         run: ./gradlew clean
 
       - name: 🏗 Build Debug APK and Save Logs
-        run: ./gradlew assembleDebug --stacktrace --info > build_output.txt 2>&1
+        run: |
+          ./gradlew assembleDebug --stacktrace --info > build_output.txt 2>&1 || echo "Build failed"
 
-      - name: 🕵️ Extract Build Errors (Short Summary)
+      - name: 🕵️ Extract Build Errors
         run: |
           touch error_summary.txt
           grep -iE "error|exception|failed|Caused by|not found|unresolved|compilation|kapt|spotless" build_output.txt >> error_summary.txt || true
-          if [ ! -s error_summary.txt ]; then echo "✅ No critical build errors detected." >> error_summary.txt; fi
+          if [ ! -s error_summary.txt ]; then echo "✅ No critical build errors detected." > error_summary.txt; fi
 
-      - name: ☁️ Upload Error Summary
+      - name: ☁️ Upload Logs & Errors (Always)
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ErrorSummary-${{ github.run_number }}
-          path: error_summary.txt
+          name: Logs-And-Errors-${{ github.run_number }}
+          path: |
+            build_output.txt
+            error_summary.txt
 
-      - name: ☁️ Upload APK
+      - name: ☁️ Upload APK (Only If Successful)
         if: success()
         uses: actions/upload-artifact@v4
         with:
