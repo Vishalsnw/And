@@ -278,7 +278,8 @@ private fun EmptyStateCard(onCreateGoal: () -> Unit) {
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Create your first goal and let AI help you achieve it with personalized roadmaps and daily tasks.",
+                text = "Create your first goal and let AI help you achieve it with personalized " +
+                    "roadmaps and daily tasks.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                 textAlign = TextAlign.Center
