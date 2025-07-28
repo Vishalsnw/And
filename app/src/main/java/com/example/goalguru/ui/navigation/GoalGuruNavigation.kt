@@ -10,7 +10,6 @@ import androidx.navigation.navArgument
 import com.example.goalguru.ui.screens.create.CreateGoalScreen
 import com.example.goalguru.ui.screens.dashboard.DashboardScreen
 import com.example.goalguru.ui.screens.goal.GoalDetailScreen
-import com.example.goalguru.ui.screens.settings.SettingsScreen
 
 @Composable
 fun GoalGuruNavigation(
@@ -24,9 +23,6 @@ fun GoalGuruNavigation(
             DashboardScreen(
                 onCreateGoal = {
                     navController.navigate("create_goal")
-                },
-                onSettings = {
-                    navController.navigate("settings")
                 },
                 onGoalClick = { goalId ->
                     navController.navigate("goal_detail/$goalId")
@@ -54,14 +50,6 @@ fun GoalGuruNavigation(
             val goalId = backStackEntry.arguments?.getString("goalId") ?: ""
             GoalDetailScreen(
                 goalId = goalId,
-                onBackPressed = {
-                    navController.popBackStack()
-                },
-            )
-        }
-
-        composable("settings") {
-            SettingsScreen(
                 onBackPressed = {
                     navController.popBackStack()
                 },

@@ -1,42 +1,25 @@
-
 package com.example.goalguru.ui.screens.dashboard
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.goalguru.ui.components.GoalCard
+import com.example.goalguru.data.model.Goal
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
     onCreateGoal: () -> Unit,
-    onSettings: () -> Unit,
     onGoalClick: (String) -> Unit,
+    onSettings: (() -> Unit)? = null,
     viewModel: DashboardViewModel = hiltViewModel(),
 ) {
     val goals by viewModel.goals.collectAsState()
@@ -47,27 +30,29 @@ fun DashboardScreen(
             TopAppBar(
                 title = {
                     Text(
-                        "GoalGuru",
+                        text = "GoalGuru",
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
                     )
                 },
-                actions = {
-                    IconButton(onClick = onSettings) {
-                        Icon(Icons.Default.Settings, contentDescription = "Settings")
-                    }
-                },
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = onCreateGoal) {
-                Icon(Icons.Default.Add, contentDescription = "Add Goal")
+            FloatingActionButton(
+                onClick = onCreateGoal,
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Create Goal",
+                )
             }
         },
     ) { paddingValues ->
         if (isLoading) {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
                 contentAlignment = Alignment.Center,
             ) {
                 CircularProgressIndicator()
@@ -80,117 +65,94 @@ fun DashboardScreen(
                     .padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                items(goals) { goal ->
-                    GoalCard(
-                        goal = goal,
-                        onClick = { onGoalClick(goal.id) },
+                item {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Your Goals",
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold,
                     )
                 }
 
                 if (goals.isEmpty()) {
                     item {
-                        Column(
+                        Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(32.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
+                                .padding(vertical = 32.dp),
                         ) {
-                            Text(
-                                text = "No goals yet",
-                                style = MaterialTheme.typography.headlineSmall,
-                            )
-                            Text(
-                                text = "Tap the + button to create your first goal",
-                                style = MaterialTheme.typography.bodyMedium,
-                            )
+                            Column(
+                                modifier = Modifier
+                                    .padding(24.dp)
+                                    .fillMaxWidth(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                            ) {
+                                Text(
+                                    text = "No goals yet",
+                                    style = MaterialTheme.typography.headlineSmall,
+                                    fontWeight = FontWeight.Medium,
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    text = "Start your journey by creating your first goal!",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
+                                Spacer(modifier = Modifier.height(16.dp))
+                                Button(onClick = onCreateGoal) {
+                                    Text("Create Your First Goal")
+                                }
+                            }
                         }
+                    }
+                } else {
+                    items(goals) { goal ->
+                        GoalCard(
+                            goal = goal,
+                            onClick = { onGoalClick(goal.id) },
+                        )
                     }
                 }
             }
         }
     }
 }
-package com.example.goalguru.ui.screens.dashboard
-
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashboardScreen(
-    onCreateGoal: () -> Unit,
-    onGoalClick: (String) -> Unit,
-    viewModel: DashboardViewModel = hiltViewModel(),
+private fun GoalCard(
+    goal: Goal,
+    onClick: () -> Unit,
 ) {
-    val goals by viewModel.goals.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Goal Guru") },
+    Card(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+        ) {
+            Text(
+                text = goal.title,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
             )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = onCreateGoal,
-            ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Goal")
-            }
-        },
-    ) { paddingValues ->
-        if (goals.isEmpty() && !isLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center,
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                ) {
-                    Text(
-                        text = "No goals yet",
-                        style = MaterialTheme.typography.headlineSmall,
-                    )
-                    Text("Tap the + button to create your first goal")
-                }
-            }
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                items(goals) { goal ->
-                    Text(text = goal.title)
-                }
-            }
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = goal.description,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            LinearProgressIndicator(
+                progress = goal.progress,
+                modifier = Modifier.fillMaxWidth(),
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "${(goal.progress * 100).toInt()}% Complete",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
     }
 }
-</new_str>
