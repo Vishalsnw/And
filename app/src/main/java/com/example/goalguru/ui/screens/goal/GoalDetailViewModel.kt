@@ -1,4 +1,3 @@
-
 package com.example.goalguru.ui.screens.goal
 
 import androidx.lifecycle.ViewModel
@@ -24,33 +23,23 @@ class GoalDetailViewModel @Inject constructor(
     private val _tasks = MutableStateFlow<List<Task>>(emptyList())
     val tasks: StateFlow<List<Task>> = _tasks.asStateFlow()
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
     fun loadGoal(goalId: String) {
         viewModelScope.launch {
             try {
-                _goal.value = goalRepository.getGoalById(goalId)
+                _isLoading.value = true
+                goalRepository.getGoalById(goalId)?.let { goal ->
+                    _goal.value = goal
+                }
+                goalRepository.getTasksForGoal(goalId).collect { tasks ->
+                    _tasks.value = tasks
+                }
             } catch (e: Exception) {
                 // Handle error
-            }
-        }
-    }
-
-    fun loadTasks(goalId: String) {
-        viewModelScope.launch {
-            try {
-                // For now, return empty list since we don't have task repository yet
-                _tasks.value = emptyList()
-            } catch (e: Exception) {
-                // Handle error
-            }
-        }
-    }
-
-    fun toggleTaskCompletion(taskId: String, isCompleted: Boolean) {
-        viewModelScope.launch {
-            try {
-                // TODO: Implement task completion toggle when task repository is available
-            } catch (e: Exception) {
-                // Handle error
+            } finally {
+                _isLoading.value = false
             }
         }
     }
