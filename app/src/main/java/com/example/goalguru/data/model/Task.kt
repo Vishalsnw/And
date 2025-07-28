@@ -10,14 +10,11 @@ data class Task(
     val id: String,
     val goalId: String,
     val title: String,
-    val description: String = "",
+    val description: String,
     val isCompleted: Boolean = false,
-    val dueDate: Date? = null,
-    val priority: Priority = Priority.MEDIUM,
+    val dueDate: Date?,
+    val priority: Priority,
     val createdAt: Date = Date(),
-    val completedAt: Date? = null
+    val updatedAt: Date = Date()
 )
-
-enum class Priority {
-    LOW, MEDIUM, HIGH
-}
+`

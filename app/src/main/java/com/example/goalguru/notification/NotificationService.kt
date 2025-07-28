@@ -145,3 +145,59 @@ object NotificationScheduler {
         return scheduledTime - now
     }
 }
+package com.example.goalguru.notification
+
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import androidx.hilt.work.HiltWorker
+import androidx.work.CoroutineWorker
+import androidx.work.WorkerParameters
+import com.example.goalguru.data.repository.GoalRepository
+import com.example.goalguru.data.repository.UserRepository
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
+import kotlinx.coroutines.flow.first
+
+@HiltWorker
+class NotificationWorker @AssistedInject constructor(
+    @Assisted context: Context,
+    @Assisted params: WorkerParameters,
+    private val goalRepository: GoalRepository,
+    private val userRepository: UserRepository
+) : CoroutineWorker(context, params) {
+
+    override suspend fun doWork(): Result {
+        return try {
+            val userSettings = userRepository.getUserSettings()
+            if (!userSettings.notificationsEnabled) return Result.success()
+
+            val goals = goalRepository.getAllGoals().first()
+            val incompleteGoals = goals.filter { it.progress < 1.0f }
+
+            if (incompleteGoals.isNotEmpty()) {
+                showNotification(incompleteGoals.size)
+            }
+
+            Result.success()
+        } catch (e: Exception) {
+            Result.failure()
+        }
+    }
+
+    private fun showNotification(incompleteCount: Int) {
+        val context = applicationContext
+        val notificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        val channel = NotificationChannel(
+            "goal_reminders",
+            "Goal Reminders",
+            NotificationManager.IMPORTANCE_DEFAULT
+        )
+        notificationManager.createNotificationChannel(channel)
+
+        val message = "You have $incompleteCount incomplete goals"
+        // Notification implementation would go here
+    }
+}

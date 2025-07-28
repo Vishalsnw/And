@@ -1,14 +1,15 @@
 package com.example.goalguru.data.model
 
-data class UserSettings(
-    val userId: String = "",
-    valnotificationsEnabled: Boolean = true,
-    val dailyReminderTime: String = "09:00",
-    val weeklyGoalReview: Boolean = true,
-    val theme: Theme = Theme.SYSTEM,
-    val language: String = "en"
-)
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-enum class Theme {
-    LIGHT, DARK, SYSTEM
-}
+@Entity(tableName = "user_settings")
+data class UserSettings(
+    @PrimaryKey
+    val userId: String,
+    val notificationsEnabled: Boolean = true,
+    val dailyReminderTime: String = "09:00",
+    val weeklyReportEnabled: Boolean = true,
+    val darkModeEnabled: Boolean = false,
+    val aiSuggestionsEnabled: Boolean = true
+)
