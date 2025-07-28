@@ -2,16 +2,14 @@ package com.example.goalguru.notification
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.hilt.work.HiltWorker
-import androidx.work.Constraints
 import androidx.work.CoroutineWorker
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import com.example.goalguru.MainActivity
 import com.example.goalguru.R
 import com.example.goalguru.data.model.UserSettings
 import com.example.goalguru.data.repository.GoalRepository
@@ -19,8 +17,6 @@ import com.example.goalguru.data.repository.UserRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.first
-import java.util.Calendar
-import java.util.concurrent.TimeUnit
 
 @HiltWorker
 class NotificationWorker @AssistedInject constructor(
@@ -35,7 +31,7 @@ class NotificationWorker @AssistedInject constructor(
             val userSettings = userRepository.getUserSettings()
             if (!userSettings.notificationsEnabled) return Result.success()
 
-            val goals = goalRepository.goals.first()
+            val goals = goalRepository.getAllGoals().first()
             val incompleteGoals = goals.filter { it.progress < 1.0f }
 
             if (incompleteGoals.isNotEmpty()) {
@@ -62,142 +58,35 @@ class NotificationWorker @AssistedInject constructor(
 
         val message = generateNotificationMessage(userSettings, incompleteCount)
 
+        val intent = Intent(context, MainActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
         val notification = NotificationCompat.Builder(context, "goal_reminders")
-            .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle("GoalGuru Reminder")
+            .setContentTitle("Goal Reminder")
             .setContentText(message)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .build()
 
         notificationManager.notify(1, notification)
     }
 
-    private fun generateNotificationMessage(
-        userSettings: UserSettings,
-        incompleteCount: Int
-    ): String {
-        val name = if (userSettings.name.isNotEmpty()) userSettings.name else "Champion"
-
-        return when (userSettings.notificationStyle) {
-            "Harsh" -> when {
-                userSettings.age < 25 -> "Hey $name! Still slacking? You have $incompleteCount " +
-                        "incomplete goals. Time to hustle! 💪"
-
-                userSettings.gender.name == "FEMALE" -> "Queen $name, your goals are waiting! " +
-                        "$incompleteCount tasks need your attention. Show them who's boss! 👑"
-
-                else -> "Bro $name, seriously? $incompleteCount goals are incomplete. " +
-                        "Stop making excuses and get to work! 🔥"
-            }
-
-            else -> when {
-                userSettings.age < 25 -> "Hi $name! You've got this! $incompleteCount goals " +
-                        "are waiting for your magic touch ✨"
-
-                userSettings.gender.name == "FEMALE" -> "Hello beautiful $name! Time to shine " +
-                        "with your $incompleteCount pending goals 🌟"
-
-                else -> "Hey $name! Ready to conquer those $incompleteCount goals? " +
-                        "You're doing great! 🎯"
-            }
-        }
-    }
-}
-
-object NotificationScheduler {
-    fun scheduleDaily9PMNotification(context: Context) {
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
-            .build()
-
-        val notificationWork = PeriodicWorkRequestBuilder<NotificationWorker>(
-            1, TimeUnit.DAYS
-        )
-            .setConstraints(constraints)
-            .setInitialDelay(calculateInitialDelay(), TimeUnit.MILLISECONDS)
-            .build()
-
-        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-            "daily_goal_reminder",
-            ExistingPeriodicWorkPolicy.REPLACE,
-            notificationWork
-        )
-    }
-
-    private fun calculateInitialDelay(): Long {
-        val calendar = Calendar.getInstance()
-        val now = calendar.timeInMillis
-
-        // Set to 9 PM today
-        calendar.set(Calendar.HOUR_OF_DAY, 21)
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
-
-        var scheduledTime = calendar.timeInMillis
-
-        // If 9 PM has already passed today, schedule for tomorrow
-        if (scheduledTime <= now) {
-            scheduledTime += 24 * 60 * 60 * 1000 // Add 24 hours
-        }
-
-        return scheduledTime - now
-    }
-}
-package com.example.goalguru.notification
-
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
-import androidx.hilt.work.HiltWorker
-import androidx.work.CoroutineWorker
-import androidx.work.WorkerParameters
-import com.example.goalguru.data.repository.GoalRepository
-import com.example.goalguru.data.repository.UserRepository
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import kotlinx.coroutines.flow.first
-
-@HiltWorker
-class NotificationWorker @AssistedInject constructor(
-    @Assisted context: Context,
-    @Assisted params: WorkerParameters,
-    private val goalRepository: GoalRepository,
-    private val userRepository: UserRepository
-) : CoroutineWorker(context, params) {
-
-    override suspend fun doWork(): Result {
-        return try {
-            val userSettings = userRepository.getUserSettings()
-            if (!userSettings.notificationsEnabled) return Result.success()
-
-            val goals = goalRepository.getAllGoals().first()
-            val incompleteGoals = goals.filter { it.progress < 1.0f }
-
-            if (incompleteGoals.isNotEmpty()) {
-                showNotification(incompleteGoals.size)
-            }
-
-            Result.success()
-        } catch (e: Exception) {
-            Result.failure()
+    private fun generateNotificationMessage(userSettings: UserSettings, incompleteCount: Int): String {
+        return when {
+            incompleteCount == 1 -> "You have 1 incomplete goal. Keep going!"
+            incompleteCount > 1 -> "You have $incompleteCount incomplete goals. Stay focused!"
+            else -> "Great job! All your goals are complete!"
         }
     }
 
-    private fun showNotification(incompleteCount: Int) {
-        val context = applicationContext
-        val notificationManager =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        val channel = NotificationChannel(
-            "goal_reminders",
-            "Goal Reminders",
-            NotificationManager.IMPORTANCE_DEFAULT
-        )
-        notificationManager.createNotificationChannel(channel)
-
-        val message = "You have $incompleteCount incomplete goals"
-        // Notification implementation would go here
+    @dagger.assisted.AssistedFactory
+    interface Factory {
+        fun create(context: Context, params: WorkerParameters): NotificationWorker
     }
 }
