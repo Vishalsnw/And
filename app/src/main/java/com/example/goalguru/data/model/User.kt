@@ -12,5 +12,5 @@ data class User(
     val age: Int = 0,
     val gender: Gender = Gender.OTHER,
     val deepSeekApiKey: String = "",
-    val createdAt: Long = System.currentTimeMillis()
+    val createdAt: Long = System.currentTimeMillis(),
 )

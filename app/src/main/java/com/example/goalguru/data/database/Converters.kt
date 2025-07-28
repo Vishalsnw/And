@@ -2,8 +2,8 @@
 package com.example.goalguru.data.database
 
 import androidx.room.TypeConverter
-import com.example.goalguru.data.model.Priority
 import com.example.goalguru.data.model.GoalStatus
+import com.example.goalguru.data.model.Priority
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.Date

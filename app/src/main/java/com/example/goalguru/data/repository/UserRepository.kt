@@ -24,11 +24,11 @@ class UserRepository @Inject constructor() {
                     close(error)
                     return@addSnapshotListener
                 }
-                
+
                 val settings = snapshot?.toObject(UserSettings::class.java) ?: UserSettings()
                 trySend(settings)
             }
-        
+
         awaitClose { listener.remove() }
     }
 

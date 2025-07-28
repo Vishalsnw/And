@@ -10,31 +10,37 @@ class AIRepository @Inject constructor() {
         return try {
             // For now, return smart suggestions based on keywords
             val suggestions = mutableListOf<String>()
-            
+
             when {
                 description.contains("fitness", ignoreCase = true) -> {
-                    suggestions.addAll(listOf(
-                        "Start with 15-minute daily workouts",
-                        "Track your daily step count",
-                        "Set weekly weight or measurement goals",
-                        "Plan healthy meal prep sessions"
-                    ))
+                    suggestions.addAll(
+                        listOf(
+                            "Start with 15-minute daily workouts",
+                            "Track your daily step count",
+                            "Set weekly weight or measurement goals",
+                            "Plan healthy meal prep sessions",
+                        ),
+                    )
                 }
                 description.contains("learning", ignoreCase = true) -> {
-                    suggestions.addAll(listOf(
-                        "Dedicate 30 minutes daily to study",
-                        "Set weekly learning milestones",
-                        "Practice regularly with hands-on exercises",
-                        "Join online communities for support"
-                    ))
+                    suggestions.addAll(
+                        listOf(
+                            "Dedicate 30 minutes daily to study",
+                            "Set weekly learning milestones",
+                            "Practice regularly with hands-on exercises",
+                            "Join online communities for support",
+                        ),
+                    )
                 }
                 else -> {
-                    suggestions.addAll(listOf(
-                        "Break down your goal into smaller, manageable tasks",
-                        "Set specific deadlines for each milestone",
-                        "Track your daily progress",
-                        "Celebrate small wins along the way"
-                    ))
+                    suggestions.addAll(
+                        listOf(
+                            "Break down your goal into smaller, manageable tasks",
+                            "Set specific deadlines for each milestone",
+                            "Track your daily progress",
+                            "Celebrate small wins along the way",
+                        ),
+                    )
                 }
             }
             suggestions

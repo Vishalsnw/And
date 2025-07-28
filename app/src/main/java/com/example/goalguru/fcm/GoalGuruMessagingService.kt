@@ -53,8 +53,10 @@ class GoalGuruMessagingService : FirebaseMessagingService() {
         }
 
         val pendingIntent = PendingIntent.getActivity(
-            this, 0, intent,
-            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+            this,
+            0,
+            intent,
+            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE,
         )
 
         val channelId = "goal_guru_notifications"
@@ -73,7 +75,7 @@ class GoalGuruMessagingService : FirebaseMessagingService() {
             val channel = NotificationChannel(
                 channelId,
                 "GoalGuru Notifications",
-                NotificationManager.IMPORTANCE_DEFAULT
+                NotificationManager.IMPORTANCE_DEFAULT,
             )
             notificationManager.createNotificationChannel(channel)
         }

@@ -15,5 +15,5 @@ data class Task(
     val dueDate: Date?,
     val priority: Priority,
     val createdAt: Date = Date(),
-    val updatedAt: Date = Date()
+    val updatedAt: Date = Date(),
 )

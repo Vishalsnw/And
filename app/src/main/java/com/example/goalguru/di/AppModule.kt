@@ -1,10 +1,7 @@
 
 package com.example.goalguru.di
 
-import android.content.Context
-import com.example.goalguru.data.database.AppDatabase
 import com.example.goalguru.data.database.GoalDao
-import com.example.goalguru.data.database.TaskDao
 import com.example.goalguru.data.database.UserDao
 import com.example.goalguru.data.repository.AIRepository
 import com.example.goalguru.data.repository.GoalRepository
@@ -12,7 +9,6 @@ import com.example.goalguru.data.repository.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 

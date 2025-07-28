@@ -17,5 +17,5 @@ data class DailyTask(
     val priority: Priority,
     val estimatedDuration: Int, // in minutes
     val completedAt: Date? = null,
-    val createdAt: Date = Date()
+    val createdAt: Date = Date(),
 )

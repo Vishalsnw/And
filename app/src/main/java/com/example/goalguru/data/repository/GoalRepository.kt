@@ -21,14 +21,14 @@ class GoalRepository @Inject constructor() {
                 close(error)
                 return@addSnapshotListener
             }
-            
+
             val goals = snapshot?.documents?.mapNotNull { doc ->
                 doc.toObject(Goal::class.java)?.copy(id = doc.id)
             } ?: emptyList()
-            
+
             trySend(goals)
         }
-        
+
         awaitClose { listener.remove() }
     }
 

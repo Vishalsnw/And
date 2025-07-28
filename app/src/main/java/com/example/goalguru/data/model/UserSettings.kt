@@ -11,5 +11,5 @@ data class UserSettings(
     val dailyReminderTime: String = "09:00",
     val weeklyReportEnabled: Boolean = true,
     val darkModeEnabled: Boolean = false,
-    val aiSuggestionsEnabled: Boolean = true
+    val aiSuggestionsEnabled: Boolean = true,
 )

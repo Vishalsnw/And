@@ -19,7 +19,7 @@ data class Goal(
     val updatedAt: Date = Date(),
     val roadmap: List<String> = emptyList(),
     val aiGeneratedTasks: List<String> = emptyList(),
-    val isCompleted: Boolean = false
+    val isCompleted: Boolean = false,
 )
 
 enum class Priority {

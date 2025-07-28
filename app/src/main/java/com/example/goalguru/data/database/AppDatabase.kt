@@ -1,11 +1,11 @@
 
 package com.example.goalguru.data.database
 
+import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import android.content.Context
 import com.example.goalguru.data.model.Goal
 import com.example.goalguru.data.model.Task
 import com.example.goalguru.data.model.UserSettings
@@ -13,7 +13,7 @@ import com.example.goalguru.data.model.UserSettings
 @Database(
     entities = [Goal::class, Task::class, UserSettings::class],
     version = 1,
-    exportSchema = false
+    exportSchema = false,
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -30,7 +30,7 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "goal_guru_database"
+                    "goal_guru_database",
                 ).build()
                 INSTANCE = instance
                 instance

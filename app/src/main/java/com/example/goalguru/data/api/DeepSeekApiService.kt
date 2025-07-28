@@ -10,7 +10,7 @@ interface DeepSeekApiService {
     @POST("chat/completions")
     suspend fun generateRoadmap(
         @Header("Authorization") authorization: String,
-        @Body request: DeepSeekRequest
+        @Body request: DeepSeekRequest,
     ): Response<DeepSeekResponse>
 }
 
@@ -18,18 +18,18 @@ data class DeepSeekRequest(
     val model: String = "deepseek-chat",
     val messages: List<Message>,
     val temperature: Double = 0.7,
-    val max_tokens: Int = 1000
+    val max_tokens: Int = 1000,
 )
 
 data class Message(
     val role: String,
-    val content: String
+    val content: String,
 )
 
 data class DeepSeekResponse(
-    val choices: List<Choice>
+    val choices: List<Choice>,
 )
 
 data class Choice(
-    val message: Message
+    val message: Message,
 )
