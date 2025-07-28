@@ -10,20 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: 📥 Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up JDK 17
+      - name: ⚙️ Set up JDK 17
         uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: 17
           cache: gradle
 
-      - name: Set up Android SDK
+      - name: 📱 Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Create fix_wildcards.sh
+      - name: 🧹 Create fix_wildcards.sh
         run: |
           cat <<'EOF' > fix_wildcards.sh
           #!/bin/bash
@@ -59,13 +59,13 @@ jobs:
           EOF
           chmod +x fix_wildcards.sh
 
-      - name: Run Wildcard Import Fix
+      - name: 🛠 Run Wildcard Import Fix
         run: ./fix_wildcards.sh
 
-      - name: Run Spotless Auto Fix
+      - name: ✨ Run Spotless Auto Fix
         run: ./gradlew spotlessApply
 
-      - name: Commit Spotless Fixes (if any)
+      - name: 📦 Commit Spotless Fixes (if any)
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
@@ -74,25 +74,26 @@ jobs:
           git push origin main || echo "No changes to commit"
         continue-on-error: true
 
-      - name: Clean Project
+      - name: 🧼 Clean Project
         run: ./gradlew clean
 
-      - name: Build Debug APK and Save Logs
+      - name: 🏗 Build Debug APK and Save Logs
         run: ./gradlew assembleDebug --stacktrace --info > build_output.txt 2>&1
 
-      - name: Extract Build Errors
+      - name: 🕵️ Extract Build Errors (Short Summary)
         run: |
-          grep -iE "error|exception|failed|Caused by|not found|unresolved|compilation|kapt|spotless" build_output.txt > error_summary.txt || true
-          if [ ! -s error_summary.txt ]; then echo "✅ No critical build errors detected." > error_summary.txt; fi
+          touch error_summary.txt
+          grep -iE "error|exception|failed|Caused by|not found|unresolved|compilation|kapt|spotless" build_output.txt >> error_summary.txt || true
+          if [ ! -s error_summary.txt ]; then echo "✅ No critical build errors detected." >> error_summary.txt; fi
 
-      - name: Upload Error Summary
+      - name: ☁️ Upload Error Summary
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ErrorSummary-${{ github.run_number }}
           path: error_summary.txt
 
-      - name: Upload APK
+      - name: ☁️ Upload APK
         if: success()
         uses: actions/upload-artifact@v4
         with:
