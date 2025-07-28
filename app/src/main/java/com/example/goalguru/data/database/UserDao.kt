@@ -1,7 +1,11 @@
 
 package com.example.goalguru.data.database
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
 import com.example.goalguru.data.model.UserSettings
 import kotlinx.coroutines.flow.Flow
 
