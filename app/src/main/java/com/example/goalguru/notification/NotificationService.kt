@@ -5,7 +5,13 @@ import android.app.NotificationManager
 import android.content.Context
 import androidx.core.app.NotificationCompat
 import androidx.hilt.work.HiltWorker
-import androidx.work.*
+import androidx.work.Constraints
+import androidx.work.CoroutineWorker
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkerParameters
 import com.example.goalguru.R
 import com.example.goalguru.data.model.UserSettings
 import com.example.goalguru.data.repository.GoalRepository
@@ -125,7 +131,6 @@ object NotificationScheduler {
             set(Calendar.HOUR_OF_DAY, 21)
             set(Calendar.MINUTE, 0)
             set(Calendar.SECOND, 0)
-
             if (timeInMillis <= now) {
                 add(Calendar.DAY_OF_YEAR, 1)
             }
