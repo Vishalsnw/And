@@ -55,6 +55,8 @@ class GoalRepository @Inject constructor() {
 }
 package com.example.goalguru.data.repository
 
+package com.example.goalguru.data.repository
+
 import com.example.goalguru.data.database.GoalDao
 import com.example.goalguru.data.database.TaskDao
 import com.example.goalguru.data.model.Goal

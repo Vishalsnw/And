@@ -20,23 +20,3 @@ interface UserDao {
     @Update
     suspend fun updateUserSettings(userSettings: UserSettings)
 }
-package com.example.goalguru.data.database
-
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import androidx.room.Update
-import com.example.goalguru.data.model.UserSettings
-
-@Dao
-interface UserDao {
-    @Query("SELECT * FROM user_settings WHERE userId = :userId")
-    suspend fun getUserSettings(userId: String): UserSettings?
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertUserSettings(userSettings: UserSettings)
-
-    @Update
-    suspend fun updateUserSettings(userSettings: UserSettings)
-}

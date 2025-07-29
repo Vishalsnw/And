@@ -2,6 +2,7 @@
 package com.example.goalguru.di
 
 import com.example.goalguru.data.database.GoalDao
+import com.example.goalguru.data.database.TaskDao
 import com.example.goalguru.data.database.UserDao
 import com.example.goalguru.data.repository.AIRepository
 import com.example.goalguru.data.repository.GoalRepository
@@ -21,8 +22,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGoalRepository(goalDao: GoalDao): GoalRepository {
-        return GoalRepository(goalDao)
+    fun provideGoalRepository(goalDao: GoalDao, taskDao: TaskDao): GoalRepository {
+        return GoalRepository(goalDao, taskDao)
     }
 
     @Provides
