@@ -32,3 +32,17 @@ data class DeepSeekResponse(
 data class Choice(
     val message: Message
 )
+package com.example.goalguru.data.api
+
+import com.example.goalguru.data.model.DeepSeekRequest
+import com.example.goalguru.data.model.DeepSeekResponse
+import retrofit2.http.Body
+import retrofit2.http.Header
+import retrofit2.http.POST
+
+interface DeepSeekApiService {
+    @POST("chat/completions")
+    suspend fun generateCompletion(
+        @Body request: DeepSeekRequest
+    ): DeepSeekResponse
+}

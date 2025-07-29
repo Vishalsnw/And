@@ -10,6 +10,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
+import javax.inject.Singleton
+
+@Singleton
 class GoalRepository @Inject constructor(
     private val goalDao: GoalDao,
     private val taskDao: TaskDao

@@ -2,6 +2,12 @@
 package com.example.goalguru.data.repository
 
 import com.example.goalguru.data.api.DeepSeekApiService
+import com.example.goalguru.data.model.DeepSeekRequest
+import com.example.goalguru.data.model.Message
+import javax.inject.Inject
+import javax.inject.Singleton
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import com.example.goalguru.data.api.DeepSeekRequest
 import com.example.goalguru.data.api.Message
 import retrofit2.Retrofit
