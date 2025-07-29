@@ -10,9 +10,9 @@ import javax.inject.Singleton
 class UserRepository @Inject constructor(
     private val userDao: UserDao
 ) {
-    fun getUserSettings(): Flow<UserSettings?> = userDao.getUserSettings()
+    suspend fun getUserSettings(): UserSettings? = userDao.getUserSettings()
 
-    suspend fun insertUserSettings(userSettings: UserSettings) = userDao.insertUserSettings(userSettings)
+    suspend fun saveUserSettings(userSettings: UserSettings) = userDao.insertUserSettings(userSettings)
 
     suspend fun updateUserSettings(userSettings: UserSettings) = userDao.updateUserSettings(userSettings)
 }
