@@ -1,19 +1,16 @@
+
 package com.example.goalguru.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Date
 
 @Entity(tableName = "user_settings")
 data class UserSettings(
     @PrimaryKey
-    val id: String,
-    val userId: String,
+    val id: String = "default",
     val notificationsEnabled: Boolean = true,
-    val dailyReminderTime: String? = null,
-    val weeklyReviewEnabled: Boolean = true,
-    val theme: String = "SYSTEM",
-    val language: String = "en",
-    val createdAt: Date = Date(),
-    val updatedAt: Date = Date(),
+    val dailyReminderTime: String = "09:00",
+    val weeklyReportEnabled: Boolean = true,
+    val darkModeEnabled: Boolean = false,
+    val aiSuggestionsEnabled: Boolean = true,
 )
