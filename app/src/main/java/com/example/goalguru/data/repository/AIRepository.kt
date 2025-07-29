@@ -43,7 +43,8 @@ class AIRepository @Inject constructor() {
                 messages = listOf(
                     Message(
                         role = "user",
-                        content = "Create a detailed roadmap for achieving this goal: $goalTitle. Description: $goalDescription. Provide specific, actionable steps."
+                        content = "Create a detailed roadmap for achieving this goal: $goalTitle. " +
+                            "Description: $goalDescription. Provide specific, actionable steps."
                     )
                 )
             )
