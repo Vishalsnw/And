@@ -142,3 +142,64 @@ class CreateGoalViewModel @Inject constructor(
         }
     }
 }
+package com.example.goalguru.ui.screens.create
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.goalguru.data.model.Goal
+import com.example.goalguru.data.repository.GoalRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+data class CreateGoalUiState(
+    val title: String = "",
+    val description: String = "",
+    val isLoading: Boolean = false
+)
+
+@HiltViewModel
+class CreateGoalViewModel @Inject constructor(
+    private val goalRepository: GoalRepository
+) : ViewModel() {
+    
+    private val _uiState = MutableStateFlow(CreateGoalUiState())
+    val uiState: StateFlow<CreateGoalUiState> = _uiState.asStateFlow()
+    
+    fun updateTitle(title: String) {
+        _uiState.value = _uiState.value.copy(title = title)
+    }
+    
+    fun updateDescription(description: String) {
+        _uiState.value = _uiState.value.copy(description = description)
+    }
+    
+    fun saveGoal() {
+        val currentState = _uiState.value
+        if (currentState.title.isBlank()) return
+        
+        _uiState.value = currentState.copy(isLoading = true)
+        
+        viewModelScope.launch {
+            try {
+                val goal = Goal(
+                    id = "",
+                    title = currentState.title,
+                    description = currentState.description,
+                    progress = 0f,
+                    createdAt = System.currentTimeMillis(),
+                    updatedAt = System.currentTimeMillis()
+                )
+                goalRepository.insertGoal(goal)
+                // Navigate back or show success
+            } catch (e: Exception) {
+                // Handle error
+            } finally {
+                _uiState.value = currentState.copy(isLoading = false)
+            }
+        }
+    }
+}

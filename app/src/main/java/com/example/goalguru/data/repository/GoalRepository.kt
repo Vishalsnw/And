@@ -50,3 +50,25 @@ class GoalRepository @Inject constructor(
         }
     }
 }
+package com.example.goalguru.data.repository
+
+import com.example.goalguru.data.dao.GoalDao
+import com.example.goalguru.data.model.Goal
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
+import javax.inject.Singleton
+
+@Singleton
+class GoalRepository @Inject constructor(
+    private val goalDao: GoalDao
+) {
+    fun getAllGoals(): Flow<List<Goal>> = goalDao.getAllGoals()
+    
+    suspend fun insertGoal(goal: Goal) = goalDao.insertGoal(goal)
+    
+    suspend fun getGoalById(id: String): Goal? = goalDao.getGoalById(id)
+    
+    suspend fun updateGoal(goal: Goal) = goalDao.updateGoal(goal)
+    
+    suspend fun deleteGoal(goal: Goal) = goalDao.deleteGoal(goal)
+}

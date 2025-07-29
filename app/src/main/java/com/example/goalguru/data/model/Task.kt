@@ -17,3 +17,19 @@ data class Task(
     val createdAt: Date = Date(),
     val updatedAt: Date = Date(),
 )
+package com.example.goalguru.data.model
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "tasks")
+data class Task(
+    @PrimaryKey
+    val id: String,
+    val goalId: String,
+    val title: String,
+    val description: String = "",
+    val completed: Boolean = false,
+    val createdAt: Long,
+    val updatedAt: Long
+)

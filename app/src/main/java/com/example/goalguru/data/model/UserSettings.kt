@@ -14,3 +14,17 @@ data class UserSettings(
     val darkModeEnabled: Boolean = false,
     val aiSuggestionsEnabled: Boolean = true,
 )
+package com.example.goalguru.data.model
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "user_settings")
+data class UserSettings(
+    @PrimaryKey
+    val id: Int = 1,
+    val notificationsEnabled: Boolean = true,
+    val darkModeEnabled: Boolean = false,
+    val reminderFrequency: Int = 24, // hours
+    val userId: String = ""
+)
