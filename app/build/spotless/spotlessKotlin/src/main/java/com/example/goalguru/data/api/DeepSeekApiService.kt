@@ -1,5 +1,7 @@
 package com.example.goalguru.data.api
 
+import com.example.goalguru.data.model.DeepSeekRequest
+import com.example.goalguru.data.model.DeepSeekResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header
@@ -11,24 +13,9 @@ interface DeepSeekApiService {
         @Header("Authorization") authorization: String,
         @Body request: DeepSeekRequest,
     ): Response<DeepSeekResponse>
+
+    @POST("chat/completions")
+    suspend fun generateCompletion(
+        @Body request: DeepSeekRequest,
+    ): DeepSeekResponse
 }
-
-data class DeepSeekRequest(
-    val model: String = "deepseek-chat",
-    val messages: List<Message>,
-    val temperature: Double = 0.7,
-    val max_tokens: Int = 1000,
-)
-
-data class Message(
-    val role: String,
-    val content: String,
-)
-
-data class DeepSeekResponse(
-    val choices: List<Choice>,
-)
-
-data class Choice(
-    val message: Message,
-)
