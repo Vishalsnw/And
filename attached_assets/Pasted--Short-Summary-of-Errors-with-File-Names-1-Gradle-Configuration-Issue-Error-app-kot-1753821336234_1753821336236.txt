@@ -1,0 +1,113 @@
+⚠️ Short Summary of Errors with File Names
+
+
+---
+
+❗ 1. Gradle Configuration Issue:
+
+Error:
+
+:app:kotlinKaptWorkerDependencies is incorrectly set as:
+
+both resolvable and consumable
+
+both consumable and declarable
+
+
+
+Fix Suggestion:
+Update your Gradle config (build.gradle.kts or build.gradle) to ensure this configuration is only one of them — not both.
+
+
+
+---
+
+❗ 2. Missing Kotlin/Java Directories:
+
+Missing:
+
+/app/src/main/kotlin
+
+/app/src/debug/kotlin
+
+/app/src/debug/java
+
+
+Fix Suggestion:
+Create these directories if they are part of your module structure, or update your sourceSets if not needed.
+
+
+
+---
+
+❗ 3. Unresolved References (likely missing imports or Compose dependencies):
+
+File	Line	Error
+
+NotificationWorker.kt	33	Unresolved reference: notificationsEnabled
+CreateGoalScreen.kt	28	Unresolved reference: Composable
+CreateGoalScreen.kt	34–38	collectAsState errors (probably missing import androidx.compose.runtime.*)
+CreateGoalScreen.kt	126	Unresolved reference: size
+DashboardScreen.kt	31	Unresolved reference: Composable
+DashboardScreen.kt	38–39	Unresolved reference: collectAsState
+DashboardScreen.kt	92, 115, 135, 140, 159	UI elements missing: Card, Button, LinearProgressIndicator
+GoalDetailScreen.kt	48, 67, 76, 80	LaunchedEffect, Edit, Box, CircularProgressIndicator
+SettingsViewModel.kt	48, 56	Unresolved reference: saveUserSettings
+
+
+Fix Suggestion:
+
+Ensure you have Jetpack Compose dependencies added in your build.gradle.
+
+Add necessary import statements.
+
+Make sure any custom functions like saveUserSettings() actually exist or are correctly imported.
+
+
+
+
+---
+
+❗ 4. Missing Dependencies:
+
+Gradle couldn’t download:
+
+error_prone_annotations
+
+javac-shaded
+
+
+Cause: Missing or blocked Maven URLs.
+
+Fix Suggestion:
+
+Make sure you have internet access and proxy/firewall isn’t blocking Maven.
+
+Double-check repositories block:
+
+repositories {
+    google()
+    mavenCentral()
+}
+
+
+
+
+---
+
+❗ 5. Compilation Failed
+
+Final error:
+
+Execution failed for task ':app:compileDebugKotlin'.
+> Compilation error. See log for more details
+
+Fix:
+Resolve the above unresolved references and missing files/imports, and the compilation will succeed.
+
+
+
+---
+
+Let me know if you want auto-fix steps or Gradle file cleanup.
+
