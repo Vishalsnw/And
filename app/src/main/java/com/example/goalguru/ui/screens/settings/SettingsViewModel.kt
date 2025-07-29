@@ -30,7 +30,7 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                userRepository.getUserSettings()?.let { settings ->
+                userRepository.getUserSettings().collect { settings ->
                     _userSettings.value = settings
                 }
             } catch (e: Exception) {

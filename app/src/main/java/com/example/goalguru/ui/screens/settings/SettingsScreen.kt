@@ -1,4 +1,3 @@
-
 package com.example.goalguru.ui.screens.settings
 
 import androidx.compose.foundation.layout.Arrangement
@@ -32,8 +31,8 @@ fun SettingsScreen(
     onNavigateBack: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
-    val settings by viewModel.settings.collectAsState()
-    
+    val userSettings by viewModel.userSettings.collectAsState()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -66,12 +65,12 @@ fun SettingsScreen(
                         style = MaterialTheme.typography.bodyLarge
                     )
                     Switch(
-                        checked = settings.notificationsEnabled,
+                        checked = userSettings.notificationsEnabled,
                         onCheckedChange = viewModel::toggleNotifications
                     )
                 }
             }
-            
+
             Card {
                 Row(
                     modifier = Modifier
@@ -85,7 +84,7 @@ fun SettingsScreen(
                         style = MaterialTheme.typography.bodyLarge
                     )
                     Switch(
-                        checked = settings.darkModeEnabled,
+                        checked = userSettings.darkModeEnabled,
                         onCheckedChange = viewModel::toggleDarkMode
                     )
                 }
@@ -129,7 +128,7 @@ fun SettingsScreen(
                             style = MaterialTheme.typography.bodyLarge
                         )
                         Switch(
-                            checked = settings?.notificationsEnabled ?: false,
+                            checked = userSettings?.notificationsEnabled ?: false,
                             onCheckedChange = { enabled ->
                                 viewModel.updateNotificationSettings(enabled)
                             }
