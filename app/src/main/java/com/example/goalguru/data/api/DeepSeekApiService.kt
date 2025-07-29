@@ -16,6 +16,6 @@ interface DeepSeekApiService {
 
     @POST("chat/completions")
     suspend fun generateCompletion(
-        @Body request: DeepSeekRequest
+        @Body request: DeepSeekRequest,
     ): DeepSeekResponse
 }
