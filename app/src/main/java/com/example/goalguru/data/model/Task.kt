@@ -10,26 +10,11 @@ data class Task(
     val id: String,
     val goalId: String,
     val title: String,
-    val description: String?,
+    val description: String = "",
     val isCompleted: Boolean = false,
-    val dueDate: Date?,
+    val completed: Boolean = false, // Keep both for compatibility
+    val dueDate: Date? = null,
     val priority: Priority = Priority.MEDIUM,
     val createdAt: Date = Date(),
-    val updatedAt: Date = Date(),
-)
-package com.example.goalguru.data.model
-
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
-@Entity(tableName = "tasks")
-data class Task(
-    @PrimaryKey
-    val id: String,
-    val goalId: String,
-    val title: String,
-    val description: String = "",
-    val completed: Boolean = false,
-    val createdAt: Long,
-    val updatedAt: Long
+    val updatedAt: Date = Date()
 )
