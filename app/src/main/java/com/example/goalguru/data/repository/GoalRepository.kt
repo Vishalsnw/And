@@ -1,3 +1,4 @@
+
 package com.example.goalguru.data.repository
 
 import com.example.goalguru.data.database.GoalDao
@@ -42,7 +43,7 @@ class GoalRepository @Inject constructor(
         } else {
             0f
         }
-
+        
         val goal = goalDao.getGoalById(goalId)
         goal?.let {
             goalDao.updateGoal(it.copy(progress = progress))
