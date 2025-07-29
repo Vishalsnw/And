@@ -1,4 +1,3 @@
-
 package com.example.goalguru.data.repository
 
 import com.example.goalguru.data.api.DeepSeekApiService
@@ -11,8 +10,8 @@ import javax.inject.Singleton
 
 @Singleton
 class AIRepository @Inject constructor() {
-    
-    private val deepSeekService: DeepSeekApiService by lazy {
+
+    private val apiService: DeepSeekApiService by lazy {
         Retrofit.Builder()
             .baseUrl("https://api.deepseek.com/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -20,68 +19,27 @@ class AIRepository @Inject constructor() {
             .create(DeepSeekApiService::class.java)
     }
 
-    suspend fun generateGoalSuggestions(description: String): List<String> {
+    suspend fun generateGoalRoadmap(goalTitle: String, goalDescription: String): String? {
         return try {
-            val apiKey = System.getenv("DEEPSEEK_API_KEY")
-            if (apiKey.isNullOrEmpty()) {
-                return getFallbackSuggestions(description)
-            }
+            val apiKey = System.getenv("DEEPSEEK_API_KEY") ?: return null
 
             val request = DeepSeekRequest(
                 messages = listOf(
                     Message(
                         role = "user",
-                        content = "Generate 4 specific, actionable suggestions for achieving this goal: $description"
+                        content = "Create a detailed roadmap for achieving this goal: $goalTitle. Description: $goalDescription. Provide specific, actionable steps."
                     )
                 )
             )
 
-            val response = deepSeekService.generateRoadmap("Bearer $apiKey", request)
-            if (response.isSuccessful && response.body() != null) {
-                val content = response.body()!!.choices.firstOrNull()?.message?.content
-                content?.split("\n")?.filter { it.isNotBlank() }?.take(4) ?: getFallbackSuggestions(description)
+            val response = apiService.generateRoadmap("Bearer $apiKey", request)
+            if (response.isSuccessful) {
+                response.body()?.choices?.firstOrNull()?.message?.content
             } else {
-                getFallbackSuggestions(description)
+                null
             }
         } catch (e: Exception) {
-            getFallbackSuggestions(description)
+            null
         }
-    }
-
-    private fun getFallbackSuggestions(description: String): List<String> {
-        val suggestions = mutableListOf<String>()
-        when {
-            description.contains("fitness", ignoreCase = true) -> {
-                suggestions.addAll(
-                    listOf(
-                        "Start with 15-minute daily workouts",
-                        "Track your daily step count",
-                        "Set weekly weight or measurement goals",
-                        "Plan healthy meal prep sessions",
-                    ),
-                )
-            }
-            description.contains("learning", ignoreCase = true) -> {
-                suggestions.addAll(
-                    listOf(
-                        "Dedicate 30 minutes daily to study",
-                        "Set weekly learning milestones",
-                        "Practice regularly with hands-on exercises",
-                        "Join online communities for support",
-                    ),
-                )
-            }
-            else -> {
-                suggestions.addAll(
-                    listOf(
-                        "Break down your goal into smaller, manageable tasks",
-                        "Set specific deadlines for each milestone",
-                        "Track your daily progress",
-                        "Celebrate small wins along the way",
-                    ),
-                )
-            }
-        }
-        return suggestions
     }
 }
