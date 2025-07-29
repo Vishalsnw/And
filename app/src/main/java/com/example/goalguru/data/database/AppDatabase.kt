@@ -8,11 +8,12 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.goalguru.data.model.Goal
 import com.example.goalguru.data.model.Task
+import com.example.goalguru.data.model.User
 import com.example.goalguru.data.model.UserSettings
 
 @Database(
-    entities = [Goal::class, Task::class, UserSettings::class],
-    version = 1,
+    entities = [Goal::class, Task::class, User::class, UserSettings::class],
+    version = 2,
     exportSchema = false,
 )
 @TypeConverters(Converters::class)

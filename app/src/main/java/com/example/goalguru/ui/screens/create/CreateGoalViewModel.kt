@@ -95,3 +95,92 @@ class CreateGoalViewModel @Inject constructor(
         }
     }
 }
+package com.example.goalguru.ui.screens.create
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.goalguru.data.model.Goal
+import com.example.goalguru.data.model.GoalStatus
+import com.example.goalguru.data.model.Priority
+import com.example.goalguru.data.repository.AIRepository
+import com.example.goalguru.data.repository.GoalRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import java.util.Date
+import java.util.UUID
+import javax.inject.Inject
+
+@HiltViewModel
+class CreateGoalViewModel @Inject constructor(
+    private val goalRepository: GoalRepository,
+    private val aiRepository: AIRepository
+) : ViewModel() {
+
+    private val _title = MutableStateFlow("")
+    val title: StateFlow<String> = _title.asStateFlow()
+
+    private val _description = MutableStateFlow("")
+    val description: StateFlow<String> = _description.asStateFlow()
+
+    private val _targetDate = MutableStateFlow("")
+    val targetDate: StateFlow<String> = _targetDate.asStateFlow()
+
+    private val _suggestions = MutableStateFlow<List<String>>(emptyList())
+    val suggestions: StateFlow<List<String>> = _suggestions.asStateFlow()
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
+    fun updateTitle(newTitle: String) {
+        _title.value = newTitle
+    }
+
+    fun updateDescription(newDescription: String) {
+        _description.value = newDescription
+        if (newDescription.isNotBlank()) {
+            generateSuggestions(newDescription)
+        }
+    }
+
+    fun updateTargetDate(newTargetDate: String) {
+        _targetDate.value = newTargetDate
+    }
+
+    private fun generateSuggestions(description: String) {
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                val suggestions = aiRepository.generateGoalSuggestions(description)
+                _suggestions.value = suggestions
+            } catch (e: Exception) {
+                _suggestions.value = emptyList()
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun createGoal(onSuccess: () -> Unit) {
+        viewModelScope.launch {
+            try {
+                val goal = Goal(
+                    id = UUID.randomUUID().toString(),
+                    title = _title.value,
+                    description = _description.value,
+                    category = "General",
+                    targetDate = null, // You can parse the targetDate string if needed
+                    priority = Priority.MEDIUM,
+                    status = GoalStatus.ACTIVE,
+                    roadmap = _suggestions.value
+                )
+                goalRepository.insertGoal(goal)
+                onSuccess()
+            } catch (e: Exception) {
+                // Handle error
+            }
+        }
+    }
+}
