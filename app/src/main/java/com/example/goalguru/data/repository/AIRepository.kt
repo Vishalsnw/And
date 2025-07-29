@@ -36,7 +36,7 @@ class AIRepository @Inject constructor() {
                 )
             )
 
-            val response = deepSeekService.generateRoadmap(request)
+            val response = deepSeekService.generateRoadmap("Bearer $apiKey", request)
             if (response.isSuccessful && response.body() != null) {
                 val content = response.body()!!.choices.firstOrNull()?.message?.content
                 content?.split("\n")?.filter { it.isNotBlank() }?.take(4) ?: getFallbackSuggestions(description)
