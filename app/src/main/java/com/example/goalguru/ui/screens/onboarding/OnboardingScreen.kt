@@ -18,6 +18,40 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun OnboardingScreen(
+    onCompleteOnboarding: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "Welcome to GoalGuru",
+            style = MaterialTheme.typography.headlineMedium,
+            textAlign = TextAlign.Center
+        )
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        Text(
+            text = "Your AI-powered personal goal coach",
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center
+        )
+        
+        Spacer(modifier = Modifier.height(32.dp))
+        
+        Button(
+            onClick = onCompleteOnboarding,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Get Started")
+        }
+    }
+}
+fun OnboardingScreen(
     onComplete: () -> Unit,
 ) {
     Column(

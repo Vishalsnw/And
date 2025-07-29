@@ -13,6 +13,46 @@ import com.example.goalguru.ui.screens.goal.GoalDetailScreen
 
 @Composable
 fun GoalGuruNavigation(
+    navController: NavHostController = rememberNavController()
+) {
+    NavHost(
+        navController = navController,
+        startDestination = "dashboard"
+    ) {
+        composable("dashboard") {
+            DashboardScreen(
+                onNavigateToGoalDetail = { goalId ->
+                    navController.navigate("goal_detail/$goalId")
+                },
+                onNavigateToCreateGoal = {
+                    navController.navigate("create_goal")
+                }
+            )
+        }
+        
+        composable("create_goal") {
+            CreateGoalScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        
+        composable(
+            "goal_detail/{goalId}",
+            arguments = listOf(navArgument("goalId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val goalId = backStackEntry.arguments?.getString("goalId") ?: ""
+            GoalDetailScreen(
+                goalId = goalId,
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+    }
+}
+fun GoalGuruNavigation(
     navController: NavHostController = rememberNavController(),
 ) {
     NavHost(

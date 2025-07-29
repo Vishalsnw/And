@@ -137,4 +137,7 @@ dependencies {
 kapt {
     correctErrorTypes true
     useBuildCache true
+    
+    // Fix gradle configuration conflict
+    generateStubs = true
 }

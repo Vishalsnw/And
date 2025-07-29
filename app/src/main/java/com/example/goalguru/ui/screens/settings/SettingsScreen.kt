@@ -29,6 +29,58 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
+    onNavigateBack: () -> Unit,
+    viewModel: SettingsViewModel = hiltViewModel()
+) {
+    val settings by viewModel.settings.collectAsState()
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Settings") },
+                navigationIcon = {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Card(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Notifications",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        Switch(
+                            checked = settings?.notificationsEnabled ?: false,
+                            onCheckedChange = { enabled ->
+                                viewModel.updateNotificationSettings(enabled)
+                            }
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+fun SettingsScreen(
     onBackPressed: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
