@@ -8,15 +8,9 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import com.example.goalguru.ui.navigation.GoalGuruNavigation
@@ -27,12 +21,12 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Handle splash screen
-        val splashScreen = installSplashScreen()
+        // Show splash screen while app loads
+        installSplashScreen()
 
         super.onCreate(savedInstanceState)
 
-        // Enable edge-to-edge display
+        // Enable edge-to-edge layout
         enableEdgeToEdge()
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
@@ -44,22 +38,17 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun GoalGuruApp() {
-    val systemUiController = rememberSystemUiController()
     val darkTheme = isSystemInDarkTheme()
-    val context = LocalContext.current
+    val systemUiController = rememberSystemUiController()
 
-    // Track if we've loaded all necessary data
+    // Optional loading state
     var isReady by remember { mutableStateOf(false) }
 
-    // Set up system UI colors
+    // Transparent system bars
     DisposableEffect(systemUiController, darkTheme) {
         systemUiController.setSystemBarsColor(
             color = Color.Transparent,
-            darkIcons = !darkTheme,
-        )
-        systemUiController.setNavigationBarColor(
-            color = Color.Transparent,
-            darkIcons = !darkTheme,
+            darkIcons = !darkTheme
         )
         onDispose {}
     }
@@ -67,13 +56,13 @@ fun GoalGuruApp() {
     GoalGuruTheme(darkTheme = darkTheme) {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background,
+            color = MaterialTheme.colorScheme.background
         ) {
             GoalGuruNavigation(
-                onDataLoaded = { isReady = true },
+                onDataLoaded = { isReady = true }
             )
 
-            // You could show a loading indicator here if needed
+            // Optional loading UI
             // if (!isReady) LoadingScreen()
         }
     }
