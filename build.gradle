@@ -1,12 +1,4 @@
 buildscript {
-    ext {
-        // Define versions here for all modules to use
-        compose_compiler_version = '1.5.8'
-        compose_bom_version = '2024.02.00'
-        hilt_version = '2.48'
-        firebase_bom_version = '32.7.2'
-        error_prone_version = '2.18.0'
-    }
     repositories {
         google()
         mavenCentral()
@@ -14,7 +6,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0"
-        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:2.48"
         classpath 'com.google.gms:google-services:4.3.15'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
         classpath 'com.diffplug.spotless:spotless-plugin-gradle:6.23.3'
@@ -23,7 +15,9 @@ buildscript {
 
 allprojects {
     repositories {
-        // Keep empty - repositories are defined in settings.gradle
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
 }
 
