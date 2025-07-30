@@ -34,6 +34,25 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:655564345934:android:954c2d97ba9636ce78291f",
+        "android_client_info": {
+          "package_name": "com.example.goalguru.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "655564345934-stv90cf9ck8kekmh3oule1nj7ulp2smu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCw92TX6PI9k9cwSkXwM75-4fWy0koVdg"
+        }
+      ]
     }
   ],
   "configuration_version": "1"
