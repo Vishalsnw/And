@@ -3,16 +3,10 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
-    id 'com.google.gms.google-services' apply false
     id 'com.google.firebase.crashlytics'
-    id 'com.diffplug.spotless' version '6.25.0'
+    id 'com.google.gms.google-services' // Must be after Crashlytics plugin
+    id 'com.diffplug.spotless'
 }
-
-// Define versions in one place
-def compose_version = '1.5.4'
-def material3_version = '1.1.2'
-def room_version = '2.6.0'
-def nav_version = '2.7.4'
 
 android {
     namespace 'com.example.goalguru'
@@ -26,23 +20,7 @@ android {
         versionName "1.0"
         
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArguments clearPackageData: 'true'
         vectorDrawables.useSupportLibrary = true
-    }
-
-    signingConfigs {
-        debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
-        }
-        release {
-            storeFile file('release.keystore')
-            storePassword System.getenv('STORE_PASSWORD')
-            keyAlias System.getenv('KEY_ALIAS')
-            keyPassword System.getenv('KEY_PASSWORD')
-        }
     }
 
     buildTypes {
@@ -50,35 +28,15 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            firebaseCrashlytics {
+                mappingFileUploadEnabled true
+            }
         }
         debug {
             applicationIdSuffix ".debug"
-            debuggable true
-            signingConfig signingConfigs.debug
             firebaseCrashlytics {
                 mappingFileUploadEnabled false
             }
-            // Manual Firebase config for debug
-            resValue "string", "google_app_id", "1:1234567890:android:1234567890abcdef"
-            resValue "string", "google_api_key", "your_api_key"
-            resValue "string", "firebase_database_url", "https://your-app.firebaseio.com"
-            resValue "string", "gcm_defaultSenderId", "1234567890"
-            resValue "string", "google_storage_bucket", "your-app.appspot.com"
-            resValue "string", "project_id", "your-app-id"
-        }
-    }
-
-    flavorDimensions "environment"
-    productFlavors {
-        dev {
-            dimension "environment"
-            applicationIdSuffix ".dev"
-            resValue "string", "app_name", "GoalGuru Dev"
-        }
-        prod {
-            dimension "environment"
-            resValue "string", "app_name", "GoalGuru"
         }
     }
 
@@ -91,66 +49,30 @@ android {
     }
     buildFeatures {
         compose true
-        buildConfig true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.5.1'
-    }
-    packagingOptions {
-        resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
-        }
+        kotlinCompilerExtensionVersion '1.5.3'
     }
 }
 
 dependencies {
-    // Core Android dependencies
+    // Core
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
-    implementation 'androidx.activity:activity-compose:1.8.0'
     
-    // Compose dependencies
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation "androidx.compose.material3:material3:$material3_version"
-    implementation "androidx.compose.material3:material3-window-size-class:$material3_version"
+    // Compose
+    implementation platform('androidx.compose:compose-bom:2023.08.00')
+    implementation 'androidx.compose.ui:ui'
+    implementation 'androidx.compose.material3:material3'
     
-    // Testing dependencies
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
-    
-    // Hilt dependencies
-    implementation "com.google.dagger:hilt-android:2.48"
-    kapt "com.google.dagger:hilt-compiler:2.48"
-    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
-    
-    // Firebase dependencies
+    // Firebase
     implementation platform('com.google.firebase:firebase-bom:32.3.1')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
-    implementation 'com.google.firebase:firebase-auth-ktx'
-    implementation 'com.google.firebase:firebase-firestore-ktx'
     
-    // Navigation dependencies
-    implementation "androidx.navigation:navigation-compose:$nav_version"
-    
-    // Room database
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-    
-    // DataStore preferences
-    implementation "androidx.datastore:datastore-preferences:1.0.0"
-    
-    // Accompanist permissions
-    implementation "com.google.accompanist:accompanist-permissions:0.33.1-alpha"
-    
-    // Material Icons Extended
-    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    // Hilt
+    implementation "com.google.dagger:hilt-android:2.48"
+    kapt "com.google.dagger:hilt-compiler:2.48"
 }
 
 kapt {
@@ -160,30 +82,9 @@ kapt {
 spotless {
     kotlin {
         target '**/*.kt'
-        targetExclude('**/build/**', '**/generated/**')
-        ktlint('0.50.0')
-            .editorConfigOverride([
-                'indent_size': '4',
-                'continuation_indent_size': '4',
-                'disabled_rules': 'no-wildcard-imports',
-                'android': 'true'
-            ])
-        trimTrailingWhitespace()
-        endWithNewline()
-        licenseHeader '/* Licensed under Apache-2.0 */\n\n'
-    }
-    format 'xml', {
-        target '**/*.xml'
-        targetExclude('**/build/**', '**/generated/**')
-        trimTrailingWhitespace()
-        indentWithSpaces(4)
-        endWithNewline()
-    }
-}
-
-// Conditionally apply Google Services plugin
-afterEvaluate {
-    if (gradle.startParameter.taskNames.any { it.contains('Release') }) {
-        apply plugin: 'com.google.gms.google-services'
+        ktlint('0.50.0').editorConfigOverride([
+            'indent_size': '4',
+            'disabled_rules': 'no-wildcard-imports'
+        ])
     }
 }
