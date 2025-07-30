@@ -14,8 +14,36 @@ buildscript {
     }
 }
 
+plugins {
+    id 'com.diffplug.spotless' version '6.23.3'
+}
+
 allprojects {
     // No repositories here - they're in settings.gradle
+    plugins.apply('com.diffplug.spotless')
+    spotless {
+        kotlin {
+            target '**/*.kt'
+            targetExclude('**/build/**', '**/generated/**')
+            ktlint('0.50.0')
+                .userData([
+                    'indent_size': '4',
+                    'continuation_indent_size': '4',
+                    'disabled_rules': 'no-wildcard-imports',
+                    'android': 'true'
+                ])
+            trimTrailingWhitespace()
+            endWithNewline()
+            licenseHeader '/* Licensed under Apache-2.0 */\n\n'
+        }
+        format 'xml', {
+            target '**/*.xml'
+            targetExclude('**/build/**', '**/generated/**')
+            trimTrailingWhitespace()
+            indentWithSpaces(4)
+            endWithNewline()
+        }
+    }
 }
 
 task clean(type: Delete) {
