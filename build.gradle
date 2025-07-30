@@ -11,12 +11,12 @@ buildscript {
         classpath "com.google.dagger:hilt-android-gradle-plugin:2.48"
         classpath 'com.google.gms:google-services:4.3.15'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
-        classpath 'com.diffplug.spotless:spotless-plugin-gradle:6.23.3'
+        classpath 'com.diffplug.spotless:spotless-plugin-gradle:6.25.0' // Updated to latest stable version
     }
 }
 
 plugins {
-    id 'com.diffplug.spotless' version '6.23.3' apply false
+    id 'com.diffplug.spotless' version '6.25.0' apply false
 }
 
 subprojects {
@@ -26,7 +26,7 @@ subprojects {
             target '**/*.kt'
             targetExclude('**/build/**', '**/generated/**')
             ktlint('0.50.0')
-                .userData([
+                .editorConfigOverride([  // Changed from userData to editorConfigOverride
                     'indent_size': '4',
                     'continuation_indent_size': '4',
                     'disabled_rules': 'no-wildcard-imports',
