@@ -1,3 +1,4 @@
+
 package com.example.goalguru.notification
 
 import android.app.NotificationChannel
@@ -90,4 +91,3 @@ class NotificationWorker @AssistedInject constructor(
         fun create(context: Context, params: WorkerParameters): NotificationWorker
     }
 }
-```The code has been modified to correctly retrieve user settings as a Flow and handle potential exceptions during the work execution.
