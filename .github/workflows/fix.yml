@@ -31,7 +31,7 @@ jobs:
           path: |
             ${{ env.ANDROID_SDK_ROOT }}
             ~/.android/cache
-          key: ${{ runner.os }}-android-${{ hashFiles('**/build.gradle') }}
+          key: ${{ runner.os }}-android-${{ hashFiles('**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-android-
 
@@ -53,28 +53,8 @@ jobs:
           disable-ndk: true
           disable-system-images: true
 
-      - name: 📜 Accept Licenses
-        run: |
-          yes | sdkmanager --licenses || true
-          sdkmanager --update
-
       - name: 🔄 Update Gradle Wrapper
         run: ./gradlew wrapper --gradle-version 8.0 --distribution-type bin
-
-      - name: 🔍 Check for Wildcard Imports
-        id: wildcard-check
-        run: |
-          if grep -rE '^import .*\.\*$' app/src/main/java; then
-            echo "wildcards_found=true" >> $GITHUB_OUTPUT
-          else
-            echo "wildcards_found=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: 🛠 Fix Wildcard Imports
-        if: steps.wildcard-check.outputs.wildcards_found == 'true'
-        run: |
-          find app/src/main/java -name "*.kt" -exec sed -i '/^import .*\.\*$/d' {} +
-          ./gradlew spotlessApply --no-daemon
 
       - name: ✨ Run Spotless
         run: ./gradlew spotlessApply --no-daemon --stacktrace
@@ -94,36 +74,11 @@ jobs:
       - name: 🔨 Build APK
         run: ./gradlew assembleDebug --no-daemon --stacktrace
 
-      - name: 🔍 Analyze Build
-        run: |
-          {
-            echo "### Build Report"
-            echo "Start: $(date)"
-            ./gradlew build --no-daemon > build.log 2>&1 || true
-            echo "Finish: $(date)"
-            echo ""
-            echo "### Errors"
-            grep -E 'error|exception|failed|Caused by|not found|unresolved|compilation|kapt|spotless' build.log || echo "✅ No critical errors found"
-          } > summary.log
-
       - name: 📦 Upload Results
         uses: actions/upload-artifact@v4
         with:
-          name: build-${{ github.run_number }}
+          name: build-artifacts
           path: |
             app/build/outputs/apk/debug/*.apk
-            build.log
-            summary.log
+            app/build/reports
           retention-days: 3
-
-      - name: 📊 Job Summary
-        if: always()
-        run: |
-          echo "### 🛠️ Build Report" >> $GITHUB_STEP_SUMMARY
-          echo "**Run:** [#${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
-          echo "**Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "#### 📝 Summary" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          cat summary.log >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
