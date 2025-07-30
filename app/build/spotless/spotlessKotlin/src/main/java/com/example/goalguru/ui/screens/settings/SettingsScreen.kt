@@ -1,23 +1,11 @@
-
 package com.example.goalguru.ui.screens.settings
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -28,58 +16,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(
-    onNavigateBack: () -> Unit,
-    viewModel: SettingsViewModel = hiltViewModel(),
-) {
-    val settings by viewModel.settings.collectAsState()
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Settings") },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                },
-            )
-        },
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text(
-                            text = "Notifications",
-                            style = MaterialTheme.typography.bodyLarge,
-                        )
-                        Switch(
-                            checked = settings?.notificationsEnabled ?: false,
-                            onCheckedChange = { enabled ->
-                                viewModel.updateNotificationSettings(enabled)
-                            },
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
 fun SettingsScreen(
     onBackPressed: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel(),
@@ -92,70 +28,104 @@ fun SettingsScreen(
                 title = { Text("Settings") },
                 navigationIcon = {
                     IconButton(onClick = onBackPressed) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back"
+                        )
                     }
-                },
+                }
             )
-        },
+        }
     ) { paddingValues ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                ) {
-                    Text(
-                        text = "Notifications",
-                        style = MaterialTheme.typography.titleMedium,
-                    )
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text("Enable Notifications")
-                        Switch(
-                            checked = userSettings.notificationsEnabled,
-                            onCheckedChange = { viewModel.updateNotificationSettings(it) },
+            item {
+                SettingCategoryCard(
+                    title = "Notifications",
+                    settings = listOf(
+                        SettingItem(
+                            name = "Enable Notifications",
+                            isEnabled = userSettings.notificationsEnabled,
+                            onToggle = { viewModel.updateNotificationSettings(it) }
                         )
-                    }
-                }
+                    )
+                )
             }
 
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                ) {
-                    Text(
-                        text = "Appearance",
-                        style = MaterialTheme.typography.titleMedium,
-                    )
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text("Dark Mode")
-                        Switch(
-                            checked = userSettings.darkModeEnabled,
-                            onCheckedChange = { viewModel.updateDarkMode(it) },
+            item {
+                SettingCategoryCard(
+                    title = "Appearance",
+                    settings = listOf(
+                        SettingItem(
+                            name = "Dark Mode",
+                            isEnabled = userSettings.darkModeEnabled,
+                            onToggle = { viewModel.updateDarkMode(it) }
                         )
-                    }
-                }
+                    )
+                )
             }
         }
     }
 }
+
+@Composable
+private fun SettingCategoryCard(
+    title: String,
+    settings: List<SettingItem>,
+    modifier: Modifier = Modifier
+) {
+    Card(modifier = modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+
+            settings.forEach { setting ->
+                SettingToggleRow(
+                    name = setting.name,
+                    isEnabled = setting.isEnabled,
+                    onToggle = setting.onToggle
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SettingToggleRow(
+    name: String,
+    isEnabled: Boolean,
+    onToggle: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = name,
+            style = MaterialTheme.typography.bodyLarge
+        )
+        Switch(
+            checked = isEnabled,
+            onCheckedChange = onToggle
+        )
+    }
+}
+
+private data class SettingItem(
+    val name: String,
+    val isEnabled: Boolean,
+    val onToggle: (Boolean) -> Unit
+)
