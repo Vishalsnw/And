@@ -18,3 +18,20 @@ data class Task(
     val createdAt: Date = Date(),
     val updatedAt: Date = Date()
 )
+package com.example.goalguru.data.model
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import java.util.UUID
+
+@Entity(tableName = "tasks")
+data class Task(
+    @PrimaryKey
+    val id: String = UUID.randomUUID().toString(),
+    val title: String,
+    val description: String = "",
+    val completed: Boolean = false,
+    val goalId: String,
+    val createdAt: Long = System.currentTimeMillis(),
+    val dueDate: Long? = null
+)

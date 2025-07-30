@@ -1,4 +1,3 @@
-
 package com.example.goalguru.di
 
 import android.content.Context
@@ -32,8 +31,8 @@ object DatabaseModule {
     fun provideGoalDao(database: AppDatabase): GoalDao = database.goalDao()
 
     @Provides
-    fun provideTaskDao(database: AppDatabase): TaskDao = database.taskDao()
+    fun provideUserDao(database: AppDatabase): UserDao = database.userDao()
 
     @Provides
-    fun provideUserDao(database: AppDatabase): UserDao = database.userDao()
+    fun provideTaskDao(database: AppDatabase): TaskDao = database.taskDao()
 }
