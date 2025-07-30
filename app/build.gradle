@@ -3,7 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
-    id 'com.google.gms.google-services'
+    id 'com.google.gms.google-services' apply false  // Disabled by default
     id 'com.google.firebase.crashlytics'
     id 'com.diffplug.spotless' version '6.25.0'
 }
@@ -31,6 +31,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile file('release.keystore')
+            storePassword System.getenv('STORE_PASSWORD')
+            keyAlias System.getenv('KEY_ALIAS')
+            keyPassword System.getenv('KEY_PASSWORD')
+        }
     }
 
     buildTypes {
@@ -38,17 +44,18 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
+            // Enable Firebase for release
+            apply plugin: 'com.google.gms.google-services'
         }
         debug {
             applicationIdSuffix ".debug"
             debuggable true
-            // Solution 2: Use same package name for Firebase
-            matchingFallbacks = ['release']
+            signingConfig signingConfigs.debug
             firebaseCrashlytics {
                 mappingFileUploadEnabled false
             }
-            // Optional: Disable Firebase Analytics in debug
+            // Manual Firebase config for debug
             resValue "string", "google_app_id", "1:1234567890:android:1234567890abcdef"
             resValue "string", "google_api_key", "your_api_key"
             resValue "string", "firebase_database_url", "https://your-app.firebaseio.com"
@@ -62,8 +69,6 @@ android {
     productFlavors {
         dev {
             dimension "environment"
-            // Use same package name for Firebase in dev
-            matchingFallbacks = ['release']
             resValue "string", "app_name", "GoalGuru Dev"
         }
         prod {
@@ -72,149 +77,30 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
-        coreLibraryDesugaringEnabled true
-    }
+    // ... keep all your existing compileOptions, kotlinOptions, buildFeatures etc. ...
 
-    kotlinOptions {
-        jvmTarget = '17'
-        freeCompilerArgs += [
-            '-opt-in=kotlin.RequiresOptIn',
-            '-Xjvm-default=all',
-            '-Xcontext-receivers',
-            '-Xskip-prerelease-check'
-        ]
-    }
-
-    buildFeatures {
-        compose true
-        viewBinding true
-        buildConfig true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = '1.5.8'
-    }
-
-    packagingOptions {
-        resources {
-            excludes += [
-                '/META-INF/{AL2.0,LGPL2.1}',
-                '**/attach_hotspot_windows.dll',
-                'META-INF/licenses/**'
-            ]
-        }
-        jniLibs {
-            useLegacyPackaging false
-        }
-    }
-
-    testOptions {
-        unitTests {
-            returnDefaultValues true
-            includeAndroidResources true
-        }
-        animationsDisabled true
-    }
-
-    kapt {
-        correctErrorTypes true
-        useBuildCache true
-        arguments {
-            arg("room.schemaLocation", "$projectDir/schemas")
-            arg("dagger.fastInit", "enabled")
-            arg("dagger.hilt.android.internal.disableAndroidSuperclassValidation", "true")
+    applicationVariants.all { variant ->
+        // Only apply google-services plugin to non-debug variants
+        if (variant.buildType.name != "debug") {
+            variant.outputs.each { output ->
+                def processTask = output.getProcessResourcesProvider().get()
+                processTask.doFirst {
+                    android.applicationVariants.all { v ->
+                        if (v.name == variant.name) {
+                            project.plugins.apply('com.google.gms.google-services')
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
-spotless {
-    kotlin {
-        target '**/*.kt'
-        targetExclude('**/build/**', '**/generated/**')
-        ktlint('0.50.0')
-            .editorConfigOverride([
-                'indent_size': '4',
-                'max_line_length': '120',
-                'disabled_rules': 'no-wildcard-imports,annotation,comment-spacing',
-                'android': 'true'
-            ])
-        licenseHeaderFile rootProject.file('spotless/copyright.kt')
-        trimTrailingWhitespace()
-        indentWithSpaces(4)
-        endWithNewline()
+// ... keep all your existing spotless, dependencies, and kapt configurations ...
+
+// Apply google-services plugin only for release builds
+afterEvaluate {
+    if (!getGradle().getStartParameter().getTaskRequests().toString().contains("Debug")) {
+        apply plugin: 'com.google.gms.google-services'
     }
-    format 'xml', {
-        target '**/*.xml'
-        targetExclude('**/build/**', '**/generated/**')
-        trimTrailingWhitespace()
-        indentWithSpaces(4)
-        endWithNewline()
-    }
-}
-
-dependencies {
-    // Core
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
-    implementation 'androidx.core:core-ktx:1.12.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.lifecycle:lifecycle-runtime-compose:2.7.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.7.0'
-
-    // Compose
-    implementation platform('androidx.compose:compose-bom:2024.02.00')
-    implementation 'androidx.compose.ui:ui'
-    implementation 'androidx.compose.ui:ui-graphics'
-    implementation 'androidx.compose.ui:ui-tooling-preview'
-    implementation 'androidx.compose.material3:material3'
-    implementation 'androidx.compose.material:material-icons-extended'
-    implementation 'androidx.activity:activity-compose:1.8.2'
-    implementation 'androidx.navigation:navigation-compose:2.7.6'
-    debugImplementation 'androidx.compose.ui:ui-tooling'
-    androidTestImplementation platform('androidx.compose:compose-bom:2024.02.00')
-
-    // DI
-    implementation 'com.google.dagger:hilt-android:2.48'
-    kapt 'com.google.dagger:hilt-compiler:2.48'
-    implementation 'androidx.hilt:hilt-navigation-compose:1.1.0'
-    kapt 'androidx.hilt:hilt-compiler:1.1.0'
-
-    // Firebase
-    implementation platform('com.google.firebase:firebase-bom:32.7.2')
-    implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx'
-    implementation 'com.google.firebase:firebase-auth-ktx'
-    implementation 'com.google.firebase:firebase-firestore-ktx'
-
-    // Networking
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11'
-
-    // Database
-    implementation 'androidx.room:room-ktx:2.6.1'
-    implementation 'androidx.room:room-runtime:2.6.1'
-    kapt 'androidx.room:room-compiler:2.6.1'
-
-    // UI Components
-    implementation 'com.google.accompanist:accompanist-systemuicontroller:0.32.0'
-    implementation 'com.airbnb.android:lottie-compose:6.1.0'
-    implementation 'io.coil-kt:coil-compose:2.5.0'
-
-    // Testing
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3'
-    testImplementation 'app.cash.turbine:turbine:1.0.0'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
-    debugImplementation 'androidx.compose.ui:ui-test-manifest'
-}
-
-// Workaround for Hilt + Compose
-kapt {
-    correctErrorTypes = true
 }
