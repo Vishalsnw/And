@@ -57,7 +57,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = '1.5.8' // Using direct version instead of variable
+        kotlinCompilerExtensionVersion = '1.5.8'
     }
 
     packagingOptions {
@@ -90,6 +90,9 @@ spotless {
             'ktlint_standard_no-unit-return': 'disabled'
         ])
         licenseHeaderFile rootProject.file('spotless/copyright.kt')
+        trimTrailingWhitespace()
+        indentWithSpaces(4)
+        endWithNewline()
     }
     format 'xml', {
         target '**/*.xml'
@@ -110,7 +113,7 @@ dependencies {
 
     // Compose
     implementation 'androidx.activity:activity-compose:1.8.2'
-    implementation platform('androidx.compose:compose-bom:2024.02.00') // Using direct version
+    implementation platform('androidx.compose:compose-bom:2024.02.00')
     implementation 'androidx.compose.ui:ui'
     implementation 'androidx.compose.ui:ui-graphics'
     implementation 'androidx.compose.ui:ui-tooling-preview'
@@ -126,7 +129,7 @@ dependencies {
     kapt 'androidx.hilt:hilt-compiler:1.1.0'
 
     // Firebase
-    implementation platform('com.google.firebase:firebase-bom:32.7.2') // Using direct version
+    implementation platform('com.google.firebase:firebase-bom:32.7.2')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-messaging-ktx'
