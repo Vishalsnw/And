@@ -1,104 +1,98 @@
-name: Android APK Build & Syntax Fix
+name: Android CI/CD Pipeline
 
 on:
   workflow_dispatch:
   push:
     branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+      - '**.gitignore'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: 📥 Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: ⚙️ Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          distribution: temurin
-          java-version: 17
-          cache: gradle
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
 
       - name: 📱 Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: 🧹 Create fix_wildcards.sh
+      - name: 🔍 Check for Wildcard Imports
+        id: wildcard-check
         run: |
-          cat <<'EOF' > fix_wildcards.sh
-          #!/bin/bash
-          SRC_DIR="app/src/main/java/com/example/goalguru"
+          if grep -rE '^import .*\.\*$' app/src/main/java; then
+            echo "wildcards_found=true" >> $GITHUB_OUTPUT
+          else
+            echo "wildcards_found=false" >> $GITHUB_OUTPUT
+          fi
 
-          find "$SRC_DIR" -name "*.kt" | while read file; do
-              WILDCARDS=$(grep -E '^import .*\.\*$' "$file" || true)
-              if [ -z "$WILDCARDS" ]; then continue; fi
-              IMPORTS=""
-              echo "$WILDCARDS" | while read import_line; do
-                  base_pkg=$(echo "$import_line" | sed -E 's/import (.*)\.\*/\1/')
-                  used_classes=$(grep -oP "${base_pkg//./\\.}\\.[A-Z][A-Za-z0-9_]*" "$file" | sort | uniq | sed "s|$base_pkg\.||g")
-                  sed -i "\|$import_line|d" "$file"
-                  for cls in $used_classes; do
-                      IMPORTS+="import $base_pkg.$cls"$'\n'
-                  done
-              done
-              if [ -n "$IMPORTS" ]; then
-                  tmpfile=$(mktemp)
-                  awk -v new_imports="$IMPORTS" '
-                  BEGIN { done=0 }
-                  {
-                      print $0
-                      if (!done && /^package /) {
-                          print ""
-                          print new_imports
-                          done=1
-                      }
-                  }' "$file" > "$tmpfile"
-                  mv "$tmpfile" "$file"
-              fi
-          done
-          EOF
-          chmod +x fix_wildcards.sh
+      - name: 🛠 Fix Wildcard Imports (if needed)
+        if: steps.wildcard-check.outputs.wildcards_found == 'true'
+        run: |
+          find app/src/main/java -name "*.kt" -exec sed -i '/^import .*\.\*$/d' {} +
+          ./gradlew spotlessApply
 
-      - name: 🛠 Run Wildcard Import Fix
-        run: ./fix_wildcards.sh
+      - name: ✨ Run Spotless Formatting
+        run: ./gradlew spotlessApply --no-daemon
 
-      - name: ✨ Run Spotless Auto Fix
-        run: ./gradlew spotlessApply
-
-      - name: 📦 Commit Spotless Fixes (if any)
+      - name: 💾 Commit Code Style Fixes
+        if: always()
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
           git add .
-          git diff --quiet && git diff --staged --quiet || git commit -am "🔧 Spotless + wildcard imports fixed"
-          git push origin main || echo "No changes to commit"
+          git diff --quiet && git diff --staged --quiet || (git commit -m "🎨 Auto-formatted code" && git push)
         continue-on-error: true
 
-      - name: 🧼 Clean Project
-        run: ./gradlew clean
+      - name: 🧹 Clean Project
+        run: ./gradlew clean --no-daemon
 
-      - name: 🏗 Build Debug APK and Save Logs
+      - name: 🔧 Build Debug APK
+        run: ./gradlew assembleDebug --stacktrace --no-daemon
+
+      - name: 🔍 Analyze Build Output
         run: |
-          ./gradlew assembleDebug --stacktrace --info > build_output.txt 2>&1 || echo "Build failed"
+          ./gradlew build --no-daemon > build.log 2>&1 || true
+          grep -E 'error|exception|failed|Caused by|not found|unresolved|compilation|kapt|spotless' build.log > errors.log || echo "No errors found" > errors.log
+          echo "Build completed at $(date)" >> summary.log
+          echo "Last commit: $(git log -1 --pretty=%B)" >> summary.log
 
-      - name: 🕵️ Extract Build Errors
-        run: |
-          touch error_summary.txt
-          grep -iE "error|exception|failed|Caused by|not found|unresolved|compilation|kapt|spotless" build_output.txt >> error_summary.txt || true
-          if [ ! -s error_summary.txt ]; then echo "✅ No critical build errors detected." > error_summary.txt; fi
-
-      - name: ☁️ Upload Logs & Errors (Always)
-        if: always()
+      - name: 📦 Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Logs-And-Errors-${{ github.run_number }}
+          name: build-artifacts-${{ github.run_number }}
           path: |
-            build_output.txt
-            error_summary.txt
+            app/build/outputs/apk/debug/*.apk
+            build.log
+            errors.log
+            summary.log
+          if-no-files-found: warn
 
-      - name: ☁️ Upload APK (Only If Successful)
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: MyApp-APK
-          path: app/build/outputs/apk/debug/*.apk
+      - name: 📊 Post Job Summary
+        if: always()
+        run: |
+          echo "### Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Date:** $(date)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "```" >> $GITHUB_STEP_SUMMARY
+          cat summary.log >> $GITHUB_STEP_SUMMARY
+          echo "```" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Error Summary" >> $GITHUB_STEP_SUMMARY
+          echo "```" >> $GITHUB_STEP_SUMMARY
+          cat errors.log >> $GITHUB_STEP_SUMMARY
+          echo "```" >> $GITHUB_STEP_SUMMARY
