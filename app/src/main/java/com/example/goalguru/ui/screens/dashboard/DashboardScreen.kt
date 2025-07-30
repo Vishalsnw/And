@@ -1,12 +1,9 @@
 package com.example.goalguru.ui.screens.dashboard
 
-import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -19,29 +16,29 @@ import com.example.goalguru.data.model.Goal
 fun DashboardScreen(
     onNavigateToCreateGoal: () -> Unit,
     onNavigateToGoalDetail: (String) -> Unit,
-    viewModel: DashboardViewModel = hiltViewModel()
+    viewModel: DashboardViewModel = hiltViewModel(),
 ) {
     val goals by viewModel.goals.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
-    
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Goal Guru") }
+                title = { Text("Goal Guru") },
             )
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = onNavigateToCreateGoal
+                onClick = onNavigateToCreateGoal,
             ) {
                 Icon(Icons.Default.Add, contentDescription = "Add Goal")
             }
-        }
+        },
     ) { paddingValues ->
         if (isLoading) {
             Box(
                 modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 CircularProgressIndicator()
             }
@@ -51,12 +48,12 @@ fun DashboardScreen(
                     .fillMaxSize()
                     .padding(paddingValues),
                 contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 items(goals) { goal ->
                     GoalCard(
                         goal = goal,
-                        onClick = { onNavigateToGoalDetail(goal.id) }
+                        onClick = { onNavigateToGoalDetail(goal.id) },
                     )
                 }
             }
@@ -67,29 +64,29 @@ fun DashboardScreen(
 @Composable
 fun GoalCard(
     goal: Goal,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Card(
         onClick = onClick,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp),
         ) {
             Text(
                 text = goal.title,
                 style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = goal.description,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
             )
             Spacer(modifier = Modifier.height(8.dp))
             LinearProgressIndicator(
                 progress = goal.progress,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }

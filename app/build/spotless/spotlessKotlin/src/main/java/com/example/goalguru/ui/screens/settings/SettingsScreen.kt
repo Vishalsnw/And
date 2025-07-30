@@ -1,11 +1,7 @@
 package com.example.goalguru.ui.screens.settings
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -30,102 +26,68 @@ fun SettingsScreen(
                     IconButton(onClick = onBackPressed) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = "Back",
                         )
                     }
-                }
+                },
             )
-        }
+        },
     ) { paddingValues ->
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            item {
-                SettingCategoryCard(
-                    title = "Notifications",
-                    settings = listOf(
-                        SettingItem(
-                            name = "Enable Notifications",
-                            isEnabled = userSettings.notificationsEnabled,
-                            onToggle = { viewModel.updateNotificationSettings(it) }
-                        )
-                    )
-                )
-            }
+            SettingToggleCard(
+                title = "Notifications",
+                description = "Enable Notifications",
+                isChecked = userSettings.notificationsEnabled,
+                onCheckedChange = viewModel::toggleNotifications,
+            )
 
-            item {
-                SettingCategoryCard(
-                    title = "Appearance",
-                    settings = listOf(
-                        SettingItem(
-                            name = "Dark Mode",
-                            isEnabled = userSettings.darkModeEnabled,
-                            onToggle = { viewModel.updateDarkMode(it) }
-                        )
-                    )
-                )
-            }
+            SettingToggleCard(
+                title = "Appearance",
+                description = "Dark Mode",
+                isChecked = userSettings.darkModeEnabled,
+                onCheckedChange = viewModel::toggleDarkMode,
+            )
         }
     }
 }
 
 @Composable
-private fun SettingCategoryCard(
+private fun SettingToggleCard(
     title: String,
-    settings: List<SettingItem>,
-    modifier: Modifier = Modifier
+    description: String,
+    isChecked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Card(modifier = modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(bottom = 4.dp)
             )
-
-            settings.forEach { setting ->
-                SettingToggleRow(
-                    name = setting.name,
-                    isEnabled = setting.isEnabled,
-                    onToggle = setting.onToggle
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+                Switch(
+                    checked = isChecked,
+                    onCheckedChange = onCheckedChange,
                 )
             }
         }
     }
 }
-
-@Composable
-private fun SettingToggleRow(
-    name: String,
-    isEnabled: Boolean,
-    onToggle: (Boolean) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = name,
-            style = MaterialTheme.typography.bodyLarge
-        )
-        Switch(
-            checked = isEnabled,
-            onCheckedChange = onToggle
-        )
-    }
-}
-
-private data class SettingItem(
-    val name: String,
-    val isEnabled: Boolean,
-    val onToggle: (Boolean) -> Unit
-)

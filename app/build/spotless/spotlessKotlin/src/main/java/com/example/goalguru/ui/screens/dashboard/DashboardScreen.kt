@@ -14,6 +14,84 @@ import com.example.goalguru.data.model.Goal
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
+    onNavigateToCreateGoal: () -> Unit,
+    onNavigateToGoalDetail: (String) -> Unit,
+    viewModel: DashboardViewModel = hiltViewModel(),
+) {
+    val goals by viewModel.goals.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Goal Guru") },
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onNavigateToCreateGoal,
+            ) {
+                Icon(Icons.Default.Add, contentDescription = "Add Goal")
+            }
+        },
+    ) { paddingValues ->
+        if (isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                CircularProgressIndicator()
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                items(goals) { goal ->
+                    GoalCard(
+                        goal = goal,
+                        onClick = { onNavigateToGoalDetail(goal.id) },
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun GoalCard(
+    goal: Goal,
+    onClick: () -> Unit,
+) {
+    Card(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+        ) {
+            Text(
+                text = goal.title,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = goal.description,
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            LinearProgressIndicator(
+                progress = goal.progress,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+    }
+}
+fun DashboardScreen(
     onCreateGoal: () -> Unit,
     onGoalClick: (String) -> Unit,
     onSettings: (() -> Unit)? = null,
