@@ -43,9 +43,32 @@ android {
         debug {
             applicationIdSuffix ".debug"
             debuggable true
+            // Solution 2: Use same package name for Firebase
+            matchingFallbacks = ['release']
             firebaseCrashlytics {
                 mappingFileUploadEnabled false
             }
+            // Optional: Disable Firebase Analytics in debug
+            resValue "string", "google_app_id", "1:1234567890:android:1234567890abcdef"
+            resValue "string", "google_api_key", "your_api_key"
+            resValue "string", "firebase_database_url", "https://your-app.firebaseio.com"
+            resValue "string", "gcm_defaultSenderId", "1234567890"
+            resValue "string", "google_storage_bucket", "your-app.appspot.com"
+            resValue "string", "project_id", "your-app-id"
+        }
+    }
+
+    flavorDimensions "environment"
+    productFlavors {
+        dev {
+            dimension "environment"
+            // Use same package name for Firebase in dev
+            matchingFallbacks = ['release']
+            resValue "string", "app_name", "GoalGuru Dev"
+        }
+        prod {
+            dimension "environment"
+            resValue "string", "app_name", "GoalGuru"
         }
     }
 
