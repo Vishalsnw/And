@@ -59,7 +59,7 @@ jobs:
           sdkmanager --update
 
       - name: 🔄 Update Gradle Wrapper
-        run: ./gradlew wrapper --gradle-version 8.0 --distribution-type bin
+        run: ./gradlew wrapper --gradle-version 8.2 --distribution-type bin
 
       - name: ✨ Run Spotless
         run: |
