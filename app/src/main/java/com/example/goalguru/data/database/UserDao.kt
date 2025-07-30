@@ -24,7 +24,7 @@ interface UserDao {
     @Update
     suspend fun updateUser(user: User)
 
-    @Query("SELECT * FROM user_settings WHERE id = :userId LIMIT 1")
+    @Query("SELECT * FROM user_settings WHERE userId = :userId LIMIT 1")
     fun getUserSettings(userId: String): Flow<UserSettings?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

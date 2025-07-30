@@ -25,10 +25,4 @@ class UserRepository @Inject constructor(
     suspend fun insertUserSettings(settings: UserSettings) = userDao.insertUserSettings(settings)
 
     suspend fun updateUserSettings(settings: UserSettings) = userDao.updateUserSettings(settings)
-
-    fun getAllUsers(): Flow<List<User>> = userDao.getAllUsers()
-
-    fun getUserSettings(): Flow<UserSettings> = userDao.getUserSettings()
-
-    suspend fun saveUserSettings(settings: UserSettings) = userDao.insertUserSettings(settings)
 }
