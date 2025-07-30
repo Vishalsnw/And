@@ -19,10 +19,10 @@ import com.example.goalguru.data.database.entities.User
     entities = [
         Goal::class,
         User::class,
-        Task::class
+        Task::class,
     ],
     version = 2,
-    exportSchema = false
+    exportSchema = false,
 )
 @TypeConverters(Converters::class)
 abstract class GoalGuruDatabase : RoomDatabase() {
