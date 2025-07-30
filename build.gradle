@@ -1,32 +1,23 @@
 buildscript {
-    ext {
-        kotlin_version = '1.8.0'
-        error_prone_version = '2.19.0'
-    }
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:2.48" // Add Hilt plugin
+        classpath 'com.google.gms:google-services:4.3.15'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
+        classpath 'com.diffplug.spotless:spotless-plugin-gradle:6.23.3'
     }
 }
 
 allprojects {
     repositories {
-        // Repositories are defined in settings.gradle
-    }
-    
-    configurations.all {
-        resolutionStrategy {
-            force "com.google.errorprone:error_prone:$error_prone_version"
-            eachDependency { details ->
-                if (details.requested.group == 'com.google.errorprone') {
-                    details.useVersion error_prone_version
-                }
-            }
-        }
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
 }
 
