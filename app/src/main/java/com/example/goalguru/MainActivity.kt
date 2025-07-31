@@ -10,10 +10,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -26,12 +22,9 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Show splash screen while app loads
         installSplashScreen()
-
         super.onCreate(savedInstanceState)
 
-        // Enable edge-to-edge layout
         enableEdgeToEdge()
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
@@ -46,10 +39,6 @@ fun GoalGuruApp() {
     val darkTheme = isSystemInDarkTheme()
     val systemUiController = rememberSystemUiController()
 
-    // Optional loading state
-    var isReady by remember { mutableStateOf(false) }
-
-    // Transparent system bars
     DisposableEffect(systemUiController, darkTheme) {
         systemUiController.setSystemBarsColor(
             color = Color.Transparent,
@@ -67,14 +56,7 @@ fun GoalGuruApp() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background,
         ) {
-            GoalGuruNavigation(
-                onDataLoaded = { isReady = true },
-            )
-
-            // Optional: show loading UI while data is not ready
-            // if (!isReady) {
-            //     LoadingScreen()
-            // }
+            GoalGuruNavigation()
         }
     }
 }
