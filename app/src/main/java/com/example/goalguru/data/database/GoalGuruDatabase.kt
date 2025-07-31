@@ -11,9 +11,10 @@ import androidx.room.TypeConverters
 import com.example.goalguru.data.database.dao.GoalDao
 import com.example.goalguru.data.database.dao.TaskDao
 import com.example.goalguru.data.database.dao.UserDao
-import com.example.goalguru.data.database.entities.Goal
-import com.example.goalguru.data.database.entities.Task
-import com.example.goalguru.data.database.entities.User
+import com.example.goalguru.data.model.Goal
+import com.example.goalguru.data.model.Task
+import com.example.goalguru.data.model.User
+import com.example.goalguru.data.util.Converters
 
 @Database(
     entities = [
@@ -22,15 +23,13 @@ import com.example.goalguru.data.database.entities.User
         Task::class,
     ],
     version = 2,
-    exportSchema = false,
+    exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class GoalGuruDatabase : RoomDatabase() {
 
     abstract fun goalDao(): GoalDao
-
     abstract fun userDao(): UserDao
-
     abstract fun taskDao(): TaskDao
 
     companion object {
