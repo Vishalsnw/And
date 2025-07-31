@@ -35,6 +35,7 @@ fun GoalCard(
             Text(
                 text = goal.title,
                 style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
             )
 
             if (goal.description.isNotBlank()) {
@@ -42,18 +43,20 @@ fun GoalCard(
                 Text(
                     text = goal.description,
                     style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            PriorityChip(goal.priority)
+            PriorityChip(priority = goal.priority)
 
             Spacer(modifier = Modifier.height(12.dp))
 
             LinearProgressIndicator(
                 progress = goal.progress.coerceIn(0f, 1f),
                 modifier = Modifier.fillMaxWidth(),
+                color = MaterialTheme.colorScheme.primary,
             )
 
             Spacer(modifier = Modifier.height(4.dp))
@@ -61,6 +64,7 @@ fun GoalCard(
             Text(
                 text = "${(goal.progress * 100).toInt()}% Complete",
                 style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }
@@ -68,11 +72,11 @@ fun GoalCard(
 
 @Composable
 private fun PriorityChip(priority: Priority) {
-    val (color, text) = when (priority) {
-        Priority.LOW -> Pair(MaterialTheme.colorScheme.outline, "Low")
-        Priority.MEDIUM -> Pair(MaterialTheme.colorScheme.secondary, "Medium")
-        Priority.HIGH -> Pair(MaterialTheme.colorScheme.tertiary, "High")
-        Priority.URGENT -> Pair(MaterialTheme.colorScheme.error, "Urgent")
+    val (color, label) = when (priority) {
+        Priority.LOW -> MaterialTheme.colorScheme.outline to "Low"
+        Priority.MEDIUM -> MaterialTheme.colorScheme.secondary to "Medium"
+        Priority.HIGH -> MaterialTheme.colorScheme.tertiary to "High"
+        Priority.URGENT -> MaterialTheme.colorScheme.error to "Urgent"
     }
 
     Surface(
@@ -81,11 +85,11 @@ private fun PriorityChip(priority: Priority) {
         modifier = Modifier.padding(end = 8.dp),
     ) {
         Text(
-            text = text,
+            text = label,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
             style = MaterialTheme.typography.labelSmall,
-            color = color,
             fontWeight = FontWeight.Medium,
+            color = color,
         )
     }
 }
