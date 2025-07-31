@@ -1,4 +1,3 @@
-
 package com.example.goalguru.data.database
 
 import androidx.room.Database

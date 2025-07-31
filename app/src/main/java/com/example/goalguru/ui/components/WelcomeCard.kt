@@ -65,20 +65,7 @@ fun WelcomeCard(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f),
                 )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Text(
-                    text = "Ready to achieve your goals today?",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.9f),
-                )
             }
-
-            Text(
-                text = "🚀",
-                style = MaterialTheme.typography.displaySmall,
-            )
         }
     }
 }

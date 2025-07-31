@@ -18,67 +18,36 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun OnboardingScreen(
-    onCompleteOnboarding: () -> Unit,
+    onGetStarted: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Text(
-            text = "Welcome to GoalGuru",
-            style = MaterialTheme.typography.headlineMedium,
-            textAlign = TextAlign.Center,
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = "Your AI-powered personal goal coach",
-            style = MaterialTheme.typography.bodyLarge,
-            textAlign = TextAlign.Center,
-        )
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        Button(
-            onClick = onCompleteOnboarding,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text("Get Started")
-        }
-    }
-}
-fun OnboardingScreen(
-    onComplete: () -> Unit,
-) {
-    Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = "Welcome to GoalGuru",
             style = MaterialTheme.typography.headlineLarge,
             textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.primary,
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Your AI-powered personal goal coach that helps you achieve your dreams step by step.",
+            text = "Your AI-powered personal goal coach to help you achieve your dreams",
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurface,
         )
 
         Spacer(modifier = Modifier.height(48.dp))
 
         Button(
-            onClick = onComplete,
+            onClick = onGetStarted,
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text("Get Started")

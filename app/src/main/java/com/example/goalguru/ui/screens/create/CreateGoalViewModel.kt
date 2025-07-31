@@ -118,3 +118,64 @@ class CreateGoalViewModel @Inject constructor(
         }
     }
 }
+package com.example.goalguru.ui.screens.create
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.goalguru.data.model.Goal
+import com.example.goalguru.data.model.GoalCategory
+import com.example.goalguru.data.model.GoalPriority
+import com.example.goalguru.data.repository.GoalRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import java.util.Date
+import javax.inject.Inject
+
+@HiltViewModel
+class CreateGoalViewModel @Inject constructor(
+    private val goalRepository: GoalRepository,
+) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(CreateGoalUiState())
+    val uiState: StateFlow<CreateGoalUiState> = _uiState.asStateFlow()
+
+    fun updateTitle(title: String) {
+        _uiState.value = _uiState.value.copy(title = title)
+    }
+
+    fun updateDescription(description: String) {
+        _uiState.value = _uiState.value.copy(description = description)
+    }
+
+    fun createGoal() {
+        val state = _uiState.value
+        if (state.title.isNotBlank() && state.description.isNotBlank()) {
+            viewModelScope.launch {
+                val goal = Goal(
+                    id = 0, // Room will auto-generate
+                    userId = 1, // Default user ID for now
+                    title = state.title,
+                    description = state.description,
+                    category = GoalCategory.PERSONAL,
+                    priority = GoalPriority.MEDIUM,
+                    targetDate = Date(System.currentTimeMillis() + 30L * 24 * 60 * 60 * 1000), // 30 days from now
+                    createdAt = Date(),
+                    updatedAt = Date(),
+                    isCompleted = false,
+                    progress = 0.0f
+                )
+                goalRepository.insertGoal(goal)
+                _uiState.value = CreateGoalUiState() // Reset form
+            }
+        }
+    }
+}
+
+data class CreateGoalUiState(
+    val title: String = "",
+    val description: String = "",
+    val isLoading: Boolean = false,
+)

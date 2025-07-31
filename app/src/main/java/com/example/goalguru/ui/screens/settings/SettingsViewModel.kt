@@ -57,3 +57,65 @@ class SettingsViewModel @Inject constructor(
         }
     }
 }
+package com.example.goalguru.ui.screens.settings
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.goalguru.data.model.UserSettings
+import com.example.goalguru.data.repository.UserRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class SettingsViewModel @Inject constructor(
+    private val userRepository: UserRepository,
+) : ViewModel() {
+
+    private val _userSettings = MutableStateFlow(
+        UserSettings(
+            notificationsEnabled = true,
+            darkModeEnabled = false,
+        )
+    )
+    val userSettings: StateFlow<UserSettings> = _userSettings.asStateFlow()
+
+    init {
+        loadUserSettings()
+    }
+
+    private fun loadUserSettings() {
+        viewModelScope.launch {
+            // Load settings from repository when implemented
+            // For now, use default values
+        }
+    }
+
+    fun toggleNotifications() {
+        _userSettings.value = _userSettings.value.copy(
+            notificationsEnabled = !_userSettings.value.notificationsEnabled
+        )
+        saveSettings()
+    }
+
+    fun toggleDarkMode() {
+        _userSettings.value = _userSettings.value.copy(
+            darkModeEnabled = !_userSettings.value.darkModeEnabled
+        )
+        saveSettings()
+    }
+
+    private fun saveSettings() {
+        viewModelScope.launch {
+            // Save settings to repository when implemented
+        }
+    }
+}
+
+data class UserSettings(
+    val notificationsEnabled: Boolean,
+    val darkModeEnabled: Boolean,
+)
