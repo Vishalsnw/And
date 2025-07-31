@@ -36,3 +36,29 @@ object DatabaseModule {
     @Provides
     fun provideTaskDao(database: AppDatabase): TaskDao = database.taskDao()
 }
+package com.example.goalguru.di
+
+import android.content.Context
+import androidx.room.Room
+import com.example.goalguru.data.database.GoalGuruDatabase
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+object DatabaseModule {
+
+    @Provides
+    @Singleton
+    fun provideDatabase(@ApplicationContext context: Context): GoalGuruDatabase {
+        return Room.databaseBuilder(
+            context,
+            GoalGuruDatabase::class.java,
+            "goalguru_database"
+        ).build()
+    }
+}
