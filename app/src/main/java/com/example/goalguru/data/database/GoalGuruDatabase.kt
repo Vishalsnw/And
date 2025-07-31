@@ -9,15 +9,34 @@ import com.example.goalguru.data.model.Task
 import com.example.goalguru.data.model.User
 import com.example.goalguru.data.model.UserSettings
 import com.example.goalguru.data.util.Converters
+import android.content.Context
 
 @Database(
     entities = [Goal::class, Task::class, User::class, UserSettings::class],
-    version = 1,
-    exportSchema = false
+    version = 2,
+    exportSchema = false,
 )
 @TypeConverters(Converters::class)
 abstract class GoalGuruDatabase : RoomDatabase() {
     abstract fun goalDao(): GoalDao
     abstract fun taskDao(): TaskDao
     abstract fun userDao(): UserDao
+
+    companion object {
+        @Volatile
+        private var INSTANCE: GoalGuruDatabase? = null
+
+        fun getDatabase(context: Context): GoalGuruDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    GoalGuruDatabase::class.java,
+                    "goal_guru_database",
+                ).fallbackToDestructiveMigration()
+                .build()
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
 }

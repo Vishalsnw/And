@@ -32,7 +32,10 @@ fun GoalGuruNavigation(
 
         composable("create_goal") {
             CreateGoalScreen(
-                onNavigateBack = {
+                onBackPressed = {
+                    navController.popBackStack()
+                },
+                onGoalCreated = {
                     navController.popBackStack()
                 }
             )
