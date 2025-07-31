@@ -24,6 +24,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: 🛠 Make gradlew Executable
+        run: chmod +x ./gradlew
+
       - name: ⚙️ Set up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -35,11 +38,6 @@ jobs:
         uses: android-actions/setup-android@v3
         with:
           cmdline-tools-version: 'latest'
-          build-tools-version: '34.0.0'
-          platform-version: '34'
-          disable-emulator: true
-          disable-ndk: true
-          disable-system-images: true
 
       - name: 📜 Accept Licenses
         run: yes | sdkmanager --licenses
@@ -47,33 +45,33 @@ jobs:
       - name: 🧹 Clean Project
         run: ./gradlew clean --no-daemon
 
-      - name: 🔨 Build APK and Log
-        run: ./gradlew assembleDebug --no-daemon --stacktrace | tee build.log || true
+      - name: 🔨 Build APK and Capture Log
+        run: |
+          ./gradlew assembleDebug --no-daemon --stacktrace | tee build.log
+        continue-on-error: true
 
-      - name: ❗ Show Kotlin/Kapt Errors
+      - name: ❗ Show Exact Kotlin/Kapt Error File
         if: always()
         run: |
-          echo "### ❌ Exact Kotlin/Kapt Error" >> $GITHUB_STEP_SUMMARY
+          echo "### ❌ Kotlin/Kapt Compilation Error" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-          grep -i -A 10 -B 2 -m 1 'Execution failed for task.*kaptGenerateStubsDebugKotlin' build.log || \
-          grep -i -A 5 -B 2 -m 1 "e: .*\.kt" build.log || \
-          echo "✅ No kapt-related errors found"
+          grep -E -i -A 3 -B 3 'e: .*\.kt' build.log | head -n 30 || echo "✅ No .kt file errors found"
           echo '```' >> $GITHUB_STEP_SUMMARY
 
-      - name: 📦 Upload APK if available
+      - name: 📦 APK Built?
         if: always()
         run: |
           if [ -f app/build/outputs/apk/debug/app-debug.apk ]; then
             echo "✅ APK built successfully."
-            echo "### ✅ APK built and available at app/build/outputs/apk/debug/app-debug.apk" >> $GITHUB_STEP_SUMMARY
+            echo "### ✅ APK path: app/build/outputs/apk/debug/app-debug.apk" >> $GITHUB_STEP_SUMMARY
           else
             echo "⚠️ APK build failed." >> $GITHUB_STEP_SUMMARY
           fi
 
-      - name: ❗ Fail if compilation errors found
+      - name: ❌ Fail if Compilation Errors Found
         if: always()
         run: |
-          if grep -i 'error\|exception\|failed\|Caused by\|unresolved' build.log; then
-            echo "❌ Build failed due to detected errors."
+          if grep -i -E 'error|exception|failed|unresolved|kapt' build.log; then
+            echo "❌ Compilation errors detected."
             exit 1
           fi
