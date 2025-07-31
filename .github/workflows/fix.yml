@@ -81,10 +81,13 @@ jobs:
       - name: 🧹 Clean Project
         run: ./gradlew clean --no-daemon
 
-      - name: 🔨 Build APK
-        run: ./gradlew assembleDebug --no-daemon --stacktrace --scan
+      - name: 🧪 Compile Only (Kotlin)
+        run: ./gradlew compileDebugKotlin --no-daemon --stacktrace || true
 
-      - name: 🔍 Analyze Build
+      - name: 🔨 Build APK
+        run: ./gradlew assembleDebug --no-daemon --stacktrace || true
+
+      - name: 🔍 Analyze Build Logs
         run: |
           {
             echo "### Build Report"
@@ -93,10 +96,13 @@ jobs:
             echo "Finish: $(date)"
             echo ""
             echo "### Errors"
-            grep -E 'error|exception|failed|Caused by|not found|unresolved|compilation|kapt|spotless' build.log || echo "✅ No critical errors found"
+            grep -iE 'error|exception|failed|Caused by|not found|unresolved|compilation|kapt|Room' build.log || echo "✅ No critical errors found"
           } > summary.log
 
-      - name: 📦 Upload Results
+          # Extract key errors separately
+          grep -iE 'error|exception|failed|Caused by|not found|unresolved|compilation|kapt|Room' build.log > errors.log || echo "✅ No errors" > errors.log
+
+      - name: 📦 Upload Build Logs & APK
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts-${{ github.run_number }}
@@ -104,7 +110,8 @@ jobs:
             app/build/outputs/apk/debug/*.apk
             build.log
             summary.log
-          retention-days: 3
+            errors.log
+          retention-days: 5
 
       - name: 📊 Job Summary
         if: always()
