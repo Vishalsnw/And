@@ -39,6 +39,7 @@ fun GoalGuruApp() {
     val darkTheme = isSystemInDarkTheme()
     val systemUiController = rememberSystemUiController()
 
+    // Set transparent status/navigation bar with appropriate icon colors
     DisposableEffect(systemUiController, darkTheme) {
         systemUiController.setSystemBarsColor(
             color = Color.Transparent,
