@@ -55,16 +55,14 @@ jobs:
 
       - name: 📜 Accept Licenses
         run: |
-          yes | sdkmanager --licenses || true
+          yes | sdkmanager --licenses
           sdkmanager --update
 
       - name: 🔄 Update Gradle Wrapper
         run: ./gradlew wrapper --gradle-version 8.2 --distribution-type bin
 
       - name: ✨ Run Spotless
-        run: |
-          ./gradlew spotlessApply --no-daemon --stacktrace || \
-          (echo "Spotless failed, continuing with build..." && exit 0)
+        run: ./gradlew spotlessApply --no-daemon --stacktrace
 
       - name: 💾 Commit Formatting
         if: always()
@@ -82,25 +80,21 @@ jobs:
         run: ./gradlew clean --no-daemon
 
       - name: 🧪 Compile Only (Kotlin)
-        run: ./gradlew compileDebugKotlin --no-daemon --stacktrace || true
+        run: ./gradlew compileDebugKotlin --no-daemon --stacktrace
 
       - name: 🔨 Build APK
-        run: ./gradlew assembleDebug --no-daemon --stacktrace || true
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
 
       - name: 🔍 Analyze Build Logs
         run: |
-          {
-            echo "### Build Report"
-            echo "Start: $(date)"
-            ./gradlew build --no-daemon > build.log 2>&1 || true
-            echo "Finish: $(date)"
-            echo ""
-            echo "### Errors"
-            grep -iE 'error|exception|failed|Caused by|not found|unresolved|compilation|kapt|Room' build.log || echo "✅ No critical errors found"
-          } > summary.log
+          ./gradlew build --no-daemon > build.log 2>&1
 
-          # Extract key errors separately
-          grep -iE 'error|exception|failed|Caused by|not found|unresolved|compilation|kapt|Room' build.log > errors.log || echo "✅ No errors" > errors.log
+          echo "### Build Report" > summary.log
+          echo "Start: $(date)" >> summary.log
+          echo "Finish: $(date)" >> summary.log
+          echo "### Errors" >> summary.log
+          grep -iE 'error|exception|failed|Caused by|not found|unresolved|compilation|kapt|Room' build.log > errors.log || echo "✅ No critical errors found" > errors.log
+          cat errors.log >> summary.log
 
       - name: 📦 Upload Build Logs & APK
         uses: actions/upload-artifact@v4
@@ -130,3 +124,11 @@ jobs:
           echo '```' >> $GITHUB_STEP_SUMMARY
           cat errors.log >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: ❗ Fail if build errors found
+        if: always()
+        run: |
+          if grep -q -i 'error\|exception\|failed\|Caused by\|unresolved' errors.log; then
+            echo "❌ Build failed due to detected errors."
+            exit 1
+          fi
