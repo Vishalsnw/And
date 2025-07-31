@@ -10,39 +10,22 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
-// GoalGuru Brand Colors
-val PrimaryGreen = Color(0xFF4CAF50)
-val PrimaryGreenDark = Color(0xFF388E3C)
-val SecondaryBlue = Color(0xFF2196F3)
-val AccentOrange = Color(0xFFFF9800)
-val ErrorRed = Color(0xFFE53E3E)
-val WarningYellow = Color(0xFFFFC107)
-val SuccessGreen = Color(0xFF4CAF50)
+// Goal Guru Brand Colors
+val PrimaryBlue = Color(0xFF2196F3)
+val PrimaryBlueDark = Color(0xFF1976D2)
+val AccentGreen = Color(0xFF4CAF50)
+val AccentGreenDark = Color(0xFF388E3C)
 
-// Neutral Colors
-val NeutralGray50 = Color(0xFFFAFAFA)
-val NeutralGray100 = Color(0xFFF5F5F5)
-val NeutralGray200 = Color(0xFFEEEEEE)
-val NeutralGray300 = Color(0xFFE0E0E0)
-val NeutralGray400 = Color(0xFFBDBDBD)
-val NeutralGray500 = Color(0xFF9E9E9E)
-val NeutralGray600 = Color(0xFF757575)
-val NeutralGray700 = Color(0xFF616161)
-val NeutralGray800 = Color(0xFF424242)
-val NeutralGray900 = Color(0xFF212121)
+val BackgroundLight = Color(0xFFFAFAFA)
+val BackgroundDark = Color(0xFF121212)
+val SurfaceLight = Color(0xFFFFFFFF)
+val SurfaceDark = Color(0xFF1E1E1E)
 
-// Additional Theme Colors
-val Primary = Color(0xFF6200EE)
-val PrimaryVariant = Color(0xFF3700B3)
-val Secondary = Color(0xFF03DAC6)
-package com.example.goalguru.ui.theme
+val TextPrimary = Color(0xFF212121)
+val TextSecondary = Color(0xFF757575)
+val TextPrimaryDark = Color(0xFFFFFFFF)
+val TextSecondaryDark = Color(0xFFB3B3B3)
 
-import androidx.compose.ui.graphics.Color
-
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val ErrorRed = Color(0xFFD32F2F)
+val WarningOrange = Color(0xFFFF9800)
+val SuccessGreen = Color(0xFF388E3C)
