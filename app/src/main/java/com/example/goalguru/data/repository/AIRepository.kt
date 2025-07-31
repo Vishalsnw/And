@@ -3,6 +3,7 @@ package com.example.goalguru.data.repository
 import com.example.goalguru.data.api.DeepSeekApiService
 import com.example.goalguru.data.model.DeepSeekRequest
 import com.example.goalguru.data.model.Message
+import com.google.gson.Gson // ✅ Added Gson import if needed for any future extensions
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
@@ -13,7 +14,7 @@ class AIRepository @Inject constructor() {
 
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://api.deepseek.com/")
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create()) // ✅ Gson used here
         .build()
 
     private val apiService = retrofit.create(DeepSeekApiService::class.java)
