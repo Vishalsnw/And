@@ -55,7 +55,9 @@ jobs:
         run: |
           echo "### ❌ Kotlin/Kapt Compilation Error" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-          grep -E -i -A 3 -B 3 'e: .*\.kt' build.log | head -n 30 || echo "✅ No .kt file errors found"
+          grep -E -i -A 3 -B 3 'e: .*\.kt' build.log | head -n 30 || \
+          grep -i -A 10 -B 5 'kaptGenerateStubsDebugKotlin' build.log || \
+          echo "✅ No .kt file errors found"
           echo '```' >> $GITHUB_STEP_SUMMARY
 
       - name: 📦 APK Built?
