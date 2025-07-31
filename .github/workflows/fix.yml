@@ -67,29 +67,32 @@ jobs:
       - name: 🔨 Build APK
         run: ./gradlew assembleDebug --no-daemon --stacktrace || true
 
-      - name: 🧪 Analyze Errors in Build
+      - name: 📊 Show Kotlin/Kapt/Room Errors
+        if: always()
         run: |
-          echo "### ❌ Kotlin/Kapt/Room Compilation Errors" >> $GITHUB_STEP_SUMMARY
+          echo "### ❌ Exact Kotlin/Kapt Error" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-          grep -i -A 10 -B 2 -m 1 'Execution failed for task.*kaptGenerateStubsDebugKotlin' <<< "$(cat build.log || true)" || \
-          grep -i -A 5 -B 2 -m 1 "e: .*\.kt" <<< "$(cat build.log || true)" || \
-          echo "✅ No critical kapt/kotlin errors found"
+          grep -i -A 10 -B 2 -m 1 'Execution failed for task.*kaptGenerateStubsDebugKotlin' build.log || \
+          grep -i -A 5 -B 2 -m 1 "e: .*\.kt" build.log || \
+          echo "✅ No kapt-related errors found"
           echo '```' >> $GITHUB_STEP_SUMMARY
 
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 🧾 Other Errors" >> $GITHUB_STEP_SUMMARY
+          echo "### 🧾 General Errors" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-          grep -iE 'error|exception|failed|Caused by|not found|unresolved|Room' <<< "$(cat build.log || true)" | head -n 40 || \
+          grep -iE 'error|exception|failed|Caused by|not found|unresolved|Room' build.log | head -n 40 || \
           echo "✅ No general errors"
           echo '```' >> $GITHUB_STEP_SUMMARY
 
-      - name: 📦 Upload APK Only (if built)
-        if: success() && exists('app/build/outputs/apk/debug/app-debug.apk')
-        uses: actions/upload-artifact@v4
-        with:
-          name: goalguru-debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
-          retention-days: 3
+      - name: 📦 Upload APK (if it exists)
+        if: always()
+        run: |
+          if [ -f "app/build/outputs/apk/debug/app-debug.apk" ]; then
+            echo "✅ APK found, uploading..."
+            gh release upload temp app/build/outputs/apk/debug/app-debug.apk --clobber || echo "Could not upload to GitHub release"
+          else
+            echo "⚠️ APK not built, skipping upload."
+          fi
 
       - name: ❗ Fail if build errors found
         if: always()
