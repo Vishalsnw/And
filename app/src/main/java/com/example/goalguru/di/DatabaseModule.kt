@@ -2,7 +2,7 @@ package com.example.goalguru.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.goalguru.data.database.AppDatabase
+import com.example.goalguru.data.database.GoalGuruDatabase
 import com.example.goalguru.data.database.GoalDao
 import com.example.goalguru.data.database.TaskDao
 import com.example.goalguru.data.database.UserDao
