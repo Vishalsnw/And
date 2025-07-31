@@ -65,21 +65,30 @@ jobs:
         run: ./gradlew clean --no-daemon
 
       - name: 🧪 Compile Only (Kotlin)
-        run: ./gradlew compileDebugKotlin --no-daemon --stacktrace
+        run: ./gradlew compileDebugKotlin --no-daemon --stacktrace || true
 
       - name: 🔨 Build APK
-        run: ./gradlew assembleDebug --no-daemon --stacktrace
+        run: ./gradlew assembleDebug --no-daemon --stacktrace || true
 
       - name: 🔍 Analyze Build Logs
         run: |
-          ./gradlew build --no-daemon > build.log 2>&1
-
+          ./gradlew build --no-daemon > build.log 2>&1 || true
           echo "### Build Report" > summary.log
           echo "Start: $(date)" >> summary.log
           echo "Finish: $(date)" >> summary.log
           echo "### Errors" >> summary.log
           grep -iE 'error|exception|failed|Caused by|not found|unresolved|compilation|kapt|Room' build.log > errors.log || echo "✅ No critical errors found" > errors.log
           cat errors.log >> summary.log
+
+      - name: ❗ Show Exact Kotlin/Kapt Error
+        if: always()
+        run: |
+          echo "### ❌ Exact Kotlin/Kapt Error" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          grep -iA 10 -B 2 -m 1 'Execution failed for task.*kaptGenerateStubsDebugKotlin' build.log || \
+          grep -iA 10 -B 2 -m 1 'Compilation error' build.log || \
+          echo "✅ No kapt-related errors found"
+          echo '```' >> $GITHUB_STEP_SUMMARY
 
       - name: 📦 Upload Build Logs & APK
         uses: actions/upload-artifact@v4
@@ -103,11 +112,6 @@ jobs:
           echo "#### 📝 Summary" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           cat summary.log >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "#### ❌ Errors" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          cat errors.log >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
 
       - name: ❗ Fail if build errors found
