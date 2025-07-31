@@ -13,5 +13,5 @@ data class UserSettings(
     val darkModeEnabled: Boolean = false,
     val aiSuggestionsEnabled: Boolean = true,
     val reminderFrequency: Int = 24, // in hours
-    val userId: String = "",
+    val userId: String = ""
 )
