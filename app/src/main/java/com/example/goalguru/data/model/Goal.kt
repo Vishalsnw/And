@@ -2,12 +2,14 @@ package com.example.goalguru.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.example.goalguru.data.util.Converters
 import java.util.Date
 
 @Entity(tableName = "goals")
+@TypeConverters(Converters::class)
 data class Goal(
-    @PrimaryKey
-    val id: String,
+    @PrimaryKey val id: String,
     val title: String,
     val description: String,
     val category: String,
