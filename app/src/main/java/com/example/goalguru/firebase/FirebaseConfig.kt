@@ -1,28 +1,27 @@
 package com.example.goalguru.firebase
 
 import android.content.Context
-import com.google.firebase.Firebase
+import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.analytics
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.firestore
 
 object FirebaseConfig {
 
-    val auth: FirebaseAuth
-        get() = Firebase.auth
+    val auth: FirebaseAuth by lazy {
+        FirebaseAuth.getInstance()
+    }
 
-    val firestore: FirebaseFirestore
-        get() = Firebase.firestore
+    val firestore: FirebaseFirestore by lazy {
+        FirebaseFirestore.getInstance()
+    }
 
-    val analytics: FirebaseAnalytics
-        get() = Firebase.analytics
+    lateinit var analytics: FirebaseAnalytics
+        private set
 
     fun initialize(context: Context) {
-        // Firebase is automatically initialized via google-services plugin.
-        // You can explicitly initialize Firebase if needed using FirebaseApp.initializeApp(context)
-        // FirebaseApp.initializeApp(context) // Uncomment if manual init is ever required
+        // Ensure Firebase is initialized
+        FirebaseApp.initializeApp(context)
+        analytics = FirebaseAnalytics.getInstance(context)
     }
 }
