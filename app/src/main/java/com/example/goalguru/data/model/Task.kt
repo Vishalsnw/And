@@ -2,10 +2,13 @@ package com.example.goalguru.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.example.goalguru.data.util.Converters
 import java.util.Date
 import java.util.UUID
 
 @Entity(tableName = "tasks")
+@TypeConverters(Converters::class)
 data class Task(
     @PrimaryKey
     val id: String = UUID.randomUUID().toString(),
@@ -16,5 +19,5 @@ data class Task(
     val dueDate: Date? = null,
     val priority: Priority = Priority.MEDIUM,
     val createdAt: Date = Date(),
-    val updatedAt: Date = Date(),
+    val updatedAt: Date = Date()
 )
