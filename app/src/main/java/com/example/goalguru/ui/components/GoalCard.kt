@@ -26,11 +26,12 @@ fun GoalCard(
 ) {
     Card(
         onClick = onClick,
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        shape = RoundedCornerShape(12.dp),
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-        ) {
+        Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = goal.title,
                 style = MaterialTheme.typography.titleMedium,
@@ -44,10 +45,14 @@ fun GoalCard(
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(12.dp))
+
+            PriorityChip(goal.priority)
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             LinearProgressIndicator(
-                progress = goal.progress,
+                progress = goal.progress.coerceIn(0f, 1f),
                 modifier = Modifier.fillMaxWidth(),
             )
 
@@ -73,7 +78,7 @@ private fun PriorityChip(priority: Priority) {
     Surface(
         shape = RoundedCornerShape(12.dp),
         color = color.copy(alpha = 0.1f),
-        modifier = Modifier.padding(start = 8.dp),
+        modifier = Modifier.padding(end = 8.dp),
     ) {
         Text(
             text = text,
