@@ -64,60 +64,37 @@ jobs:
       - name: 🧹 Clean Project
         run: ./gradlew clean --no-daemon
 
-      - name: 🧪 Compile Only (Kotlin)
-        run: ./gradlew compileDebugKotlin --no-daemon --stacktrace || true
-
       - name: 🔨 Build APK
         run: ./gradlew assembleDebug --no-daemon --stacktrace || true
 
-      - name: 🔍 Analyze Build Logs
+      - name: 🧪 Analyze Errors in Build
         run: |
-          ./gradlew build --no-daemon > build.log 2>&1 || true
-          echo "### Build Report" > summary.log
-          echo "Start: $(date)" >> summary.log
-          echo "Finish: $(date)" >> summary.log
-          echo "### Errors" >> summary.log
-          grep -iE 'error|exception|failed|Caused by|not found|unresolved|compilation|kapt|Room' build.log > errors.log || echo "✅ No critical errors found" > errors.log
-          cat errors.log >> summary.log
-
-      - name: ❗ Show Exact Kotlin/Kapt Error
-        if: always()
-        run: |
-          echo "### ❌ Exact Kotlin/Kapt Error" >> $GITHUB_STEP_SUMMARY
+          echo "### ❌ Kotlin/Kapt/Room Compilation Errors" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
-          grep -iA 10 -B 2 -m 1 'Execution failed for task.*kaptGenerateStubsDebugKotlin' build.log || \
-          grep -iA 10 -B 2 -m 1 'Compilation error' build.log || \
-          echo "✅ No kapt-related errors found"
+          grep -i -A 10 -B 2 -m 1 'Execution failed for task.*kaptGenerateStubsDebugKotlin' <<< "$(cat build.log || true)" || \
+          grep -i -A 5 -B 2 -m 1 "e: .*\.kt" <<< "$(cat build.log || true)" || \
+          echo "✅ No critical kapt/kotlin errors found"
           echo '```' >> $GITHUB_STEP_SUMMARY
 
-      - name: 📦 Upload Build Logs & APK
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🧾 Other Errors" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          grep -iE 'error|exception|failed|Caused by|not found|unresolved|Room' <<< "$(cat build.log || true)" | head -n 40 || \
+          echo "✅ No general errors"
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: 📦 Upload APK Only (if built)
+        if: success() && exists('app/build/outputs/apk/debug/app-debug.apk')
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifacts-${{ github.run_number }}
-          path: |
-            app/build/outputs/apk/debug/*.apk
-            build.log
-            summary.log
-            errors.log
-          retention-days: 5
-
-      - name: 📊 Job Summary
-        if: always()
-        run: |
-          echo "### 🛠️ Build Report" >> $GITHUB_STEP_SUMMARY
-          echo "**Run:** [#${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
-          echo "**Commit:** [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})" >> $GITHUB_STEP_SUMMARY
-          echo "**Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "#### 📝 Summary" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          cat summary.log >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
+          name: goalguru-debug-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 3
 
       - name: ❗ Fail if build errors found
         if: always()
         run: |
-          if grep -q -i 'error\|exception\|failed\|Caused by\|unresolved' errors.log; then
+          if grep -q -i 'error\|exception\|failed\|Caused by\|unresolved' build.log; then
             echo "❌ Build failed due to detected errors."
             exit 1
           fi
