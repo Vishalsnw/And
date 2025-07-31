@@ -31,7 +31,11 @@ class NotificationWorker @AssistedInject constructor(
     override suspend fun doWork(): Result {
         return try {
             val userSettings = userRepository.getUserSettings().first()
-            if (!userSettings.notificationsEnabled) return Result.success()
+
+            // Check for null or notifications disabled
+            if (userSettings == null || !userSettings.notificationsEnabled) {
+                return Result.success()
+            }
 
             val goals = goalRepository.getAllGoals().first()
             val incompleteGoals = goals.filter { it.progress < 1.0f }
@@ -51,7 +55,6 @@ class NotificationWorker @AssistedInject constructor(
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        // Create notification channel for Android 8.0+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 "goal_reminders",
@@ -61,7 +64,7 @@ class NotificationWorker @AssistedInject constructor(
             notificationManager.createNotificationChannel(channel)
         }
 
-        val message = generateNotificationMessage(userSettings, incompleteCount)
+        val message = generateNotificationMessage(incompleteCount)
 
         val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -85,7 +88,7 @@ class NotificationWorker @AssistedInject constructor(
         notificationManager.notify(1, notification)
     }
 
-    private fun generateNotificationMessage(userSettings: UserSettings, incompleteCount: Int): String {
+    private fun generateNotificationMessage(incompleteCount: Int): String {
         return when {
             incompleteCount == 1 -> "You have 1 incomplete goal. Keep going!"
             incompleteCount > 1 -> "You have $incompleteCount incomplete goals. Stay focused!"
