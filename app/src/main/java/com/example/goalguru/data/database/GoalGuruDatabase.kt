@@ -8,10 +8,6 @@ package com.example.goalguru.data.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.goalguru.data.database.dao.GoalDao
-import com.example.goalguru.data.database.dao.TaskDao
-import com.example.goalguru.data.database.dao.UserDao
-import com.example.goalguru.data.database.dao.UserSettingsDao // ✅ Added missing DAO import
 import com.example.goalguru.data.model.Goal
 import com.example.goalguru.data.model.Task
 import com.example.goalguru.data.model.User
@@ -23,7 +19,7 @@ import com.example.goalguru.data.util.Converters
         Goal::class,
         User::class,
         Task::class,
-        UserSettings::class, // ✅ To avoid "no such table" error
+        UserSettings::class, // ✅ Ensures table is created
     ],
     version = 2,
     exportSchema = false,
@@ -34,7 +30,7 @@ abstract class GoalGuruDatabase : RoomDatabase() {
     abstract fun goalDao(): GoalDao
     abstract fun userDao(): UserDao
     abstract fun taskDao(): TaskDao
-    abstract fun userSettingsDao(): UserSettingsDao // ✅ Exposed DAO for UserSettings
+    abstract fun userSettingsDao(): UserSettingsDao // ✅ Exposed DAO method
 
     companion object {
         const val DATABASE_NAME = "goal_guru_db"
