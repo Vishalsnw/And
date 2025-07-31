@@ -18,7 +18,7 @@ import com.example.goalguru.data.repository.UserRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 
 @HiltWorker
 class NotificationWorker @AssistedInject constructor(
@@ -30,18 +30,17 @@ class NotificationWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         return try {
-            val userSettings = userRepository.getUserSettings().first()
+            val userSettings = userRepository.getUserSettings().firstOrNull()
 
-            // Check for null or notifications disabled
             if (userSettings == null || !userSettings.notificationsEnabled) {
                 return Result.success()
             }
 
-            val goals = goalRepository.getAllGoals().first()
+            val goals = goalRepository.getAllGoals().firstOrNull().orEmpty()
             val incompleteGoals = goals.filter { it.progress < 1.0f }
 
             if (incompleteGoals.isNotEmpty()) {
-                showNotification(userSettings, incompleteGoals.size)
+                showNotification(incompleteGoals.size)
             }
 
             Result.success()
@@ -51,7 +50,7 @@ class NotificationWorker @AssistedInject constructor(
         }
     }
 
-    private fun showNotification(userSettings: UserSettings, incompleteCount: Int) {
+    private fun showNotification(incompleteCount: Int) {
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -89,10 +88,9 @@ class NotificationWorker @AssistedInject constructor(
     }
 
     private fun generateNotificationMessage(incompleteCount: Int): String {
-        return when {
-            incompleteCount == 1 -> "You have 1 incomplete goal. Keep going!"
-            incompleteCount > 1 -> "You have $incompleteCount incomplete goals. Stay focused!"
-            else -> "Great job! All your goals are complete!"
+        return when (incompleteCount) {
+            1 -> "You have 1 incomplete goal. Keep going!"
+            else -> "You have $incompleteCount incomplete goals. Stay focused!"
         }
     }
 
