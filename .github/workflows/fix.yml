@@ -61,21 +61,6 @@ jobs:
       - name: 🔄 Update Gradle Wrapper
         run: ./gradlew wrapper --gradle-version 8.2 --distribution-type bin
 
-      - name: ✨ Run Spotless
-        run: ./gradlew spotlessApply --no-daemon --stacktrace
-
-      - name: 💾 Commit Formatting
-        if: always()
-        run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-          git add .
-          git diff --cached --quiet || \
-          (git commit -m "🎨 Auto-formatted code [skip ci]" && \
-           git pull --rebase && \
-           git push)
-        continue-on-error: true
-
       - name: 🧹 Clean Project
         run: ./gradlew clean --no-daemon
 
