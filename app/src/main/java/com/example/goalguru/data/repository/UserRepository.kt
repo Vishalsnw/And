@@ -1,28 +1,21 @@
+
 package com.example.goalguru.data.repository
 
-import com.example.goalguru.data.database.UserDao
-import com.example.goalguru.data.model.User
 import com.example.goalguru.data.model.UserSettings
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class UserRepository @Inject constructor(
-    private val userDao: UserDao,
-) {
+class UserRepository @Inject constructor() {
 
-    suspend fun getUserById(userId: String): User? = userDao.getUserById(userId)
+    suspend fun updateUserSettings(settings: UserSettings) {
+        // Implementation for updating user settings
+        // This would typically save to Room database or Firebase
+    }
 
-    suspend fun getCurrentUser(): User? = userDao.getCurrentUser()
-
-    suspend fun insertUser(user: User) = userDao.insertUser(user)
-
-    suspend fun updateUser(user: User) = userDao.updateUser(user)
-
-    fun getUserSettings(userId: String): Flow<UserSettings?> = userDao.getUserSettings(userId)
-
-    suspend fun insertUserSettings(settings: UserSettings) = userDao.insertUserSettings(settings)
-
-    suspend fun updateUserSettings(settings: UserSettings) = userDao.updateUserSettings(settings)
+    suspend fun getUserSettings(userId: String): UserSettings {
+        // Implementation for getting user settings
+        // This would typically load from Room database or Firebase
+        return UserSettings(userId = userId)
+    }
 }
