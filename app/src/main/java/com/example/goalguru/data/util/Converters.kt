@@ -1,6 +1,9 @@
 package com.example.goalguru.data.util
 
 import androidx.room.TypeConverter
+import com.example.goalguru.data.model.Gender
+import com.example.goalguru.data.model.GoalCategory
+import com.example.goalguru.data.model.GoalPriority
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.Date
@@ -28,14 +31,25 @@ class Converters {
     fun listToString(list: List<String>?): String {
         return gson.toJson(list ?: emptyList())
     }
-}
-package com.example.goalguru.data.util
 
-import androidx.room.TypeConverter
-import com.example.goalguru.data.model.Gender
-import com.example.goalguru.data.model.GoalCategory
-import com.example.goalguru.data.model.GoalPriority
-import java.util.Date
+    @TypeConverter
+    fun fromGoalCategory(value: String): GoalCategory = GoalCategory.valueOf(value)
+
+    @TypeConverter
+    fun goalCategoryToString(category: GoalCategory): String = category.name
+
+    @TypeConverter
+    fun fromGoalPriority(value: String): GoalPriority = GoalPriority.valueOf(value)
+
+    @TypeConverter
+    fun goalPriorityToString(priority: GoalPriority): String = priority.name
+
+    @TypeConverter
+    fun fromGender(value: String): Gender = Gender.valueOf(value)
+
+    @TypeConverter
+    fun genderToString(gender: Gender): String = gender.name
+}
 
 class Converters {
 

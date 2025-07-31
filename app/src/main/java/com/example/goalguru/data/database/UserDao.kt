@@ -2,6 +2,7 @@
 package com.example.goalguru.data.database
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -12,7 +13,8 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
-    @Query("SELECT * FROM users WHERE id = :userId LIMIT 1")
+
+    @Query("SELECT * FROM users WHERE id = :userId")
     suspend fun getUserById(userId: String): User?
 
     @Query("SELECT * FROM users LIMIT 1")
@@ -24,6 +26,9 @@ interface UserDao {
     @Update
     suspend fun updateUser(user: User)
 
+    @Delete
+    suspend fun deleteUser(user: User)
+
     @Query("SELECT * FROM user_settings WHERE userId = :userId LIMIT 1")
     fun getUserSettings(userId: String): Flow<UserSettings?>
 
@@ -32,26 +37,6 @@ interface UserDao {
 
     @Update
     suspend fun updateUserSettings(userSettings: UserSettings)
-}
-package com.example.goalguru.data.database
-
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import androidx.room.Update
-import com.example.goalguru.data.model.User
-import kotlinx.coroutines.flow.Flow
-
-@Dao
-interface UserDao {
-
-    @Query("SELECT * FROM users WHERE id = :userId")
-    suspend fun getUserById(userId: String): User?
-
-    @Query("SELECT * FROM users LIMIT 1")
-    fun getCurrentUser(): Flow<User?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUser(user: User)
