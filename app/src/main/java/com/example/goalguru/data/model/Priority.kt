@@ -4,5 +4,5 @@ enum class Priority {
     LOW,
     MEDIUM,
     HIGH,
-    URGENT,
+    URGENT
 }
