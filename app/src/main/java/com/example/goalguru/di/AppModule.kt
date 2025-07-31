@@ -1,24 +1,41 @@
-
 package com.example.goalguru.di
 
-import com.example.goalguru.data.database.GoalDao
-import com.example.goalguru.data.database.TaskDao
-import com.example.goalguru.data.database.UserDao
-import com.example.goalguru.data.repository.AIRepository
-import com.example.goalguru.data.repository.GoalRepository
-import com.example.goalguru.data.repository.UserRepository
+import android.content.Context
+import androidx.room.Room
+import com.example.goalguru.data.database.*
+import com.example.goalguru.data.repository.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    // Using Firebase Firestore as primary database
-    // Room database removed to avoid conflicts
+    @Provides
+    @Singleton
+    fun provideDatabase(@ApplicationContext context: Context): GoalGuruDatabase {
+        return Room.databaseBuilder(
+            context,
+            GoalGuruDatabase::class.java,
+            GoalGuruDatabase.DATABASE_NAME
+        ).build()
+    }
+
+    @Provides
+    fun provideGoalDao(database: GoalGuruDatabase): GoalDao = database.goalDao()
+
+    @Provides
+    fun provideTaskDao(database: GoalGuruDatabase): TaskDao = database.taskDao()
+
+    @Provides
+    fun provideUserDao(database: GoalGuruDatabase): UserDao = database.userDao()
+
+    @Provides
+    fun provideUserSettingsDao(database: GoalGuruDatabase): UserSettingsDao = database.userSettingsDao()
 
     @Provides
     @Singleton
