@@ -1,33 +1,29 @@
+package com.example.goalguru.data.util
 
-package com.example.goalguru.utils
+import androidx.room.TypeConverter
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.util.Date
 
-object Constants {
-    // Database
-    const val DATABASE_NAME = "goal_guru_database"
+class Converters {
 
-    // SharedPreferences
-    const val PREFS_NAME = "goal_guru_prefs"
-    const val PREFS_USER_ONBOARDED = "user_onboarded"
-    const val PREFS_NOTIFICATIONS_ENABLED = "notifications_enabled"
+    private val gson = Gson()
 
-    // Firebase Collections
-    const val COLLECTION_USERS = "users"
-    const val COLLECTION_GOALS = "goals"
-    const val COLLECTION_TASKS = "tasks"
+    @TypeConverter
+    fun fromTimestamp(value: Long?): Date? = value?.let { Date(it) }
 
-    // Notification
-    const val NOTIFICATION_CHANNEL_ID = "goal_reminders"
-    const val NOTIFICATION_CHANNEL_NAME = "Goal Reminders"
+    @TypeConverter
+    fun dateToTimestamp(date: Date?): Long? = date?.time
 
-    // Work Manager
-    const val WORK_TAG_GOAL_REMINDER = "goal_reminder"
+    @TypeConverter
+    fun fromStringList(value: String?): List<String> {
+        if (value.isNullOrBlank()) return emptyList()
+        val listType = object : TypeToken<List<String>>() {}.type
+        return gson.fromJson(value, listType)
+    }
 
-    // Date Formats
-    const val DATE_FORMAT_DISPLAY = "MMM dd, yyyy"
-    const val DATE_FORMAT_API = "yyyy-MM-dd"
-
-    // Limits
-    const val MAX_GOAL_TITLE_LENGTH = 50
-    const val MAX_GOAL_DESCRIPTION_LENGTH = 200
-    const val MAX_TASKS_PER_GOAL = 20
+    @TypeConverter
+    fun toStringList(list: List<String>?): String {
+        return gson.toJson(list ?: emptyList())
+    }
 }
