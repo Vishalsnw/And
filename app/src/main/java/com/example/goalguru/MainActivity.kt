@@ -23,6 +23,40 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        installSplashScreen()
+        enableEdgeToEdge()
+
+        setContent {
+            GoalGuruTheme {
+                SetupSystemUI()
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background,
+                ) {
+                    GoalGuruNavigation()
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun SetupSystemUI() {
+        val systemUiController = rememberSystemUiController()
+        val isDarkTheme = isSystemInDarkTheme()
+
+        DisposableEffect(systemUiController, isDarkTheme) {
+            systemUiController.setSystemBarsColor(
+                color = Color.Transparent,
+                darkIcons = !isDarkTheme,
+            )
+            onDispose {}
+        }
+    }
+}
+class MainActivity : ComponentActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
 

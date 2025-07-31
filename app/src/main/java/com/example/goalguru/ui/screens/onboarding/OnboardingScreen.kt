@@ -1,3 +1,4 @@
+
 package com.example.goalguru.ui.screens.onboarding
 
 import androidx.compose.foundation.layout.Arrangement
@@ -25,14 +26,13 @@ fun OnboardingScreen(
         modifier = modifier
             .fillMaxSize()
             .padding(24.dp),
-        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
     ) {
         Text(
             text = "Welcome to GoalGuru",
             style = MaterialTheme.typography.headlineLarge,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.primary,
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -41,7 +41,7 @@ fun OnboardingScreen(
             text = "Your AI-powered personal goal coach to help you achieve your dreams",
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
         )
 
         Spacer(modifier = Modifier.height(48.dp))

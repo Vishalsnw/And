@@ -26,27 +26,3 @@ class UserRepository @Inject constructor(
 
     suspend fun updateUserSettings(settings: UserSettings) = userDao.updateUserSettings(settings)
 }
-class UserRepository @Inject constructor(
-    private val userDao: UserDao,
-) {
-
-    fun getCurrentUser(): Flow<User?> {
-        return userDao.getCurrentUser()
-    }
-
-    suspend fun getUserById(userId: String): User? {
-        return userDao.getUserById(userId)
-    }
-
-    suspend fun insertUser(user: User) {
-        userDao.insertUser(user)
-    }
-
-    suspend fun updateUser(user: User) {
-        userDao.updateUser(user)
-    }
-
-    suspend fun deleteUser(user: User) {
-        userDao.deleteUser(user)
-    }
-}
