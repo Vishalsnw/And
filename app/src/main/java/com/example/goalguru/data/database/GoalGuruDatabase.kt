@@ -8,6 +8,10 @@ package com.example.goalguru.data.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.example.goalguru.data.database.dao.GoalDao
+import com.example.goalguru.data.database.dao.TaskDao
+import com.example.goalguru.data.database.dao.UserDao
+import com.example.goalguru.data.database.dao.UserSettingsDao
 import com.example.goalguru.data.model.Goal
 import com.example.goalguru.data.model.Task
 import com.example.goalguru.data.model.User
