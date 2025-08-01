@@ -5,6 +5,7 @@ import com.example.goalguru.data.database.TaskDao
 import com.example.goalguru.data.model.Goal
 import com.example.goalguru.data.model.Task
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -27,6 +28,10 @@ class GoalRepository @Inject constructor(
     suspend fun deleteGoalById(goalId: String) = goalDao.deleteGoalById(goalId)
 
     fun getTasksForGoal(goalId: String): Flow<List<Task>> = taskDao.getTasksForGoal(goalId)
+    
+    // Add this helper method
+    suspend fun getTasksForGoalSync(goalId: String): List<Task> = 
+        taskDao.getTasksForGoal(goalId).firstOrNull() ?: emptyList()
 
     suspend fun insertTask(task: Task) = taskDao.insertTask(task)
 
@@ -35,7 +40,7 @@ class GoalRepository @Inject constructor(
     suspend fun deleteTask(task: Task) = taskDao.deleteTask(task)
 
     suspend fun updateGoalProgress(goalId: String) {
-        val tasks = taskDao.getTasksForGoalSync(goalId)
+        val tasks = getTasksForGoalSync(goalId) // Use the new helper method
         val completedTasks = tasks.count { it.isCompleted }
         val progress = if (tasks.isNotEmpty()) {
             completedTasks.toFloat() / tasks.size
