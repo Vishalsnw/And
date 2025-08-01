@@ -92,9 +92,3 @@ class NotificationWorker @AssistedInject constructor(
             else -> "You have $incompleteCount incomplete goals. Stay focused!"
         }
     }
-
-    @AssistedFactory
-    interface Factory {
-        fun create(context: Context, params: WorkerParameters): NotificationWorker
-    }
-}
