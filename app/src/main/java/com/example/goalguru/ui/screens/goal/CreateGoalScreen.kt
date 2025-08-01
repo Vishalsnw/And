@@ -1,3 +1,4 @@
+
 package com.example.goalguru.ui.screens.goal
 
 import androidx.compose.foundation.layout.Arrangement
@@ -7,40 +8,54 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-importandroidx.compose.material3.Scaffold
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateGoalScreen(
-    onNavigationUp: () -> Unit,
-    onGoalCreated: () -> Unit
+    onBackPressed: () -> Unit,
+    onGoalCreated: () -> Unit,
+    viewModel: CreateGoalViewModel = hiltViewModel()
 ) {
-    var title by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
-    var category by remember { mutableStateOf("") }
+    val title by viewModel.title.collectAsState()
+    val description by viewModel.description.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+    val error by viewModel.error.collectAsState()
+    val isGoalCreated by viewModel.isGoalCreated.collectAsState()
+
+    LaunchedEffect(isGoalCreated) {
+        if (isGoalCreated) {
+            onGoalCreated()
+        }
+    }
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Create New Goal") },
                 navigationIcon = {
-                    IconButton(onClick = onNavigationUp) {
+                    IconButton(onClick = onBackPressed) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
                 }
@@ -51,42 +66,47 @@ fun CreateGoalScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(16.dp),
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             OutlinedTextField(
                 value = title,
-                onValueChange = { title = it },
+                onValueChange = viewModel::updateTitle,
                 label = { Text("Goal Title") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                enabled = !isLoading
             )
 
             OutlinedTextField(
                 value = description,
-                onValueChange = { description = it },
+                onValueChange = viewModel::updateDescription,
                 label = { Text("Description") },
                 modifier = Modifier.fillMaxWidth(),
-                minLines = 3
+                minLines = 3,
+                enabled = !isLoading
             )
 
-            OutlinedTextField(
-                value = category,
-                onValueChange = { category = it },
-                label = { Text("Category") },
-                modifier = Modifier.fillMaxWidth()
-            )
+            error?.let { errorMessage ->
+                Text(
+                    text = "Error: $errorMessage",
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = {
-                    // TODO: Create goal logic
-                    onGoalCreated()
-                },
+                onClick = { viewModel.createGoal() },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = title.isNotBlank() && description.isNotBlank()
+                enabled = title.isNotBlank() && description.isNotBlank() && !isLoading
             ) {
-                Text("Create Goal")
+                if (isLoading) {
+                    CircularProgressIndicator(modifier = Modifier.height(20.dp))
+                } else {
+                    Text("Create Goal")
+                }
             }
         }
     }
