@@ -32,7 +32,11 @@ fun CreateGoalScreen(
     onGoalCreated: () -> Unit,
     viewModel: CreateGoalViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val title by viewModel.title.collectAsState()
+    val description by viewModel.description.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+    val error by viewModel.error.collectAsState()
+    val isGoalCreated by viewModel.isGoalCreated.collectAsState()
 
     Scaffold(
         topBar = {
@@ -59,14 +63,14 @@ fun CreateGoalScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             OutlinedTextField(
-                value = uiState.title,
+                value = title,
                 onValueChange = viewModel::updateTitle,
                 label = { Text("Goal Title") },
                 modifier = Modifier.fillMaxWidth(),
             )
 
             OutlinedTextField(
-                value = uiState.description,
+                value = description,
                 onValueChange = viewModel::updateDescription,
                 label = { Text("Goal Description") },
                 modifier = Modifier.fillMaxWidth(),
@@ -76,10 +80,12 @@ fun CreateGoalScreen(
             Button(
                 onClick = {
                     viewModel.createGoal()
-                    onGoalCreated()
+                    if (isGoalCreated) {
+                        onGoalCreated()
+                    }
                 },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = uiState.title.isNotBlank() && uiState.description.isNotBlank(),
+                enabled = title.isNotBlank() && description.isNotBlank() && !isLoading,
             ) {
                 Text("Create Goal")
             }
