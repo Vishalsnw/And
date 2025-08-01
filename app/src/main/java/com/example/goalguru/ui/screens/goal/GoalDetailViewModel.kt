@@ -6,23 +6,21 @@ import com.example.goalguru.data.model.Goal
 import com.example.goalguru.data.model.Task
 import com.example.goalguru.data.repository.GoalRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
-import java.util.Date
-import javax.inject.Inject
 
 @HiltViewModel
 class GoalDetailViewModel @Inject constructor(
-    private val repository: GoalRepository
+    private val goalRepository: GoalRepository
 ) : ViewModel() {
 
     private val _goal = MutableStateFlow<Goal?>(null)
     val goal: StateFlow<Goal?> = _goal.asStateFlow()
 
-    private val _tasks = MutableStateFlow<List<Task>>(emptyList())
+    private val _tasks = MutableStateFlow emptyList<Task>()
     val tasks: StateFlow<List<Task>> = _tasks.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
@@ -36,17 +34,12 @@ class GoalDetailViewModel @Inject constructor(
             _isLoading.value = true
             _error.value = null
             try {
-                val goal = repository.getGoalById(goalId)
+                val goal = goalRepository.getGoalById(goalId)
                 _goal.value = goal
                 
-                if (goal != null) {
-                    repository.getTasksForGoal(goalId)
-                        .catch { e ->
-                            _error.value = e.message ?: "Failed to load tasks"
-                        }
-                        .collect { taskList ->
-                            _tasks.value = taskList
-                        }
+                // Load tasks for the goal
+                goal?.let {
+                    _tasks.value = goalRepository.getTasksForGoal(goalId)
                 }
             } catch (e: Exception) {
                 _error.value = e.message ?: "Failed to load goal"
@@ -61,13 +54,26 @@ class GoalDetailViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val updatedGoal = currentGoal.copy(
-                    isCompleted = !currentGoal.isCompleted,
-                    updatedAt = Date()
+                    isCompleted = !currentGoal.isCompleted
                 )
-                repository.updateGoal(updatedGoal)
+                goalRepository.updateGoal(updatedGoal)
                 _goal.value = updatedGoal
             } catch (e: Exception) {
                 _error.value = e.message ?: "Failed to update goal"
+            }
+        }
+    }
+
+    fun addTask(task: Task) {
+        viewModelScope.launch {
+            try {
+                goalRepository.insertTask(task)
+                // Reload tasks
+                _goal.value?.id?.let { goalId ->
+                    loadGoal(goalId)
+                }
+            } catch (e: Exception) {
+                _error.value = e.message ?: "Failed to add task"
             }
         }
     }
