@@ -3,7 +3,7 @@ package com.example.goalguru.ui.screens.settings
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+importandroidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
@@ -53,14 +53,15 @@ fun SettingsScreen(
                 title = "Notifications",
                 description = "Enable Notifications",
                 isChecked = userSettings.notificationsEnabled,
-                onCheckedChange = viewModel::toggleNotifications,
+                onCheckedChange = { viewModel.toggleNotifications() },
             )
 
+            val darkModeEnabled by viewModel.darkModeEnabled.collectAsState()
             SettingToggleCard(
                 title = "Appearance",
                 description = "Dark Mode",
-                isChecked = userSettings.darkModeEnabled,
-                onCheckedChange = viewModel::toggleDarkMode,
+                isChecked = darkModeEnabled,
+                onCheckedChange = { viewModel.toggleDarkMode() },
             )
         }
     }

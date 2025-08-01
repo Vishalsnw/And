@@ -28,7 +28,7 @@ class NotificationWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         return try {
-            val userSettings = userRepository.getUserSettings().firstOrNull()
+            val userSettings = userRepository.getUserSettings("default_user").firstOrNull()
 
             if (userSettings == null || !userSettings.notificationsEnabled) {
                 return Result.success()
