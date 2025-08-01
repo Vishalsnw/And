@@ -3,8 +3,8 @@ package com.example.goalguru.ui.screens.goal
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.goalguru.data.model.Goal
-import com.example.goalguru.data.repository.GoalRepository
 import com.example.goalguru.data.repository.AIRepository
+import com.example.goalguru.data.repository.GoalRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,6 +24,15 @@ class CreateGoalViewModel @Inject constructor(
 
     private val _description = MutableStateFlow("")
     val description: StateFlow<String> = _description.asStateFlow()
+
+    private val _category = MutableStateFlow("Personal")
+    val category: StateFlow<String> = _category.asStateFlow()
+
+    private val _priority = MutableStateFlow(Goal.Priority.MEDIUM)
+    val priority: StateFlow<Goal.Priority> = _priority.asStateFlow()
+
+    private val _targetDate = MutableStateFlow<String?>(null)
+    val targetDate: StateFlow<String?> = _targetDate.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
@@ -50,24 +59,55 @@ class CreateGoalViewModel @Inject constructor(
         clearError()
     }
 
-    fun generateRoadmap() {
-        viewModelScope.launch {
-            try {
-                _isGeneratingRoadmap.value = true
-                _error.value = null
+    fun updateCategory(newCategory: String) {
+        _category.value = newCategory
+    }
 
+    fun updatePriority(newPriority: Goal.Priority) {
+        _priority.value = newPriority
+    }
+
+    fun updateTargetDate(newTargetDate: String?) {
+        _targetDate.value = newTargetDate
+    }
+
+    fun generateAIRoadmap() {
+        if (_title.value.isBlank()) {
+            _error.value = "Please enter a goal title first"
+            return
+        }
+
+        viewModelScope.launch {
+            _isGeneratingRoadmap.value = true
+            try {
                 val roadmap = aiRepository.generateGoalRoadmap(
                     goalTitle = _title.value,
-                    goalDescription = _description.value
+                    goalDescription = _description.value.ifBlank { "No description provided" }
                 )
-
-                _aiRoadmap.value = roadmap ?: "Unable to generate roadmap. Please try again."
+                _aiRoadmap.value = roadmap
             } catch (e: Exception) {
-                _error.value = "Failed to generate roadmap: ${e.message}"
+                _error.value = "Failed to generate AI roadmap: ${e.message}"
             } finally {
                 _isGeneratingRoadmap.value = false
             }
         }
+    }
+
+    fun useAIRoadmap() {
+        _aiRoadmap.value?.let { roadmap ->
+            val currentDescription = _description.value
+            val newDescription = if (currentDescription.isBlank()) {
+                roadmap
+            } else {
+                "$currentDescription\n\n--- AI Generated Roadmap ---\n$roadmap"
+            }
+            _description.value = newDescription
+            _aiRoadmap.value = null
+        }
+    }
+
+    fun clearAIRoadmap() {
+        _aiRoadmap.value = null
     }
 
     fun createGoal() {
@@ -76,19 +116,22 @@ class CreateGoalViewModel @Inject constructor(
             return
         }
 
-        viewModelScope.launch {
-            try {
-                _isLoading.value = true
-                _error.value = null
+        if (_description.value.isBlank()) {
+            _error.value = "Description cannot be empty"
+            return
+        }
 
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
                 val currentTime = java.time.LocalDateTime.now()
                 val goal = Goal(
                     id = UUID.randomUUID().toString(),
                     userId = "default_user", // You may want to get this from user session
                     title = _title.value.trim(),
                     description = _description.value.trim(),
-                    category = "General",
-                    priority = Goal.Priority.MEDIUM,
+                    category = _category.value,
+                    priority = _priority.value,
                     status = Goal.Status.NOT_STARTED,
                     targetDate = null,
                     createdAt = currentTime,

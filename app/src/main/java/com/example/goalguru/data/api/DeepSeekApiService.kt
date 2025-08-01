@@ -1,3 +1,4 @@
+
 package com.example.goalguru.data.api
 
 import com.example.goalguru.data.model.DeepSeekRequest
@@ -11,11 +12,12 @@ interface DeepSeekApiService {
     @POST("chat/completions")
     suspend fun generateRoadmap(
         @Header("Authorization") authorization: String,
-        @Body request: DeepSeekRequest,
+        @Body request: DeepSeekRequest
     ): Response<DeepSeekResponse>
 
     @POST("chat/completions")
     suspend fun generateCompletion(
-        @Body request: DeepSeekRequest,
+        @Header("Authorization") authorization: String,
+        @Body request: DeepSeekRequest
     ): DeepSeekResponse
 }

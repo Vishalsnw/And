@@ -16,123 +16,171 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.goalguru.data.model.Goal
+import com.example.goalguru.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
-    onNavigateToCreateGoal: () -> Unit,
-    onNavigateToGoalDetail: (String) -> Unit,
-    onNavigateToProfile: () -> Unit,
-    onNavigateToAnalytics: () -> Unit,
+    onGoalClick: (String) -> Unit,
+    onCreateGoal: () -> Unit,
     viewModel: DashboardViewModel = hiltViewModel()
 ) {
-    val goals by viewModel.goals.collectAsStateWithLifecycle()
-    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
-    
+    val goals by viewModel.goals.collectAsState()
+    val user by viewModel.currentUser.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+
     LaunchedEffect(Unit) {
-        viewModel.loadGoals()
+        viewModel.loadDashboardData()
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "GoalGuru",
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                Brush.verticalGradient(
+                    colors = listOf(
+                        PrimaryBlue.copy(alpha = 0.1f),
+                        Color.White
                     )
-                },
-                actions = {
-                    IconButton(onClick = onNavigateToProfile) {
-                        Icon(
-                            Icons.Default.AccountCircle,
-                            contentDescription = "Profile",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    titleContentColor = MaterialTheme.colorScheme.onSurface
                 )
             )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = onNavigateToCreateGoal,
-                containerColor = MaterialTheme.colorScheme.primary
+    ) {
+        // Top App Bar with Gradient
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = PrimaryBlue
+            )
+        ) {
+            Column(
+                modifier = Modifier.padding(20.dp)
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Goal")
-            }
-        }
-    ) { paddingValues ->
-        if (isLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                item {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    WelcomeSection()
-                }
-                
-                item {
-                    QuickActionsSection(
-                        onCreateGoal = onNavigateToCreateGoal,
-                        onViewAnalytics = onNavigateToAnalytics
-                    )
-                }
-                
-                item {
-                    StatsSection(goals = goals)
-                }
-                
-                item {
-                    Text(
-                        text = "Your Goals",
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(vertical = 8.dp)
-                    )
-                }
-                
-                if (goals.isEmpty()) {
-                    item {
-                        EmptyGoalsSection(onCreateGoal = onNavigateToCreateGoal)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        Text(
+                            text = "Welcome back!",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color.White.copy(alpha = 0.8f)
+                        )
+                        Text(
+                            text = user?.name ?: "Goal Achiever",
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
-                } else {
-                    items(goals) { goal ->
-                        GoalCard(
-                            goal = goal,
-                            onClick = { onNavigateToGoalDetail(goal.id) }
+                    
+                    // Profile Avatar
+                    Box(
+                        modifier = Modifier
+                            .size(48.dp)
+                            .clip(CircleShape)
+                            .background(Color.White.copy(alpha = 0.2f))
+                            .clickable { /* Navigate to profile */ },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            Icons.Default.Person,
+                            contentDescription = "Profile",
+                            tint = Color.White,
+                            modifier = Modifier.size(24.dp)
                         )
                     }
                 }
                 
-                item {
-                    Spacer(modifier = Modifier.height(80.dp))
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                // Quick Stats
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    QuickStatCard(
+                        title = "${goals.size}",
+                        subtitle = "Total Goals",
+                        icon = Icons.Default.Flag
+                    )
+                    QuickStatCard(
+                        title = "${goals.count { it.status == Goal.Status.IN_PROGRESS }}",
+                        subtitle = "Active",
+                        icon = Icons.Default.TrendingUp
+                    )
+                    QuickStatCard(
+                        title = "${goals.count { it.status == Goal.Status.COMPLETED }}",
+                        subtitle = "Completed",
+                        icon = Icons.Default.CheckCircle
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Quick Actions Menu
+        LazyRow(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items(getQuickActions()) { action ->
+                QuickActionCard(
+                    action = action,
+                    onClick = {
+                        when (action.type) {
+                            "create_goal" -> onCreateGoal()
+                            "ai_suggestions" -> viewModel.generateGoalSuggestions()
+                            "progress_report" -> viewModel.generateProgressReport()
+                            "settings" -> { /* Navigate to settings */ }
+                        }
+                    }
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        // Goals Section
+        Text(
+            text = "Your Goals",
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(horizontal = 16.dp),
+            color = TextPrimary
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        if (isLoading) {
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(color = PrimaryBlue)
+            }
+        } else if (goals.isEmpty()) {
+            EmptyGoalsState(onCreateGoal = onCreateGoal)
+        } else {
+            LazyColumn(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                items(goals) { goal ->
+                    GoalCard(
+                        goal = goal,
+                        onClick = { onGoalClick(goal.id) },
+                        onGenerateRoadmap = { viewModel.generateRoadmapForGoal(goal) }
+                    )
                 }
             }
         }
@@ -140,70 +188,38 @@ fun DashboardScreen(
 }
 
 @Composable
-private fun WelcomeSection() {
+private fun QuickStatCard(
+    title: String,
+    subtitle: String,
+    icon: ImageVector
+) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
-        )
+            containerColor = Color.White.copy(alpha = 0.2f)
+        ),
+        shape = RoundedCornerShape(12.dp)
     ) {
         Column(
-            modifier = Modifier.padding(20.dp)
+            modifier = Modifier.padding(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Icon(
+                icon,
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "Welcome back! 👋",
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.White,
+                fontWeight = FontWeight.Bold
             )
-            Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Ready to achieve your goals today?",
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
-            )
-        }
-    }
-}
-
-@Composable
-private fun QuickActionsSection(
-    onCreateGoal: () -> Unit,
-    onViewAnalytics: () -> Unit
-) {
-    Text(
-        text = "Quick Actions",
-        style = MaterialTheme.typography.titleLarge,
-        fontWeight = FontWeight.SemiBold,
-        modifier = Modifier.padding(vertical = 8.dp)
-    )
-    
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        item {
-            QuickActionCard(
-                icon = Icons.Default.Add,
-                title = "New Goal",
-                description = "Create a new goal",
-                onClick = onCreateGoal
-            )
-        }
-        item {
-            QuickActionCard(
-                icon = Icons.Default.Analytics,
-                title = "Analytics",
-                description = "View your progress",
-                onClick = onViewAnalytics
-            )
-        }
-        item {
-            QuickActionCard(
-                icon = Icons.Default.Psychology,
-                title = "AI Coach",
-                description = "Get suggestions",
-                onClick = { /* TODO: Navigate to AI coach */ }
+                text = subtitle,
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.White.copy(alpha = 0.8f)
             )
         }
     }
@@ -211,17 +227,18 @@ private fun QuickActionsSection(
 
 @Composable
 private fun QuickActionCard(
-    icon: ImageVector,
-    title: String,
-    description: String,
+    action: QuickAction,
     onClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
-            .width(140.dp)
+            .width(120.dp)
             .clickable { onClick() },
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        shape = RoundedCornerShape(16.dp)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -229,151 +246,25 @@ private fun QuickActionCard(
         ) {
             Box(
                 modifier = Modifier
-                    .size(48.dp)
-                    .background(
-                        MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-                        CircleShape
-                    ),
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .background(action.color.copy(alpha = 0.1f)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    icon,
+                    action.icon,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(24.dp)
+                    tint = action.color,
+                    modifier = Modifier.size(20.dp)
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = title,
-                style = MaterialTheme.typography.titleSmall,
+                text = action.title,
+                style = MaterialTheme.typography.bodySmall,
+                color = TextPrimary,
                 fontWeight = FontWeight.Medium
             )
-            Text(
-                text = description,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-    }
-}
-
-@Composable
-private fun StatsSection(goals: List<Goal>) {
-    val totalGoals = goals.size
-    val completedGoals = goals.count { it.status == Goal.Status.COMPLETED }
-    val inProgressGoals = goals.count { it.status == Goal.Status.IN_PROGRESS }
-    val avgProgress = if (goals.isNotEmpty()) {
-        goals.map { it.progress }.average().toFloat()
-    } else 0f
-
-    Text(
-        text = "Statistics",
-        style = MaterialTheme.typography.titleLarge,
-        fontWeight = FontWeight.SemiBold,
-        modifier = Modifier.padding(vertical = 8.dp)
-    )
-    
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        StatCard(
-            title = "Total Goals",
-            value = totalGoals.toString(),
-            icon = Icons.Default.Flag,
-            modifier = Modifier.weight(1f)
-        )
-        StatCard(
-            title = "Completed",
-            value = completedGoals.toString(),
-            icon = Icons.Default.CheckCircle,
-            modifier = Modifier.weight(1f)
-        )
-        StatCard(
-            title = "In Progress",
-            value = inProgressGoals.toString(),
-            icon = Icons.Default.Pending,
-            modifier = Modifier.weight(1f)
-        )
-    }
-}
-
-@Composable
-private fun StatCard(
-    title: String,
-    value: String,
-    icon: ImageVector,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Icon(
-                icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(24.dp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = value,
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = title,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-    }
-}
-
-@Composable
-private fun EmptyGoalsSection(onCreateGoal: () -> Unit) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(32.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Icon(
-                Icons.Default.Psychology,
-                contentDescription = null,
-                modifier = Modifier.size(64.dp),
-                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = "No goals yet",
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = "Create your first goal to start your journey!",
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(
-                onClick = onCreateGoal,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Icon(Icons.Default.Add, contentDescription = null)
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Create Your First Goal")
-            }
         }
     }
 }
@@ -381,14 +272,18 @@ private fun EmptyGoalsSection(onCreateGoal: () -> Unit) {
 @Composable
 private fun GoalCard(
     goal: Goal,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onGenerateRoadmap: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() },
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        shape = RoundedCornerShape(16.dp)
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -396,26 +291,20 @@ private fun GoalCard(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Top
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = goal.title,
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
+                        fontWeight = FontWeight.Bold,
+                        color = TextPrimary
                     )
-                    if (goal.description.isNotBlank()) {
-                        Text(
-                            text = goal.description,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.padding(top = 4.dp)
-                        )
-                    }
+                    Text(
+                        text = goal.description.take(100) + if (goal.description.length > 100) "..." else "",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = TextSecondary
+                    )
                 }
                 
                 StatusChip(status = goal.status)
@@ -423,42 +312,153 @@ private fun GoalCard(
             
             Spacer(modifier = Modifier.height(12.dp))
             
-            LinearProgressIndicator(
-                progress = goal.progress,
+            // Progress Bar
+            Column {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "Progress",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = TextSecondary
+                    )
+                    Text(
+                        text = "${(goal.progress * 100).toInt()}%",
+                        style = MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.Bold,
+                        color = PrimaryBlue
+                    )
+                }
+                
+                Spacer(modifier = Modifier.height(4.dp))
+                
+                LinearProgressIndicator(
+                    progress = goal.progress,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(6.dp)
+                        .clip(RoundedCornerShape(3.dp)),
+                    color = AccentGreen,
+                    trackColor = AccentGreen.copy(alpha = 0.2f)
+                )
+            }
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            // Action Buttons
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-                trackColor = MaterialTheme.colorScheme.surfaceVariant
-            )
-            
-            Spacer(modifier = Modifier.height(8.dp))
-            
-            Text(
-                text = "${(goal.progress * 100).toInt()}% completed",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                OutlinedButton(
+                    onClick = onGenerateRoadmap,
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = PrimaryBlue
+                    )
+                ) {
+                    Icon(
+                        Icons.Default.AutoAwesome,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("AI Roadmap")
+                }
+                
+                Button(
+                    onClick = onClick,
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = PrimaryBlue
+                    )
+                ) {
+                    Text("View Details")
+                }
+            }
         }
     }
 }
 
 @Composable
 private fun StatusChip(status: Goal.Status) {
-    val (text, color) = when (status) {
-        Goal.Status.NOT_STARTED -> "Not Started" to MaterialTheme.colorScheme.outline
-        Goal.Status.IN_PROGRESS -> "In Progress" to MaterialTheme.colorScheme.primary
-        Goal.Status.COMPLETED -> "Completed" to Color(0xFF4CAF50)
-        Goal.Status.PAUSED -> "Paused" to Color(0xFFFF9800)
+    val (color, text) = when (status) {
+        Goal.Status.NOT_STARTED -> Pair(WarningOrange, "Not Started")
+        Goal.Status.IN_PROGRESS -> Pair(PrimaryBlue, "In Progress")
+        Goal.Status.COMPLETED -> Pair(SuccessGreen, "Completed")
+        Goal.Status.PAUSED -> Pair(TextSecondary, "Paused")
     }
     
     Surface(
-        shape = RoundedCornerShape(12.dp),
-        color = color.copy(alpha = 0.1f)
+        color = color.copy(alpha = 0.1f),
+        shape = RoundedCornerShape(12.dp)
     ) {
         Text(
             text = text,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-            style = MaterialTheme.typography.labelSmall,
+            style = MaterialTheme.typography.bodySmall,
             color = color,
             fontWeight = FontWeight.Medium
         )
     }
 }
+
+@Composable
+private fun EmptyGoalsState(onCreateGoal: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            Icons.Default.Flag,
+            contentDescription = null,
+            modifier = Modifier.size(64.dp),
+            tint = TextSecondary.copy(alpha = 0.5f)
+        )
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        Text(
+            text = "No Goals Yet",
+            style = MaterialTheme.typography.headlineSmall,
+            color = TextPrimary,
+            fontWeight = FontWeight.Bold
+        )
+        
+        Text(
+            text = "Start your journey by creating your first goal",
+            style = MaterialTheme.typography.bodyMedium,
+            color = TextSecondary
+        )
+        
+        Spacer(modifier = Modifier.height(20.dp))
+        
+        Button(
+            onClick = onCreateGoal,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = PrimaryBlue
+            )
+        ) {
+            Icon(Icons.Default.Add, contentDescription = null)
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("Create Your First Goal")
+        }
+    }
+}
+
+private data class QuickAction(
+    val title: String,
+    val icon: ImageVector,
+    val color: Color,
+    val type: String
+)
+
+private fun getQuickActions() = listOf(
+    QuickAction("New Goal", Icons.Default.Add, AccentGreen, "create_goal"),
+    QuickAction("AI Tips", Icons.Default.AutoAwesome, PrimaryBlue, "ai_suggestions"),
+    QuickAction("Progress", Icons.Default.TrendingUp, WarningOrange, "progress_report"),
+    QuickAction("Settings", Icons.Default.Settings, TextSecondary, "settings")
+)
