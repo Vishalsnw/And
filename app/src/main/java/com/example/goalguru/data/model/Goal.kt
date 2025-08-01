@@ -2,55 +2,29 @@ package com.example.goalguru.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Date
-import java.util.UUID
-
-@Entity(tableName = "goals")
-data class Goal(
-    @PrimaryKey
-    val id: String = UUID.randomUUID().toString(),
-    val title: String,
-    val description: String,
-    val category: GoalCategory,
-    val priority: GoalPriority,
-    val targetDate: Date,
-    val createdAt: Date = Date(),
-    val progress: Float = 0f,
-    val isCompleted: Boolean = false,
-    val userId: String
-)
-
-enum class GoalCategory {
-    HEALTH, CAREER, PERSONAL, EDUCATION, FINANCE, RELATIONSHIPS, HOBBIES
-}
-
-enum class GoalPriority {
-    LOW, MEDIUM, HIGH, URGENT
-}
-package com.example.goalguru.data.model
-
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import java.util.Date
+import java.time.LocalDateTime
 
 @Entity(tableName = "goals")
 data class Goal(
     @PrimaryKey
     val id: String,
+    val userId: String,
     val title: String,
     val description: String,
-    val priority: Priority = Priority.MEDIUM,
-    val status: GoalStatus = GoalStatus.ACTIVE,
-    val targetDate: Date?,
-    val createdAt: Date = Date(),
-    val updatedAt: Date = Date(),
-    val tags: List<String> = emptyList()
-)
+    val category: String,
+    val priority: Priority,
+    val status: Status,
+    val targetDate: LocalDateTime?,
+    val createdAt: LocalDateTime,
+    val updatedAt: LocalDateTime,
+    val completedAt: LocalDateTime?,
+    val progress: Float = 0f
+) {
+    enum class Priority {
+        LOW, MEDIUM, HIGH, URGENT
+    }
 
-enum class Priority {
-    LOW, MEDIUM, HIGH
-}
-
-enum class GoalStatus {
-    ACTIVE, COMPLETED, PAUSED, CANCELLED
+    enum class Status {
+        NOT_STARTED, IN_PROGRESS, COMPLETED, PAUSED, CANCELLED
+    }
 }
