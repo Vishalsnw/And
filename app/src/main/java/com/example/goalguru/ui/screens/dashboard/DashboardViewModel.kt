@@ -1,3 +1,4 @@
+
 package com.example.goalguru.ui.screens.dashboard
 
 import androidx.lifecycle.ViewModel
@@ -13,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
-    private val goalRepository: GoalRepository,
+    private val goalRepository: GoalRepository
 ) : ViewModel() {
 
     private val _goals = MutableStateFlow<List<Goal>>(emptyList())
@@ -25,21 +26,18 @@ class DashboardViewModel @Inject constructor(
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error.asStateFlow()
 
-    init {
-        loadGoals()
-    }
-
-    private fun loadGoals() {
+    fun loadGoals() {
         viewModelScope.launch {
             try {
                 _isLoading.value = true
-                goalRepository.getAllGoals().collect { goals ->
-                    _goals.value = goals
-                    _isLoading.value = false
+                _error.value = null
+                goalRepository.getAllGoals().collect { goalList ->
+                    _goals.value = goalList.sortedByDescending { it.createdAt }
                 }
             } catch (e: Exception) {
-                _isLoading.value = false
                 _error.value = e.message
+            } finally {
+                _isLoading.value = false
             }
         }
     }

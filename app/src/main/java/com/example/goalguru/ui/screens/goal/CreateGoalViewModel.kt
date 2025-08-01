@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.goalguru.data.model.Goal
 import com.example.goalguru.data.repository.GoalRepository
+import com.example.goalguru.data.repository.AIRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateGoalViewModel @Inject constructor(
     private val goalRepository: GoalRepository,
+    private val aiRepository: AIRepository
 ) : ViewModel() {
 
     private val _title = MutableStateFlow("")
@@ -32,12 +34,40 @@ class CreateGoalViewModel @Inject constructor(
     private val _isGoalCreated = MutableStateFlow(false)
     val isGoalCreated: StateFlow<Boolean> = _isGoalCreated.asStateFlow()
 
+    private val _aiRoadmap = MutableStateFlow<String?>(null)
+    val aiRoadmap: StateFlow<String?> = _aiRoadmap.asStateFlow()
+
+    private val _isGeneratingRoadmap = MutableStateFlow(false)
+    val isGeneratingRoadmap: StateFlow<Boolean> = _isGeneratingRoadmap.asStateFlow()
+
     fun updateTitle(newTitle: String) {
         _title.value = newTitle
+        clearError()
     }
 
     fun updateDescription(newDescription: String) {
         _description.value = newDescription
+        clearError()
+    }
+
+    fun generateRoadmap() {
+        viewModelScope.launch {
+            try {
+                _isGeneratingRoadmap.value = true
+                _error.value = null
+
+                val roadmap = aiRepository.generateGoalRoadmap(
+                    goalTitle = _title.value,
+                    goalDescription = _description.value
+                )
+
+                _aiRoadmap.value = roadmap ?: "Unable to generate roadmap. Please try again."
+            } catch (e: Exception) {
+                _error.value = "Failed to generate roadmap: ${e.message}"
+            } finally {
+                _isGeneratingRoadmap.value = false
+            }
+        }
     }
 
     fun createGoal() {

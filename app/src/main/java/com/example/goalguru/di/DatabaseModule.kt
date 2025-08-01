@@ -7,6 +7,7 @@ import com.example.goalguru.data.database.GoalDao
 import com.example.goalguru.data.database.TaskDao
 import com.example.goalguru.data.database.UserDao
 import com.example.goalguru.data.database.UserSettingsDao
+import com.example.goalguru.data.repository.AIRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,4 +42,8 @@ object DatabaseModule {
 
     @Provides
     fun provideUserDao(database: GoalGuruDatabase): UserDao = database.userDao()
+
+    @Provides
+    @Singleton
+    fun provideAIRepository(): AIRepository = AIRepository()
 }
