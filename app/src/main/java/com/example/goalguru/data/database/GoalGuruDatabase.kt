@@ -21,7 +21,7 @@ abstract class GoalGuruDatabase : RoomDatabase() {
     abstract fun goalDao(): GoalDao
     abstract fun taskDao(): TaskDao
     abstract fun userDao(): UserDao
-
+    abstract fun userSettingsDao(): UserSettingsDao
     companion object {
         @Volatile
         private var INSTANCE: GoalGuruDatabase? = null

@@ -17,6 +17,9 @@ class SettingsViewModel @Inject constructor(
     private val userSettingsRepository: UserSettingsRepository
 ) : ViewModel() {
 
+    private val _userSettings = MutableStateFlow(UserSettings())
+    val userSettings = _userSettings.asStateFlow()
+
     private val _notificationsEnabled = MutableStateFlow(false)
     val notificationsEnabled = _notificationsEnabled.asStateFlow()
 
@@ -26,7 +29,6 @@ class SettingsViewModel @Inject constructor(
     private val _reminderFrequency = MutableStateFlow("daily")
     val reminderFrequency = _reminderFrequency.asStateFlow()
 
-
     init {
         loadSettings()
     }
@@ -34,9 +36,12 @@ class SettingsViewModel @Inject constructor(
     private fun loadSettings() {
         viewModelScope.launch {
             userSettingsRepository.getUserSettings().collectLatest { settings ->
-                _notificationsEnabled.value = settings.notificationsEnabled
-                _darkModeEnabled.value = settings.darkModeEnabled
-                _reminderFrequency.value = settings.reminderFrequency
+                if (settings != null) {
+                    _userSettings.value = settings
+                    _notificationsEnabled.value = settings.notificationsEnabled
+                    _darkModeEnabled.value = settings.darkModeEnabled
+                    _reminderFrequency.value = settings.reminderFrequency
+                }
             }
         }
     }

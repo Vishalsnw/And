@@ -6,6 +6,7 @@ import com.example.goalguru.data.database.GoalGuruDatabase
 import com.example.goalguru.data.database.GoalDao
 import com.example.goalguru.data.database.TaskDao
 import com.example.goalguru.data.database.UserDao
+import com.example.goalguru.data.database.UserSettingsDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,6 +33,11 @@ object DatabaseModule {
 
     @Provides
     fun provideTaskDao(database: GoalGuruDatabase): TaskDao = database.taskDao()
+
+    @Provides
+    fun provideUserSettingsDao(database: GoalGuruDatabase): UserSettingsDao {
+        return database.userSettingsDao()
+    }
 
     @Provides
     fun provideUserDao(database: GoalGuruDatabase): UserDao = database.userDao()
