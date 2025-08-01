@@ -10,15 +10,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
 class GoalDetailViewModel @Inject constructor(
-    private val goalRepository: GoalRepository,
+    private val repository: GoalRepository
 ) : ViewModel() {
 
     private val _goal = MutableStateFlow<Goal?>(null)
@@ -38,13 +36,11 @@ class GoalDetailViewModel @Inject constructor(
             _isLoading.value = true
             _error.value = null
             try {
-                // Load goal
-                val goal = goalRepository.getGoalById(goalId)
+                val goal = repository.getGoalById(goalId)
                 _goal.value = goal
-
-                // Load tasks with proper error handling
+                
                 if (goal != null) {
-                    goalRepository.getTasksForGoal(goalId)
+                    repository.getTasksForGoal(goalId)
                         .catch { e ->
                             _error.value = e.message ?: "Failed to load tasks"
                         }
@@ -68,7 +64,7 @@ class GoalDetailViewModel @Inject constructor(
                     isCompleted = !currentGoal.isCompleted,
                     updatedAt = Date()
                 )
-                goalRepository.updateGoal(updatedGoal)
+                repository.updateGoal(updatedGoal)
                 _goal.value = updatedGoal
             } catch (e: Exception) {
                 _error.value = e.message ?: "Failed to update goal"
