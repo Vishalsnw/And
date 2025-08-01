@@ -28,10 +28,9 @@ class GoalRepository @Inject constructor(
     suspend fun deleteGoalById(goalId: String) = goalDao.deleteGoalById(goalId)
 
     fun getTasksForGoal(goalId: String): Flow<List<Task>> = taskDao.getTasksForGoal(goalId)
-    
-    // Add this helper method
+
     suspend fun getTasksForGoalSync(goalId: String): List<Task> = 
-        taskDao.getTasksForGoal(goalId).firstOrNull() ?: emptyList()
+        taskDao.getTasksForGoalSync(goalId)
 
     suspend fun insertTask(task: Task) = taskDao.insertTask(task)
 
@@ -40,7 +39,7 @@ class GoalRepository @Inject constructor(
     suspend fun deleteTask(task: Task) = taskDao.deleteTask(task)
 
     suspend fun updateGoalProgress(goalId: String) {
-        val tasks = getTasksForGoalSync(goalId) // Use the new helper method
+        val tasks = getTasksForGoalSync(goalId)
         val completedTasks = tasks.count { it.isCompleted }
         val progress = if (tasks.isNotEmpty()) {
             completedTasks.toFloat() / tasks.size
@@ -53,26 +52,4 @@ class GoalRepository @Inject constructor(
             goalDao.updateGoal(it.copy(progress = progress))
         }
     }
-}
-package com.example.goalguru.data.repository
-
-import com.example.goalguru.data.database.GoalDao
-import com.example.goalguru.data.model.Goal
-import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
-import javax.inject.Singleton
-
-@Singleton
-class GoalRepository @Inject constructor(
-    private val goalDao: GoalDao
-) {
-    fun getAllGoals(): Flow<List<Goal>> = goalDao.getAllGoals()
-
-    suspend fun getGoalById(goalId: String): Goal? = goalDao.getGoalById(goalId)
-
-    suspend fun insertGoal(goal: Goal) = goalDao.insertGoal(goal)
-
-    suspend fun updateGoal(goal: Goal) = goalDao.updateGoal(goal)
-
-    suspend fun deleteGoal(goal: Goal) = goalDao.deleteGoal(goal)
 }
