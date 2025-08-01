@@ -1,0 +1,111 @@
+
+failed 4 minutes ago in 3m 49s
+2s
+1s
+0s
+1s
+18s
+1s
+44s
+2m 41s
+Run ./gradlew assembleDebug --no-daemon --stacktrace | tee build.log
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :
+Build was configured to prefer settings repositories over project repositories but repository 'Google' was added by build file 'build.gradle'
+Build was configured to prefer settings repositories over project repositories but repository 'MavenRepo' was added by build file 'build.gradle'
+Checking the license for package Android SDK Build-Tools 33.0.1 in /usr/local/lib/android/sdk/licenses
+License for package Android SDK Build-Tools 33.0.1 accepted.
+Preparing "Install Android SDK Build-Tools 33.0.1 v.33.0.1".
+"Install Android SDK Build-Tools 33.0.1 v.33.0.1" ready.
+Installing Android SDK Build-Tools 33.0.1 in /usr/local/lib/android/sdk/build-tools/33.0.1
+"Install Android SDK Build-Tools 33.0.1 v.33.0.1" complete.
+"Install Android SDK Build-Tools 33.0.1 v.33.0.1" finished.
+
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkDebugAarMetadata
+> Task :app:generateDebugResValues
+> Task :app:injectCrashlyticsMappingFileIdDebug
+> Task :app:processDebugGoogleServices
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:parseDebugLocalResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:mergeDebugResources
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:processDebugManifestForPackage
+> Task :app:javaPreCompileDebug
+> Task :app:mergeDebugShaders
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :app:desugarDebugFileDependencies
+> Task :app:processDebugResources
+> Task :app:checkDebugDuplicateClasses
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/GoalDao.kt:36:1 Expecting a top level declaration
+
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/GoalDao.kt:36:9 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/GoalDao.kt:36:12 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/GoalDao.kt:36:13 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/GoalDao.kt:36:20 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/GoalDao.kt:36:21 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/GoalDao.kt:36:29 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/GoalDao.kt:36:34 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/GoalDao.kt:36:35 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/GoalDao.kt:36:43 imports are only allowed in the beginning of file
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/model/Goal.kt:30:1 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/model/Goal.kt:30:9 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/model/Goal.kt:30:12 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/model/Goal.kt:30:13 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/model/Goal.kt:30:20 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/model/Goal.kt:30:21 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/model/Goal.kt:30:29 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/model/Goal.kt:30:34 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/model/Goal.kt:30:35 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/model/Goal.kt:30:40 imports are only allowed in the beginning of file
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/util/Converters.kt:51:1 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/util/Converters.kt:51:9 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/util/Converters.kt:51:12 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/util/Converters.kt:51:13 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/util/Converters.kt:51:20 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/util/Converters.kt:51:21 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/util/Converters.kt:51:29 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/util/Converters.kt:51:34 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/util/Converters.kt:51:35 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/util/Converters.kt:51:39 imports are only allowed in the beginning of file
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:88:1 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:88:9 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:88:12 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:88:13 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:88:20 Expecting a top level declaration
+> Task :app:kaptGenerateStubsDebugKotlin
+w: Argument -Xopt-in is deprecated. Please use -opt-in instead
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:88:21 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:88:29 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:88:30 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:88:32 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:88:33 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:88:43 imports are only allowed in the beginning of file
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:90:1 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:90:9 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:90:12 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:90:13 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:90:20 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:90:21 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:90:29 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:90:30 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:90:32 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:90:33 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:90:40 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:90:41 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:90:45 imports are only allowed in the beginning of file
+
+> Task :app:mergeExtDexDebug
+> Task :app:kaptGenerateStubsDebugKotlin FAILED
