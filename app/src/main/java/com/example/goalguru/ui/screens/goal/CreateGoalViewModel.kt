@@ -51,15 +51,20 @@ class CreateGoalViewModel @Inject constructor(
                 _isLoading.value = true
                 _error.value = null
 
+                val currentTime = java.time.LocalDateTime.now()
                 val goal = Goal(
                     id = UUID.randomUUID().toString(),
+                    userId = "default_user", // You may want to get this from user session
                     title = _title.value.trim(),
                     description = _description.value.trim(),
                     category = "General",
                     priority = Goal.Priority.MEDIUM,
-                    isCompleted = false,
-                    createdAt = System.currentTimeMillis(),
-                    updatedAt = System.currentTimeMillis()
+                    status = Goal.Status.NOT_STARTED,
+                    targetDate = null,
+                    createdAt = currentTime,
+                    updatedAt = currentTime,
+                    completedAt = null,
+                    progress = 0f
                 )
 
                 goalRepository.insertGoal(goal)
