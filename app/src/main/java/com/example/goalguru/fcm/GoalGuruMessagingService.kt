@@ -18,6 +18,7 @@ class GoalGuruMessagingService : FirebaseMessagingService() {
 
     companion object {
         private const val TAG = "GoalGuruMessaging"
+        private const val CHANNEL_ID = "goal_guru_notifications"
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -59,27 +60,31 @@ class GoalGuruMessagingService : FirebaseMessagingService() {
             PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE,
         )
 
-        val channelId = "goal_guru_notifications"
-        val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(android.R.drawable.ic_dialog_info)
+        createNotificationChannel()
+
+        val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(title)
             .setContentText(body)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(0, notificationBuilder.build())
+    }
 
-        // Create notification channel for Android O and above
+    private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                channelId,
-                "GoalGuru Notifications",
-                NotificationManager.IMPORTANCE_DEFAULT,
-            )
+                CHANNEL_ID,
+                "Goal Guru Notifications",
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                description = "Notifications for Goal Guru app"
+            }
+
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
-
-        notificationManager.notify(0, notificationBuilder.build())
     }
 }

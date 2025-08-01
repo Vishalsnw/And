@@ -1,25 +1,14 @@
+
 package com.example.goalguru.ui.screens.goal
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 
@@ -66,49 +55,54 @@ fun GoalDetailScreen(
                 }
                 error != null -> {
                     Text(
-                        text = error!!,
-                        color = MaterialTheme.colorScheme.error,
+                        text = "Error: $error",
                         modifier = Modifier
                             .align(Alignment.Center)
-                            .padding(16.dp)
+                            .padding(16.dp),
+                        color = MaterialTheme.colorScheme.error
                     )
                 }
                 goal != null -> {
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(16.dp)
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         Text(
                             text = goal!!.title,
                             style = MaterialTheme.typography.headlineMedium,
-                            modifier = Modifier.padding(bottom = 16.dp)
+                            fontWeight = FontWeight.Bold
                         )
-
-                        if (goal!!.description.isNotBlank()) {
-                            Text(
-                                text = goal!!.description,
-                                style = MaterialTheme.typography.bodyLarge,
-                                modifier = Modifier.padding(bottom = 16.dp)
-                            )
-                        }
-
+                        
                         Text(
-                            text = if (goal!!.isCompleted) "Completed" else "In Progress",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = if (goal!!.isCompleted)
-                                MaterialTheme.colorScheme.primary
-                            else
-                                MaterialTheme.colorScheme.secondary
+                            text = goal!!.description,
+                            style = MaterialTheme.typography.bodyLarge
                         )
+                        
+                        Card(
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(16.dp),
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Text(
+                                    text = "Priority: ${goal!!.priority.name}",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                                Text(
+                                    text = "Status: ${goal!!.status.name}",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
+                        }
                     }
                 }
                 else -> {
                     Text(
                         text = "Goal not found",
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(16.dp)
+                        modifier = Modifier.align(Alignment.Center)
                     )
                 }
             }
