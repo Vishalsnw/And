@@ -16,15 +16,7 @@ data class User(
     val lastLoginAt: Date = Date()
 )
 
-@Entity(tableName = "user_settings")
-data class UserSettings(
-    @PrimaryKey
-    val userId: String,
-    val notificationsEnabled: Boolean = true,
-    val dailyReminderTime: String = "09:00",
-    val weeklyReportEnabled: Boolean = true,
-    val theme: String = "SYSTEM"
-)
+
 
 enum class Gender {
     MALE, FEMALE, OTHER, PREFER_NOT_TO_SAY
