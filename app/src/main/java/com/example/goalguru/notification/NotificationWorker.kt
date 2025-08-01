@@ -15,7 +15,6 @@ import com.example.goalguru.R
 import com.example.goalguru.data.repository.GoalRepository
 import com.example.goalguru.data.repository.UserRepository
 import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.firstOrNull
 
@@ -92,3 +91,4 @@ class NotificationWorker @AssistedInject constructor(
             else -> "You have $incompleteCount incomplete goals. Stay focused!"
         }
     }
+}
