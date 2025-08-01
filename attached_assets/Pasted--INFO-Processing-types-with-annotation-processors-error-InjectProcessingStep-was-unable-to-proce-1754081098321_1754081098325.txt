@@ -1,0 +1,61 @@
+[INFO] Processing types with annotation processors: 
+error: InjectProcessingStep was unable to process 'SettingsViewModel(UserSettingsRepository)' because 'UserSettingsRepository' could not be resolved.
+  
+[INFO] Analyzing sources structure took 42[ms].
+  Dependency trace:
+      => element (CLASS): com.example.goalguru.ui.screens.settings.SettingsViewModel
+      => element (CONSTRUCTOR): SettingsViewModel(UserSettingsRepository)
+      => type (EXECUTABLE constructor): (UserSettingsRepository)void
+[INFO] Annotation processing complete, errors: 1, warnings: 0
+      => type (ERROR parameter type): UserSettingsRepository
+[INFO] Annotation processor stats:
+[INFO] androidx.hilt.AndroidXHiltProcessor: total: 264 ms, init: 37 ms, 4 round(s): 225 ms, 1 ms, 1 ms, 0 ms
+[INFO] androidx.room.RoomProcessor: total: 930 ms, init: 15 ms, 4 round(s): 915 ms, 0 ms, 0 ms, 0 ms
+[INFO] dagger.hilt.processor.internal.uninstallmodules.UninstallModulesProcessor: total: 11 ms, init: 11 ms, 0 round(s): 
+[INFO] dagger.hilt.android.processor.internal.viewmodel.ViewModelProcessor: total: 159 ms, init: 1 ms, 4 round(s): 158 ms, 0 ms, 0 ms, 0 ms
+[INFO] dagger.hilt.android.processor.internal.customtestapplication.CustomTestApplicationProcessor: total: 0 ms, init: 0 ms, 0 round(s): 
+[INFO] dagger.hilt.processor.internal.root.RootProcessor: total: 33 ms, init: 4 ms, 4 round(s): 24 ms, 3 ms, 2 ms, 0 ms
+  
+  If type 'UserSettingsRepository' is a generated type, check above for compilation errors that may have prevented the type from being generated. Otherwise, ensure that type 'UserSettingsRepository' is on your classpath.
+[INFO] dagger.hilt.processor.internal.earlyentrypoint.EarlyEntryPointProcessor: total: 0 ms, init: 0 ms, 0 round(s): 
+[INFO] dagger.hilt.processor.internal.generatesrootinput.GeneratesRootInputProcessor: total: 1 ms, init: 1 ms, 0 round(s): 
+[INFO] dagger.hilt.processor.internal.aliasof.AliasOfProcessor: total: 0 ms, init: 0 ms, 0 round(s): 
+File Object History : []
+[INFO] dagger.hilt.processor.internal.definecomponent.DefineComponentProcessor: total: 1 ms, init: 1 ms, 0 round(s): 
+[INFO] dagger.hilt.processor.internal.aggregateddeps.AggregatedDepsProcessor: total: 59 ms, init: 1 ms, 4 round(s): 26 ms, 30 ms, 1 ms, 1 ms
+[INFO] dagger.hilt.processor.internal.originatingelement.OriginatingElementProcessor: total: 1 ms, init: 0 ms, 3 round(s): 1 ms, 0 ms, 0 ms
+[INFO] dagger.hilt.processor.internal.root.ComponentTreeDepsProcessor: total: 0 ms, init: 0 ms, 0 round(s): 
+[INFO] dagger.hilt.android.processor.internal.androidentrypoint.AndroidEntryPointProcessor: total: 43 ms, init: 0 ms, 4 round(s): 43 ms, 0 ms, 0 ms, 0 ms
+[INFO] dagger.hilt.android.processor.internal.bindvalue.BindValueProcessor: total: 3 ms, init: 3 ms, 0 round(s): 
+[INFO] dagger.internal.codegen.ComponentProcessor: total: 463 ms, init: 84 ms, 4 round(s): 249 ms, 114 ms, 12 ms, 4 ms
+[INFO] Generated files report:
+[INFO] androidx.hilt.AndroidXHiltProcessor: total sources: 2, sources per round: 2, 0, 0, 0
+[INFO] androidx.room.RoomProcessor: total sources: 10, sources per round: 10, 0, 0, 0
+[INFO] dagger.hilt.processor.internal.uninstallmodules.UninstallModulesProcessor: total sources: 0, sources per round: 
+[INFO] dagger.hilt.android.processor.internal.viewmodel.ViewModelProcessor: total sources: 15, sources per round: 15, 0, 0, 0
+[INFO] dagger.hilt.android.processor.internal.customtestapplication.CustomTestApplicationProcessor: total sources: 0, sources per round: 
+[INFO] dagger.hilt.processor.internal.root.RootProcessor: total sources: 16, sources per round: 16, 0, 0, 0
+[INFO] dagger.hilt.processor.internal.earlyentrypoint.EarlyEntryPointProcessor: total sources: 0, sources per round: 
+[INFO] dagger.hilt.processor.internal.generatesrootinput.GeneratesRootInputProcessor: total sources: 0, sources per round: 
+[INFO] dagger.hilt.processor.internal.aliasof.AliasOfProcessor: total sources: 0, sources per round: 
+[INFO] dagger.hilt.processor.internal.definecomponent.DefineComponentProcessor: total sources: 0, sources per round: 
+[INFO] dagger.hilt.processor.internal.aggregateddeps.AggregatedDepsProcessor: total sources: 30, sources per round: 17, 13, 0, 0
+[INFO] dagger.hilt.processor.internal.originatingelement.OriginatingElementProcessor: total sources: 13, sources per round: 13, 0, 0
+[INFO] dagger.hilt.processor.internal.root.ComponentTreeDepsProcessor: total sources: 0, sources per round: 
+[INFO] dagger.hilt.android.processor.internal.androidentrypoint.AndroidEntryPointProcessor: total sources: 33, sources per round: 20, 13, 0, 0
+[INFO] dagger.hilt.android.processor.internal.bindvalue.BindValueProcessor: total sources: 0, sources per round: 
+[INFO] dagger.internal.codegen.ComponentProcessor: total sources: 51, sources per round: 32, 19, 0, 0
+Open Type Names     : []
+Gen. Src Names      : []
+
+Gen. Cls Names      : []
+> Task :app:kaptDebugKotlin FAILED
+Agg. Gen. Src Names : []
+Agg. Gen. Cls Names : []
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:kaptDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.gradle.internal.KaptWithoutKotlincTask$KaptExecutionWorkAction
+   > java.lang.reflect.InvocationTargetException (no error message)
