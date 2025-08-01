@@ -1,4 +1,3 @@
-
 package com.example.goalguru.ui.screens.dashboard
 
 import androidx.lifecycle.ViewModel
@@ -12,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -45,7 +45,7 @@ class DashboardViewModel @Inject constructor(
                 goalRepository.getAllGoals().collect { goalList ->
                     _goals.value = goalList.sortedByDescending { it.createdAt }
                 }
-                
+
                 // Load user data
                 userRepository.getCurrentUser().collect { user ->
                     _currentUser.value = user
@@ -91,7 +91,7 @@ class DashboardViewModel @Inject constructor(
                         updatedAt = java.time.LocalDateTime.now()
                     )
                     goalRepository.updateGoal(updatedGoal)
-                    
+
                     // Refresh goals
                     loadDashboardData()
                 }
@@ -119,9 +119,9 @@ class DashboardViewModel @Inject constructor(
                     - Completed Goals: $completedGoals
                     - In Progress Goals: $inProgressGoals
                     - Average Progress: ${(averageProgress * 100).toInt()}%
-                    
+
                     Goals: ${goals.joinToString("; ") { "${it.title} (${(it.progress * 100).toInt()}%)" }}
-                    
+
                     Provide encouragement, highlight achievements, and suggest next steps for continued progress.
                 """.trimIndent()
 
@@ -141,5 +141,11 @@ class DashboardViewModel @Inject constructor(
 
     fun clearAiSuggestions() {
         _aiSuggestions.value = null
+    }
+
+    suspend fun getCurrentUser(): User? {
+        return userRepository.getCurrentUserFromDb().firstOrNull { user: User? ->
+            user != null
+        }
     }
 }

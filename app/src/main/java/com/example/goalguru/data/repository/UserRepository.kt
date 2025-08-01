@@ -1,4 +1,3 @@
-
 package com.example.goalguru.data.repository
 
 import com.example.goalguru.data.database.UserDao
@@ -7,6 +6,8 @@ import com.example.goalguru.data.model.UserSettings
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
+import com.example.goalguru.data.FirebaseConfig
+import kotlinx.coroutines.flow.flowOf
 
 @Singleton
 class UserRepository @Inject constructor(
@@ -34,5 +35,17 @@ class UserRepository @Inject constructor(
 
     fun getUserSettings(userId: String): Flow<UserSettings?> {
         return userDao.getUserSettings(userId)
+    }
+
+    suspend fun getCurrentUser(): User? {
+        return FirebaseConfig.auth.currentUser?.let { firebaseUser ->
+            userDao.getUserById(firebaseUser.uid)
+        }
+    }
+
+    fun getCurrentUserFromDb(): Flow<User?> {
+        return FirebaseConfig.auth.currentUser?.let { firebaseUser ->
+            userDao.getUserByIdFlow(firebaseUser.uid)
+        } ?: flowOf(null)
     }
 }

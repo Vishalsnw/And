@@ -1,14 +1,11 @@
-
 package com.example.goalguru.data.model
 
-import com.google.gson.annotations.SerializedName
-
 data class DeepSeekRequest(
-    val model: String,
+    val model: String = "deepseek-chat",
     val messages: List<Message>,
-    val temperature: Double = 0.7,
-    @SerializedName("max_tokens")
-    val max_tokens: Int = 500
+    val stream: Boolean = false,
+    val max_tokens: Int = 1000,
+    val temperature: Double = 0.7
 )
 
 data class Message(
@@ -17,26 +14,19 @@ data class Message(
 )
 
 data class DeepSeekResponse(
-    val id: String? = null,
-    val `object`: String? = null,
-    val created: Long? = null,
-    val model: String? = null,
-    val choices: List<Choice> = emptyList(),
+    val id: String,
+    val choices: List<Choice>,
     val usage: Usage? = null
 )
 
-data class Choice(
-    val index: Int? = null,
-    val message: Message? = null,
-    @SerializedName("finish_reason")
-    val finishReason: String? = null
+data class Usage(
+    val prompt_tokens: Int,
+    val completion_tokens: Int,
+    val total_tokens: Int
 )
 
-data class Usage(
-    @SerializedName("prompt_tokens")
-    val promptTokens: Int? = null,
-    @SerializedName("completion_tokens")
-    val completionTokens: Int? = null,
-    @SerializedName("total_tokens")
-    val totalTokens: Int? = null
+data class Choice(
+    val index: Int,
+    val message: Message,
+    val finish_reason: String?
 )

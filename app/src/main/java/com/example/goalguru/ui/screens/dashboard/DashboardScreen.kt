@@ -1,4 +1,3 @@
-
 package com.example.goalguru.ui.screens.dashboard
 
 import androidx.compose.foundation.background
@@ -75,13 +74,13 @@ fun DashboardScreen(
                             color = Color.White.copy(alpha = 0.8f)
                         )
                         Text(
-                            text = user?.name ?: "Goal Achiever",
+                            text = user?.displayName ?: user?.email ?: "Goal Achiever",
                             style = MaterialTheme.typography.headlineMedium,
                             color = Color.White,
                             fontWeight = FontWeight.Bold
                         )
                     }
-                    
+
                     // Profile Avatar
                     Box(
                         modifier = Modifier
@@ -99,9 +98,9 @@ fun DashboardScreen(
                         )
                     }
                 }
-                
+
                 Spacer(modifier = Modifier.height(16.dp))
-                
+
                 // Quick Stats
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -306,12 +305,12 @@ private fun GoalCard(
                         color = TextSecondary
                     )
                 }
-                
+
                 StatusChip(status = goal.status)
             }
-            
+
             Spacer(modifier = Modifier.height(12.dp))
-            
+
             // Progress Bar
             Column {
                 Row(
@@ -330,9 +329,9 @@ private fun GoalCard(
                         color = PrimaryBlue
                     )
                 }
-                
+
                 Spacer(modifier = Modifier.height(4.dp))
-                
+
                 LinearProgressIndicator(
                     progress = goal.progress,
                     modifier = Modifier
@@ -343,9 +342,9 @@ private fun GoalCard(
                     trackColor = AccentGreen.copy(alpha = 0.2f)
                 )
             }
-            
+
             Spacer(modifier = Modifier.height(12.dp))
-            
+
             // Action Buttons
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -366,7 +365,7 @@ private fun GoalCard(
                     Spacer(modifier = Modifier.width(4.dp))
                     Text("AI Roadmap")
                 }
-                
+
                 Button(
                     onClick = onClick,
                     modifier = Modifier.weight(1f),
@@ -389,7 +388,7 @@ private fun StatusChip(status: Goal.Status) {
         Goal.Status.COMPLETED -> Pair(SuccessGreen, "Completed")
         Goal.Status.PAUSED -> Pair(TextSecondary, "Paused")
     }
-    
+
     Surface(
         color = color.copy(alpha = 0.1f),
         shape = RoundedCornerShape(12.dp)
@@ -418,24 +417,24 @@ private fun EmptyGoalsState(onCreateGoal: () -> Unit) {
             modifier = Modifier.size(64.dp),
             tint = TextSecondary.copy(alpha = 0.5f)
         )
-        
+
         Spacer(modifier = Modifier.height(16.dp))
-        
+
         Text(
             text = "No Goals Yet",
             style = MaterialTheme.typography.headlineSmall,
             color = TextPrimary,
             fontWeight = FontWeight.Bold
         )
-        
+
         Text(
             text = "Start your journey by creating your first goal",
             style = MaterialTheme.typography.bodyMedium,
             color = TextSecondary
         )
-        
+
         Spacer(modifier = Modifier.height(20.dp))
-        
+
         Button(
             onClick = onCreateGoal,
             colors = ButtonDefaults.buttonColors(
