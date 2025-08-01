@@ -54,13 +54,18 @@ fun GoalDetailScreen(
                     )
                 }
                 error != null -> {
-                    Text(
-                        text = "Error: $error",
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(16.dp),
-                        color = MaterialTheme.colorScheme.error
-                    )
+                    Column(
+                        modifier = Modifier.align(Alignment.Center),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text("Error: $error")
+                        Button(
+                            onClick = { viewModel.loadGoal(goalId) },
+                            modifier = Modifier.padding(top = 16.dp)
+                        ) {
+                            Text("Retry")
+                        }
+                    }
                 }
                 goal != null -> {
                     Column(
@@ -74,29 +79,18 @@ fun GoalDetailScreen(
                             style = MaterialTheme.typography.headlineMedium,
                             fontWeight = FontWeight.Bold
                         )
-                        
                         Text(
                             text = goal!!.description,
                             style = MaterialTheme.typography.bodyLarge
                         )
-                        
-                        Card(
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Column(
-                                modifier = Modifier.padding(16.dp),
-                                verticalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                Text(
-                                    text = "Priority: ${goal!!.priority.name}",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                                Text(
-                                    text = "Status: ${goal!!.status.name}",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            }
-                        }
+                        Text(
+                            text = "Category: ${goal!!.category}",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        Text(
+                            text = "Target Date: ${goal!!.targetDate}",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
                     }
                 }
                 else -> {
