@@ -1,0 +1,72 @@
+
+failed 3 minutes ago in 5m 44s
+2s
+2s
+0s
+1s
+20s
+2s
+1m 25s
+3m 47s
+Run ./gradlew assembleDebug --no-daemon --stacktrace | tee build.log
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :
+Build was configured to prefer settings repositories over project repositories but repository 'Google' was added by build file 'build.gradle'
+Build was configured to prefer settings repositories over project repositories but repository 'MavenRepo' was added by build file 'build.gradle'
+Checking the license for package Android SDK Build-Tools 33.0.1 in /usr/local/lib/android/sdk/licenses
+License for package Android SDK Build-Tools 33.0.1 accepted.
+Preparing "Install Android SDK Build-Tools 33.0.1 v.33.0.1".
+"Install Android SDK Build-Tools 33.0.1 v.33.0.1" ready.
+Installing Android SDK Build-Tools 33.0.1 in /usr/local/lib/android/sdk/build-tools/33.0.1
+"Install Android SDK Build-Tools 33.0.1 v.33.0.1" complete.
+"Install Android SDK Build-Tools 33.0.1 v.33.0.1" finished.
+
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkDebugAarMetadata
+> Task :app:generateDebugResValues
+> Task :app:injectCrashlyticsMappingFileIdDebug
+> Task :app:processDebugGoogleServices
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:mergeDebugResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:parseDebugLocalResources
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:processDebugManifestForPackage
+> Task :app:javaPreCompileDebug
+> Task :app:mergeDebugShaders
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :app:desugarDebugFileDependencies
+> Task :app:processDebugResources
+> Task :app:checkDebugDuplicateClasses
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:90:1 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:90:9 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:90:12 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:90:13 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:90:20 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:90:21 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:90:29 Expecting a top level declaration
+
+> Task :app:kaptGenerateStubsDebugKotlin
+w: Argument -Xopt-in is deprecated. Please use -opt-in instead
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:90:30 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:90:32 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:90:33 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:90:40 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:90:41 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:90:45 imports are only allowed in the beginning of file
+
+> Task :app:mergeExtDexDebug
+> Task :app:kaptGenerateStubsDebugKotlin FAILED
+
+FAILURE: Build failed with an exception.
