@@ -3,8 +3,10 @@ package com.example.goalguru.ui.screens.goal
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.goalguru.data.model.Goal
-import com.example.goalguru.data.repository.AIRepository
 import com.example.goalguru.data.repository.GoalRepository
+import com.example.goalguru.data.repository.AIRepository
+import java.util.UUID
+import java.time.LocalDateTime
 import com.example.goalguru.firebase.FirebaseConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -182,20 +184,25 @@ class CreateGoalViewModel @Inject constructor(
             _error.value = null
 
             try {
-                val goal = Goal(
-                    id = UUID.randomUUID().toString(),
-                    title = _title.value,
-                    description = _description.value,
-                    status = GoalStatus.ACTIVE,
-                    progress = 0.0f,
-                    createdAt = java.time.LocalDateTime.now(),
-                    updatedAt = java.time.LocalDateTime.now(),
-                    category = "General",
-                    priority = "Medium",
-                    completedAt = null
-                )
+                 val currentUser = FirebaseConfig.auth.currentUser
+                val userId = currentUser?.uid ?: "anonymous"
 
-                goalRepository.createGoal(goal)
+            val newGoal = Goal(
+                id = UUID.randomUUID().toString(),
+                userId = userId,
+                title = _title.value,
+                description = _description.value,
+                category = "General",
+                priority = Goal.Priority.MEDIUM,
+                status = Goal.Status.IN_PROGRESS,
+                targetDate = null,
+                createdAt = java.time.LocalDateTime.now(),
+                updatedAt = java.time.LocalDateTime.now(),
+                completedAt = null,
+                progress = 0.0f
+            )
+            goalRepository.insertGoal(newGoal)
+
                 _isGoalCreated.value = true
             } catch (e: Exception) {
                 _error.value = "Failed to create goal: ${e.message}"
