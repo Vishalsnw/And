@@ -10,6 +10,7 @@ import java.util.UUID
 data class Goal(
     @PrimaryKey
     val id: String = UUID.randomUUID().toString(),
+    val userId: String = "default_user",
     val title: String,
     val description: String,
     val roadmap: String,

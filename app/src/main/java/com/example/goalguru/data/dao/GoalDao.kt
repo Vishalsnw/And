@@ -15,6 +15,9 @@ interface GoalDao {
     @Query("SELECT * FROM goals WHERE id = :goalId")
     suspend fun getGoal(goalId: String): Goal?
 
+    @Query("SELECT * FROM goals WHERE userId = :userId ORDER BY createdAt DESC")
+    fun getGoalsByUserId(userId: String): Flow<List<Goal>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertGoal(goal: Goal)
 
@@ -30,6 +33,9 @@ interface GoalDao {
     @Query("UPDATE goals SET status = :status WHERE id = :goalId")
     suspend fun updateGoalStatus(goalId: String, status: Goal.Status)
 
+    @Query("SELECT COUNT(*) FROM goals WHERE userId = :userId")
+    suspend fun getGoalCountByUserId(userId: String): Int
+
     // Daily Tasks
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDailyTask(task: DailyTask)
@@ -43,7 +49,7 @@ interface GoalDao {
     @Query("SELECT * FROM daily_tasks WHERE goalId = :goalId ORDER BY dueDate ASC")
     fun getDailyTasksForGoal(goalId: String): Flow<List<DailyTask>>
 
-    @Query("SELECT * FROM daily_tasks WHERE DATE(dueDate/1000, 'unixepoch') = DATE('now') ORDER BY priority DESC")
+    @Query("SELECT * FROM daily_tasks WHERE DATE(dueDate/1000, 'unixepoch') = DATE('now') ORDER BY dueDate ASC")
     fun getTodaysTasks(): Flow<List<DailyTask>>
 
     @Query("UPDATE daily_tasks SET isCompleted = 1, completedAt = :completedAt WHERE id = :taskId")

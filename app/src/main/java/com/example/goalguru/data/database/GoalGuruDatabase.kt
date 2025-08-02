@@ -13,7 +13,7 @@ import com.example.goalguru.data.util.Converters
 
 @Database(
     entities = [Goal::class, Task::class, User::class, UserSettings::class],
-    version = 2,
+    version = 3,
     exportSchema = false,
 )
 @TypeConverters(Converters::class)
