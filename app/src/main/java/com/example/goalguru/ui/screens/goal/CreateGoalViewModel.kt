@@ -1,4 +1,3 @@
-
 package com.example.goalguru.ui.screens.goal
 
 import androidx.lifecycle.ViewModel
@@ -48,18 +47,34 @@ class CreateGoalViewModel @Inject constructor(
         )
     }
 
-    fun generateGoalRoadmap(input: String) {
+    fun generateGoal() {
         viewModelScope.launch {
             try {
                 _uiState.value = _uiState.value.copy(error = null)
                 _isLoading.value = true
-                
-                val generatedGoal = aiRepository.generateGoal(input)
-                _uiState.value = _uiState.value.copy(
-                    generatedGoal = generatedGoal,
-                    title = generatedGoal.title,
-                    description = generatedGoal.description
-                )
+
+                val prompt = "Create a detailed goal plan for: ${_uiState.value.title}. Description: ${_uiState.value.description}"
+                val aiResponse = aiRepository.generateGoalSuggestions(prompt)
+
+                if (aiResponse != null) {
+                    val goal = Goal(
+                        id = UUID.randomUUID().toString(),
+                        title = _uiState.value.title,
+                        description = _uiState.value.description,
+                        category = "General",
+                        targetDate = LocalDateTime.now().plusDays(30),
+                        status = Goal.Status.NOT_STARTED,
+                        priority = Goal.Priority.MEDIUM,
+                        progress = 0.0f,
+                        createdAt = LocalDateTime.now(),
+                        updatedAt = LocalDateTime.now(),
+                        userId = "default_user",
+                        completedAt = null
+                    )
+                    _uiState.value = _uiState.value.copy(generatedGoal = goal)
+                } else {
+                    _uiState.value = _uiState.value.copy(error = "Failed to generate goal suggestions")
+                }
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     error = "Failed to generate goal: ${e.message}"
@@ -75,11 +90,12 @@ class CreateGoalViewModel @Inject constructor(
             try {
                 _uiState.value = _uiState.value.copy(error = null)
                 _isLoading.value = true
-                
+
                 val goal = Goal(
                     id = UUID.randomUUID().toString(),
                     title = _uiState.value.title,
                     description = _uiState.value.description,
+                    category = "General",
                     targetDate = LocalDateTime.now().plusDays(30),
                     status = Goal.Status.ACTIVE,
                     priority = Goal.Priority.MEDIUM,
@@ -89,7 +105,7 @@ class CreateGoalViewModel @Inject constructor(
                     userId = "default_user",
                     completedAt = null
                 )
-                
+
                 goalRepository.insertGoal(goal)
                 _uiState.value = _uiState.value.copy(isGoalCreated = true)
             } catch (e: Exception) {
@@ -126,11 +142,12 @@ class CreateGoalViewModel @Inject constructor(
             try {
                 _uiState.value = _uiState.value.copy(error = null)
                 _isLoading.value = true
-                
+
                 val updatedGoal = Goal(
                     id = goalId,
                     title = _uiState.value.title,
                     description = _uiState.value.description,
+                    category = "General",
                     targetDate = LocalDateTime.now().plusDays(30),
                     status = Goal.Status.ACTIVE,
                     priority = Goal.Priority.MEDIUM,
@@ -140,7 +157,7 @@ class CreateGoalViewModel @Inject constructor(
                     userId = "default_user",
                     completedAt = null
                 )
-                
+
                 goalRepository.updateGoal(updatedGoal)
                 _uiState.value = _uiState.value.copy(isGoalCreated = true)
             } catch (e: Exception) {
