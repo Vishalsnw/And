@@ -1,0 +1,36 @@
+INFO] Annotation processing took 3485 ms
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:12:1 Conflicting overloads: public fun CreateGoalScreen(onNavigateBack: () -> Unit, onGoalCreated: () -> Unit, viewModel: CreateGoalViewModel = ...): Unit defined in com.example.goalguru.ui.screens.create in file CreateGoalScreen.kt, public fun CreateGoalScreen(onBackPressed: () -> Unit, onGoalCreated: () -> Unit, viewModel: CreateGoalViewModel = ...): Unit defined in com.example.goalguru.ui.screens.create in file CreateGoalScreen.kt
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:39:22 Unresolved reference: Icons
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:82:32 Unresolved reference: isLoading
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:84:25 Unresolved reference: isLoading
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:92:1 Conflicting overloads: public fun CreateGoalScreen(onNavigateBack: () -> Unit, onGoalCreated: () -> Unit, viewModel: CreateGoalViewModel = ...): Unit defined in com.example.goalguru.ui.screens.create in file CreateGoalScreen.kt, public fun CreateGoalScreen(onBackPressed: () -> Unit, onGoalCreated: () -> Unit, viewModel: CreateGoalViewModel = ...): Unit defined in com.example.goalguru.ui.screens.create in file CreateGoalScreen.kt
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:92:5 Functions which invoke @Composable functions must be marked with the @Composable annotation
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:95:38 @Composable invocations can only happen from the context of a @Composable function
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:97:34 @Composable invocations can only happen from the context of a @Composable function
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:98:46 @Composable invocations can only happen from the context of a @Composable function
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:99:42 @Composable invocations can only happen from the context of a @Composable function
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:100:28 Unresolved reference: error
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:102:5 @Composable invocations can only happen from the context of a @Composable function
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:110:5 @Composable invocations can only happen from the context of a @Composable function
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:131:22 Cannot infer a type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:132:13 Overload resolution ambiguity: 
+public fun Text(text: AnnotatedString, modifier: Modifier = ..., color: Color = ..., fontSize: TextUnit = ..., fontStyle: FontStyle? = ..., fontWeight: FontWeight? = ..., fontFamily: FontFamily? = ..., letterSpacing: TextUnit = ..., textDecoration: TextDecoration? = ..., textAlign: TextAlign? = ..., lineHeight: TextUnit = ..., overflow: TextOverflow = ..., softWrap: Boolean = ..., maxLines: Int = ..., minLines: Int = ..., inlineContent: Map<String, InlineTextContent> = ..., onTextLayout: (TextLayoutResult) -> Unit = ..., style: TextStyle = ...): Unit defined in androidx.compose.material3
+public fun Text(text: String, modifier: Modifier = ..., color: Color = ..., fontSize: TextUnit = ..., fontStyle: FontStyle? = ..., fontWeight: FontWeight? = ..., fontFamily: FontFamily? = ..., letterSpacing: TextUnit = ..., textDecoration: TextDecoration? = ..., textAlign: TextAlign? = ..., lineHeight: TextUnit = ..., overflow: TextOverflow = ..., softWrap: Boolean = ..., maxLines: Int = ..., minLines: Int = ..., onTextLayout: (TextLayoutResult) -> Unit = ..., style: TextStyle = ...): Unit defined in androidx.compose.material3
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:134:39 @Composable invocations can only happen from the context of a @Composable function
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:113:47 Unresolved reference: generateGoalRoadmap
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:224:47 Unresolved reference: saveGoal
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:68:46 Cannot find a parameter with this name: category
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:73:46 Cannot find a parameter with this name: priority
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:118:17 Cannot find a parameter with this name: isLoading
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:128:30 Type mismatch: inferred type is String but Goal.Status was expected
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:130:32 Type mismatch: inferred type is String but Goal.Priority was expected
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:131:21 Cannot find a parameter with this name: roadmap
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:132:32 The integer literal does not conform to the expected type Float
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:134:21 No value passed for parameter 'userId'
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:134:21 No value passed for parameter 'completedAt'
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:140:21 Cannot find a parameter with this name: isLoading
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.kt:146:21 Cannot find a parameter with this name: isLoading
+FAILURE: Build failed with an exception.
+* What went wrong:
+Execution failed for task ':app:compileDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
