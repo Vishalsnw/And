@@ -4,7 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
+importandroidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -387,6 +387,7 @@ private fun StatusChip(status: Goal.Status) {
         Goal.Status.IN_PROGRESS -> Pair(PrimaryBlue, "In Progress")
         Goal.Status.COMPLETED -> Pair(SuccessGreen, "Completed")
         Goal.Status.PAUSED -> Pair(TextSecondary, "Paused")
+        Goal.Status.CANCELLED -> Pair(Color.Red, "Cancelled")
     }
 
     Surface(
