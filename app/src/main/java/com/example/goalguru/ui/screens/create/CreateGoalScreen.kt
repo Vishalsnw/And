@@ -1,4 +1,3 @@
-
 package com.example.goalguru.ui.screens.create
 
 import androidx.compose.foundation.layout.*
@@ -70,7 +69,7 @@ fun CreateGoalScreen(
             }
 
             Button(
-                onClick = viewModel::createGoal,
+                onClick = { viewModel.createGoal() },
                 enabled = !isLoading && title.isNotBlank(),
                 modifier = Modifier.weight(1f)
             ) {

@@ -18,8 +18,22 @@ class CreateGoalViewModel @Inject constructor(
     private val aiRepository: AIRepository
 ) : ViewModel() {
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
+
     private val _uiState = MutableStateFlow(CreateGoalUiState())
     val uiState = _uiState.asStateFlow()
+
+    private val _isGoalCreated = MutableStateFlow(false)
+    val isGoalCreated = _isGoalCreated.asStateFlow()
+
+    data class CreateGoalUiState(
+        val title: String = "",
+        val description: String = "",
+        val error: String? = null,
+        val isGoalCreated: Boolean = false,
+        val generatedGoal: Goal? = null
+    )
 
     private val _title = MutableStateFlow("")
     val title = _title.asStateFlow()
@@ -35,9 +49,6 @@ class CreateGoalViewModel @Inject constructor(
 
     private val _targetDate = MutableStateFlow<LocalDateTime?>(null)
     val targetDate = _targetDate.asStateFlow()
-
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading = _isLoading.asStateFlow()
 
     private val _aiSuggestions = MutableStateFlow("")
     val aiSuggestions = _aiSuggestions.asStateFlow()
@@ -94,46 +105,91 @@ class CreateGoalViewModel @Inject constructor(
             }
         }
     }
+    fun updateTitle(title: String) {
+        _uiState.value = _uiState.value.copy(title = title)
+    }
 
-    fun createGoal() {
+    fun updateDescription(description: String) {
+        _uiState.value = _uiState.value.copy(description = description)
+    }
+
+    fun generateGoalRoadmap(goalInput: String) {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val goalId = UUID.randomUUID().toString()
-                val now = LocalDateTime.now()
-
-                val priorityEnum = when(_priority.value) {
-                    "LOW" -> Goal.Priority.LOW
-                    "MEDIUM" -> Goal.Priority.MEDIUM
-                    "HIGH" -> Goal.Priority.HIGH
-                    "URGENT" -> Goal.Priority.URGENT
-                    else -> Goal.Priority.MEDIUM
-                }
-
-                val goal = Goal(
-                    id = goalId,
-                    userId = "default_user", // TODO: Replace with actual user ID
-                    title = _title.value,
-                    description = _description.value,
-                    category = _category.value.ifEmpty { "General" },
-                    priority = priorityEnum,
-                    status = Goal.Status.NOT_STARTED,
-                    targetDate = _targetDate.value,
-                    createdAt = now,
-                    updatedAt = now,
+                // Simulate AI generation
+                val generatedGoal = Goal(
+                    id = UUID.randomUUID().toString(),
+                    title = goalInput,
+                    description = "AI-generated roadmap for: $goalInput",
+                    progress = 0.0f,
+                    startDate = LocalDateTime.now(),
+                    targetDate = LocalDateTime.now().plusDays(30),
+                    status = Goal.Status.ACTIVE,
+                    category = Goal.Category.PERSONAL,
+                    priority = Goal.Priority.MEDIUM,
                     completedAt = null,
-                    progress = 0.0f
+                    userId = "user123"
+                )
+                _uiState.value = _uiState.value.copy(generatedGoal = generatedGoal)
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(error = "Failed to generate roadmap: ${e.message}")
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun saveGoal() {
+        viewModelScope.launch {
+            val currentGoal = _uiState.value.generatedGoal
+            if (currentGoal != null) {
+                _isLoading.value = true
+                try {
+                    goalRepository.createGoal(currentGoal)
+                    _uiState.value = _uiState.value.copy(isGoalCreated = true)
+                } catch (e: Exception) {
+                    _uiState.value = _uiState.value.copy(error = "Failed to save goal: ${e.message}")
+                } finally {
+                    _isLoading.value = false
+                }
+            }
+        }
+    }
+
+    fun clearGenerated() {
+        _uiState.value = _uiState.value.copy(generatedGoal = null)
+    }
+
+    fun createGoal() {
+        viewModelScope.launch {
+            if (_uiState.value.title.isBlank()) {
+                _uiState.value = _uiState.value.copy(error = "Goal title cannot be empty")
+                return@launch
+            }
+
+            _isLoading.value = true
+            _uiState.value = _uiState.value.copy(error = null)
+
+            try {
+                val goal = Goal(
+                    id = UUID.randomUUID().toString(),
+                    title = _uiState.value.title,
+                    description = _uiState.value.description,
+                    progress = 0.0f,
+                    startDate = LocalDateTime.now(),
+                    targetDate = LocalDateTime.now().plusDays(30),
+                    status = Goal.Status.ACTIVE,
+                    category = Goal.Category.PERSONAL,
+                    priority = Goal.Priority.MEDIUM,
+                    completedAt = null,
+                    userId = "user123"
                 )
 
-                goalRepository.insertGoal(goal)
-                _uiState.value = _uiState.value.copy(
-                    isGoalCreated = true,
-                    error = null
-                )
+                goalRepository.createGoal(goal)
+                _uiState.value = _uiState.value.copy(isGoalCreated = true)
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    error = "Failed to create goal: ${e.message}"
-                )
+                _uiState.value = _uiState.value.copy(error = "Failed to create goal: ${e.message}")
             } finally {
                 _isLoading.value = false
             }
@@ -144,13 +200,3 @@ class CreateGoalViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(error = null)
     }
 }
-
-data class CreateGoalUiState(
-    val title: String = "",
-    val description: String = "",
-    val category: String = "",
-    val priority: String = "MEDIUM",
-    val isLoading: Boolean = false,
-    val error: String? = null,
-    val isGoalCreated: Boolean = false
-)

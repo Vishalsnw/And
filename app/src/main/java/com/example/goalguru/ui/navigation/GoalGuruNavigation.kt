@@ -22,7 +22,7 @@ fun GoalGuruNavigation(
     ) {
         composable("onboarding") {
             OnboardingScreen(
-                onNavigateToDashboard = {
+                onGetStarted = {
                     navController.navigate("dashboard") {
                         popUpTo("onboarding") { inclusive = true }
                     }
@@ -46,7 +46,7 @@ fun GoalGuruNavigation(
         
         composable("create_goal") {
             CreateGoalScreen(
-                onNavigateBack = {
+                onBackPressed = {
                     navController.popBackStack()
                 },
                 onGoalCreated = {
@@ -59,7 +59,7 @@ fun GoalGuruNavigation(
             val goalId = backStackEntry.arguments?.getString("goalId") ?: ""
             GoalDetailScreen(
                 goalId = goalId,
-                onNavigateBack = {
+                onBackPressed = {
                     navController.popBackStack()
                 }
             )

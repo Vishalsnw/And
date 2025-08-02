@@ -7,6 +7,7 @@ import com.example.goalguru.data.repository.GoalRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -59,22 +60,15 @@ class DashboardViewModel @Inject constructor(
             _isLoading.value = true
             try {
                 val currentGoals = _goals.value
-                val updatedGoals = currentGoals.map { goal ->
-                    if (goal.id == goalId) {
-                        goal.copy(
-                            status = Goal.Status.COMPLETED,
-                            progress = 1.0f,
-                            completedAt = java.time.LocalDateTime.now()
-                        )
-                    } else {
-                        goal
-                    }
+                val goalToUpdate = currentGoals.find { it.id == goalId }
+                if (goalToUpdate != null) {
+                    val updatedGoal = goalToUpdate.copy(
+                        status = Goal.Status.COMPLETED,
+                        progress = 1.0f,
+                        completedAt = LocalDateTime.now()
+                    )
+                    goalRepository.updateGoal(updatedGoal)
                 }
-                _goals.value = updatedGoals
-
-                goalRepository.updateGoal(
-                    updatedGoals.first { it.id == goalId }
-                )
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     error = "Failed to update goal: ${e.message}"

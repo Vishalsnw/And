@@ -110,15 +110,7 @@ fun CreateGoalScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Button(
-                        onClick = {
-                            if (goalInput.isNotBlank()) {
-                                isGenerating = true
-                                viewModel.generateGoalRoadmap(goalInput) {
-                                    isGenerating = false
-                                    onGoalCreated()
-                                }
-                            }
-                        },
+                        onClick = { viewModel.generateGoalRoadmap(goalInput) },
                         modifier = Modifier.fillMaxWidth(),
                         enabled = goalInput.isNotBlank() && !isGenerating,
                         shape = RoundedCornerShape(12.dp)
@@ -178,7 +170,7 @@ fun CreateGoalScreen(
             }
 
             // Show generation result
-            if (uiState.generatedGoal != null) {
+            uiState.generatedGoal?.let { generatedGoal ->
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
@@ -197,7 +189,7 @@ fun CreateGoalScreen(
                         Spacer(modifier = Modifier.height(12.dp))
 
                         Text(
-                            text = uiState.generatedGoal!!.title,
+                            text = generatedGoal.title,
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSecondaryContainer
@@ -206,7 +198,7 @@ fun CreateGoalScreen(
                         Spacer(modifier = Modifier.height(8.dp))
 
                         Text(
-                            text = uiState.generatedGoal!!.description,
+                            text = generatedGoal.description,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSecondaryContainer
                         )
