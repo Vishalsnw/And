@@ -12,6 +12,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import java.time.LocalDateTime
 import java.util.UUID
+import java.util.Date
+import java.time.ZoneId
 
 @HiltViewModel
 class CreateGoalViewModel @Inject constructor(
@@ -28,9 +30,14 @@ class CreateGoalViewModel @Inject constructor(
     data class CreateGoalUiState(
         val title: String = "",
         val description: String = "",
+		val roadmap: String = "",
         val error: String? = null,
         val isGoalCreated: Boolean = false,
-        val generatedGoal: Goal? = null
+        val generatedGoal: Goal? = null,
+        val category: String = "General",
+        val targetDate: LocalDateTime = LocalDateTime.now().plusDays(30),
+        val priority: Goal.Priority = Goal.Priority.MEDIUM,
+        val estimatedDuration: Int = 30
     )
 
     fun updateTitle(title: String) {
@@ -62,15 +69,12 @@ class CreateGoalViewModel @Inject constructor(
                         id = UUID.randomUUID().toString(),
                         title = _uiState.value.title,
                         description = _uiState.value.description,
-                        category = "General",
-                        targetDate = LocalDateTime.now().plusDays(30),
-                        status = Goal.Status.NOT_STARTED,
-                        priority = Goal.Priority.MEDIUM,
-                        progress = 0.0f,
-                        createdAt = LocalDateTime.now(),
-                        updatedAt = LocalDateTime.now(),
-                        userId = "default_user",
-                        completedAt = null
+                        roadmap = "",
+                        targetDate = Date.from(_uiState.value.targetDate.atZone(ZoneId.systemDefault()).toInstant()),
+                        priority = _uiState.value.priority,
+                        estimatedDuration = _uiState.value.estimatedDuration,
+                        createdAt = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()),
+                        progress = 0.0f
                     )
                     _uiState.value = _uiState.value.copy(generatedGoal = goal)
                 } else {
@@ -85,6 +89,60 @@ class CreateGoalViewModel @Inject constructor(
             }
         }
     }
+		fun createGoalFromAI(title: String, description: String, roadmap: String, category: String, targetDate: LocalDateTime, priority: Goal.Priority, estimatedDuration: Int) {
+			viewModelScope.launch {
+				try {
+					_isLoading.value = true
+					_uiState.value = _uiState.value.copy(error = null)
+
+					val goal = Goal(
+						title = title,
+						description = description,
+						roadmap = roadmap,
+						targetDate = Date.from(targetDate.atZone(ZoneId.systemDefault()).toInstant()),
+						priority = priority,
+						estimatedDuration = estimatedDuration,
+						createdAt = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()),
+						progress = 0.0f
+					)
+
+					goalRepository.insertGoal(goal)
+					_uiState.value = _uiState.value.copy(isGoalCreated = true)
+
+				} catch (e: Exception) {
+					_uiState.value = _uiState.value.copy(error = "Failed to create goal: ${e.message}")
+				} finally {
+					_isLoading.value = false
+				}
+			}
+		}
+		fun createGoalWithRoadmap(title: String, description: String, roadmap: String, category: String, targetDate: LocalDateTime, priority: Goal.Priority, estimatedDuration: Int) {
+			viewModelScope.launch {
+				try {
+					_isLoading.value = true
+					_uiState.value = _uiState.value.copy(error = null)
+
+					val goal = Goal(
+						title = title,
+						description = description,
+						roadmap = roadmap,
+						targetDate = Date.from(targetDate.atZone(ZoneId.systemDefault()).toInstant()),
+						priority = priority,
+						estimatedDuration = estimatedDuration,
+						createdAt = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()),
+						progress = 0.0f
+					)
+
+					goalRepository.insertGoal(goal)
+					_uiState.value = _uiState.value.copy(isGoalCreated = true)
+
+				} catch (e: Exception) {
+					_uiState.value = _uiState.value.copy(error = "Failed to create goal: ${e.message}")
+				} finally {
+					_isLoading.value = false
+				}
+			}
+		}
 
     fun generateGoalRoadmap(goalInput: String) {
         if (goalInput.trim().isEmpty()) {
@@ -96,8 +154,7 @@ class CreateGoalViewModel @Inject constructor(
             try {
                 _uiState.value = _uiState.value.copy(
                     error = null,
-                    isGenerating = true,
-                    generatedRoadmap = null
+                    roadmap = ""
                 )
                 _isLoading.value = true
 
@@ -106,21 +163,19 @@ class CreateGoalViewModel @Inject constructor(
 
                 if (aiResponse != null) {
                     _uiState.value = _uiState.value.copy(
-                        generatedRoadmap = aiResponse,
+                        roadmap = aiResponse,
                         title = goalInput.take(50), // Auto-fill title
-                        description = goalInput,
-                        isGenerating = false
+                        description = goalInput
                     )
                 } else {
                     _uiState.value = _uiState.value.copy(
-                        error = "Unable to generate roadmap. Please try again.",
-                        isGenerating = false
+                        error = "Unable to generate roadmap. Please try again."
                     )
                 }
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     error = "Generation failed: ${e.localizedMessage}",
-                    isGenerating = false
+					roadmap = _uiState.value.roadmap
                 )
             } finally {
                 _isLoading.value = false
@@ -138,15 +193,12 @@ class CreateGoalViewModel @Inject constructor(
                     id = UUID.randomUUID().toString(),
                     title = _uiState.value.title,
                     description = _uiState.value.description,
-                    category = "General",
-                    targetDate = LocalDateTime.now().plusDays(30),
-                    status = Goal.Status.NOT_STARTED,
-                    priority = Goal.Priority.MEDIUM,
-                    progress = 0.0f,
-                    createdAt = LocalDateTime.now(),
-                    updatedAt = LocalDateTime.now(),
-                    userId = "default_user",
-                    completedAt = null
+					roadmap = "",
+                    targetDate = Date.from(_uiState.value.targetDate.atZone(ZoneId.systemDefault()).toInstant()),
+                    priority = _uiState.value.priority,
+                    estimatedDuration = _uiState.value.estimatedDuration,
+                    createdAt = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()),
+                    progress = 0.0f
                 )
 
                 goalRepository.insertGoal(goal)
@@ -190,15 +242,12 @@ class CreateGoalViewModel @Inject constructor(
                     id = goalId,
                     title = _uiState.value.title,
                     description = _uiState.value.description,
-                    category = "General",
-                    targetDate = LocalDateTime.now().plusDays(30),
-                    status = Goal.Status.NOT_STARTED,
-                    priority = Goal.Priority.MEDIUM,
-                    progress = 0.0f,
-                    createdAt = LocalDateTime.now(),
-                    updatedAt = LocalDateTime.now(),
-                    userId = "default_user",
-                    completedAt = null
+					roadmap = "",
+                    targetDate = Date.from(_uiState.value.targetDate.atZone(ZoneId.systemDefault()).toInstant()),
+                    priority = _uiState.value.priority,
+                    estimatedDuration = _uiState.value.estimatedDuration,
+                    createdAt = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()),
+                    progress = 0.0f
                 )
 
                 goalRepository.updateGoal(updatedGoal)

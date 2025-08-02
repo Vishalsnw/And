@@ -4,21 +4,17 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.goalguru.data.dao.GoalDao
-import com.example.goalguru.data.dao.TaskDao
 import com.example.goalguru.data.model.Goal
-import com.example.goalguru.data.model.Task
+import com.example.goalguru.data.model.DailyTask
 import com.example.goalguru.data.model.User
 import com.example.goalguru.data.model.UserSettings
-import android.content.Context
 import com.example.goalguru.data.util.Converters
-import com.example.goalguru.data.model.DailyTask
-import com.example.goalguru.data.dao.UserDao
-import com.example.goalguru.data.dao.UserSettingsDao
+import com.example.goalguru.data.dao.GoalDao
+import com.example.goalguru.data.dao.TaskDao
 
 @Database(
-    entities = [Goal::class, Task::class, User::class, DailyTask::class, UserSettings::class],
-    version = 3,
+    entities = [Goal::class, DailyTask::class, User::class, UserSettings::class],
+    version = 2,
     exportSchema = false,
 )
 @TypeConverters(Converters::class)
@@ -27,21 +23,4 @@ abstract class GoalGuruDatabase : RoomDatabase() {
     abstract fun taskDao(): TaskDao
     abstract fun userDao(): UserDao
     abstract fun userSettingsDao(): UserSettingsDao
-    companion object {
-        @Volatile
-        private var INSTANCE: GoalGuruDatabase? = null
-
-        fun getDatabase(context: Context): GoalGuruDatabase {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    GoalGuruDatabase::class.java,
-                    "goal_guru_database",
-                ).fallbackToDestructiveMigration()
-                .build()
-                INSTANCE = instance
-                instance
-            }
-        }
-    }
 }

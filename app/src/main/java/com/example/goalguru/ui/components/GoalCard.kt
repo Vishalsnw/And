@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-
+import androidx.compose.ui.graphics.Color
 import com.example.goalguru.data.model.Goal
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,10 +51,10 @@ fun GoalCard(
                     text = goal.priority.name,
                     style = MaterialTheme.typography.labelMedium,
                     color = when (goal.priority) {
-                        Goal.Priority.URGENT -> MaterialTheme.colorScheme.error
-                        Goal.Priority.HIGH -> MaterialTheme.colorScheme.primary
-                        Goal.Priority.MEDIUM -> MaterialTheme.colorScheme.secondary
-                        Goal.Priority.LOW -> MaterialTheme.colorScheme.outline
+                        com.example.goalguru.data.model.Priority.HIGH -> MaterialTheme.colorScheme.error
+                        com.example.goalguru.data.model.Priority.MEDIUM -> MaterialTheme.colorScheme.primary
+                        com.example.goalguru.data.model.Priority.LOW -> MaterialTheme.colorScheme.secondary
+                        com.example.goalguru.data.model.Priority.OPTIONAL -> MaterialTheme.colorScheme.outline
                     }
                 )
             }

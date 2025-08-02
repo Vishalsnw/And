@@ -88,7 +88,7 @@ class DashboardViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                goalRepository.deleteGoal(goal)
+                goalRepository.deleteGoal(goal.id)
                 val updatedGoals = _goals.value.filter { it.id != goal.id }
                 _goals.value = updatedGoals
             } catch (e: Exception) {

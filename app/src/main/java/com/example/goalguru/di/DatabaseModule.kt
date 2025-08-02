@@ -3,8 +3,8 @@ package com.example.goalguru.di
 import android.content.Context
 import androidx.room.Room
 import com.example.goalguru.data.database.GoalGuruDatabase
-import com.example.goalguru.data.database.GoalDao
-import com.example.goalguru.data.database.TaskDao
+import com.example.goalguru.data.dao.GoalDao
+import com.example.goalguru.data.dao.TaskDao
 import com.example.goalguru.data.database.UserDao
 import com.example.goalguru.data.database.UserSettingsDao
 import com.example.goalguru.data.repository.AIRepository
