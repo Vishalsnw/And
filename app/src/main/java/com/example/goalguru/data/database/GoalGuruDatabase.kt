@@ -4,6 +4,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.example.goalguru.data.dao.GoalDao
+import com.example.goalguru.data.dao.TaskDao
 import com.example.goalguru.data.model.Goal
 import com.example.goalguru.data.model.Task
 import com.example.goalguru.data.model.User

@@ -5,6 +5,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
 
+enum class Priority {
+    LOW, MEDIUM, HIGH, URGENT
+}
+
 @Entity(tableName = "daily_tasks")
 data class DailyTask(
     @PrimaryKey
