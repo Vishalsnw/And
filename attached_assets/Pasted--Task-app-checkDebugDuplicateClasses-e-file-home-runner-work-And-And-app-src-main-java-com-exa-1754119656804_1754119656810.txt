@@ -1,0 +1,19 @@
+> Task :app:checkDebugDuplicateClasses
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/dashboard/DashboardScreen.kt:7:1 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/dashboard/DashboardScreen.kt:7:15 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/dashboard/DashboardScreen.kt:7:16 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/dashboard/DashboardScreen.kt:7:23 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/dashboard/DashboardScreen.kt:7:24 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/dashboard/DashboardScreen.kt:7:34 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/dashboard/DashboardScreen.kt:7:35 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/dashboard/DashboardScreen.kt:7:39 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/dashboard/DashboardScreen.kt:7:40 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/dashboard/DashboardScreen.kt:7:47 imports are only allowed in the beginning of file
+> Task :app:kaptGenerateStubsDebugKotlin
+w: Argument -Xopt-in is deprecated. Please use -opt-in instead
+> Task :app:kaptGenerateStubsDebugKotlin FAILED
+> Task :app:mergeExtDexDebug
+FAILURE: Build failed with an exception.
+* What went wrong:
+Execution failed for task ':app:kaptGenerateStubsDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
