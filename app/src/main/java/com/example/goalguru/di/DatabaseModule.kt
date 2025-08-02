@@ -8,6 +8,7 @@ import com.example.goalguru.data.database.TaskDao
 import com.example.goalguru.data.database.UserDao
 import com.example.goalguru.data.database.UserSettingsDao
 import com.example.goalguru.data.repository.AIRepository
+import com.example.goalguru.data.repository.AIRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
