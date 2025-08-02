@@ -1,6 +1,8 @@
 package com.example.goalguru.ui.screens.create
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,7 +19,8 @@ fun CreateGoalScreen(
     viewModel: CreateGoalViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    
+    val isLoading by viewModel.isLoading.collectAsState()
+
     LaunchedEffect(uiState.isGoalCreated) {
         if (uiState.isGoalCreated) {
             onGoalCreated()
@@ -59,7 +62,7 @@ fun CreateGoalScreen(
             }
         }
 
-        // Goal input fields
+        // Title Input
         OutlinedTextField(
             value = uiState.title,
             onValueChange = viewModel::updateTitle,
@@ -67,6 +70,7 @@ fun CreateGoalScreen(
             modifier = Modifier.fillMaxWidth()
         )
 
+        // Description Input
         OutlinedTextField(
             value = uiState.description,
             onValueChange = viewModel::updateDescription,
@@ -75,90 +79,19 @@ fun CreateGoalScreen(
             minLines = 3
         )
 
-        // Create Goal button
+        // Create Button
         Button(
             onClick = { viewModel.createGoal() },
             modifier = Modifier.fillMaxWidth(),
-            enabled = !uiState.isLoading && uiState.title.isNotBlank()
+            enabled = !isLoading && uiState.title.isNotBlank()
         ) {
-            if (uiState.isLoading) {
-                CircularProgressIndicator(modifier = Modifier.size(20.dp))
+            if (isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(20.dp),
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
             } else {
                 Text("Create Goal")
-            }
-        }
-    }
-}
-fun CreateGoalScreen(
-    onBackPressed: () -> Unit,
-    onGoalCreated: () -> Unit,
-    viewModel: CreateGoalViewModel = hiltViewModel()
-) {
-    val title by viewModel.title.collectAsState()
-    val description by viewModel.description.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
-    val error by viewModel.error.collectAsState()
-
-    LaunchedEffect(viewModel.isGoalCreated) {
-        viewModel.isGoalCreated.collect { isCreated ->
-            if (isCreated) {
-                onGoalCreated()
-            }
-        }
-    }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        OutlinedTextField(
-            value = title,
-            onValueChange = viewModel::updateTitle,
-            label = { Text("Goal Title") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = description,
-            onValueChange = viewModel::updateDescription,
-            label = { Text("Description") },
-            modifier = Modifier.fillMaxWidth(),
-            minLines = 3
-        )
-
-        error?.let { errorMessage ->
-            Text(
-                text = errorMessage,
-                color = MaterialTheme.colorScheme.error
-            )
-        }
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            OutlinedButton(
-                onClick = onBackPressed,
-                modifier = Modifier.weight(1f)
-            ) {
-                Text("Cancel")
-            }
-
-            Button(
-                onClick = { viewModel.createGoal() },
-                enabled = !isLoading && title.isNotBlank(),
-                modifier = Modifier.weight(1f)
-            ) {
-                if (isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(16.dp),
-                        strokeWidth = 2.dp
-                    )
-                } else {
-                    Text("Create Goal")
-                }
             }
         }
     }
