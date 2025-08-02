@@ -14,26 +14,26 @@ import com.example.goalguru.ui.screens.goal.GoalDetailScreen
 
 @Composable
 fun GoalGuruNavigation(
-    navController: NavHostController = rememberNavController(),
+    navController: NavHostController = rememberNavController()
 ) {
     NavHost(
         navController = navController,
-        startDestination = "dashboard",
+        startDestination = "dashboard"
     ) {
         composable("dashboard") {
             DashboardScreen(
-                onGoalClick = { goalId ->
-                    navController.navigate("goal_detail/$goalId")
-                },
                 onCreateGoal = {
                     navController.navigate("create_goal")
                 },
+                onGoalClick = { goalId ->
+                    navController.navigate("goal_detail/$goalId")
+                }
             )
         }
-
+        
         composable("create_goal") {
             CreateGoalScreen(
-                onBackPressed = {
+                onNavigateBack = {
                     navController.popBackStack()
                 },
                 onGoalCreated = {
@@ -41,19 +41,17 @@ fun GoalGuruNavigation(
                 }
             )
         }
-
+        
         composable(
-            route = "goal_detail/{goalId}",
-            arguments = listOf(
-                navArgument("goalId") { type = NavType.StringType },
-            ),
+            "goal_detail/{goalId}",
+            arguments = listOf(navArgument("goalId") { type = NavType.StringType })
         ) { backStackEntry ->
             val goalId = backStackEntry.arguments?.getString("goalId") ?: ""
             GoalDetailScreen(
                 goalId = goalId,
-                onBackPressed = {
+                onNavigateBack = {
                     navController.popBackStack()
-                },
+                }
             )
         }
     }
