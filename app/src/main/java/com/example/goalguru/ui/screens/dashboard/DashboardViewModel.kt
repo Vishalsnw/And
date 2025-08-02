@@ -106,12 +106,12 @@ class DashboardViewModel @Inject constructor(
         }
     }
 
-    fun deleteGoal(goalId: String) {
+    fun deleteGoal(goal: Goal) {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                goalRepository.deleteGoal(goalId)
-                val updatedGoals = _goals.value.filter { it.id != goalId }
+                goalRepository.deleteGoal(goal)
+                val updatedGoals = _goals.value.filter { it.id != goal.id }
                 _goals.value = updatedGoals
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(

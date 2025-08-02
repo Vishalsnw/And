@@ -53,14 +53,14 @@ class CreateGoalViewModel @Inject constructor(
     private val _aiSuggestions = MutableStateFlow("")
     val aiSuggestions = _aiSuggestions.asStateFlow()
 
-    fun updateTitle(newTitle: String) {
-        _title.value = newTitle
-        _uiState.value = _uiState.value.copy(title = newTitle)
+    fun updateTitle(title: String) {
+        _title.value = title
+        _uiState.value = _uiState.value.copy(title = title)
     }
 
-    fun updateDescription(newDescription: String) {
-        _description.value = newDescription
-        _uiState.value = _uiState.value.copy(description = newDescription)
+    fun updateDescription(description: String) {
+        _description.value = description
+        _uiState.value = _uiState.value.copy(description = description)
     }
 
     fun updateCategory(newCategory: String) {
@@ -105,93 +105,46 @@ class CreateGoalViewModel @Inject constructor(
             }
         }
     }
-    fun updateTitle(title: String) {
-        _uiState.value = _uiState.value.copy(title = title)
-    }
-
-    fun updateDescription(description: String) {
-        _uiState.value = _uiState.value.copy(description = description)
-    }
-
-    fun generateGoalRoadmap(goalInput: String) {
-        viewModelScope.launch {
-            _isLoading.value = true
-            try {
-                // Simulate AI generation
-                val generatedGoal = Goal(
-                    id = UUID.randomUUID().toString(),
-                    title = goalInput,
-                    description = "AI-generated roadmap for: $goalInput",
-                    progress = 0.0f,
-                    startDate = LocalDateTime.now(),
-                    targetDate = LocalDateTime.now().plusDays(30),
-                    status = Goal.Status.ACTIVE,
-                    category = Goal.Category.PERSONAL,
-                    priority = Goal.Priority.MEDIUM,
-                    completedAt = null,
-                    userId = "user123"
-                )
-                _uiState.value = _uiState.value.copy(generatedGoal = generatedGoal)
-            } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(error = "Failed to generate roadmap: ${e.message}")
-            } finally {
-                _isLoading.value = false
-            }
-        }
-    }
-
-    fun saveGoal() {
-        viewModelScope.launch {
-            val currentGoal = _uiState.value.generatedGoal
-            if (currentGoal != null) {
-                _isLoading.value = true
-                try {
-                    goalRepository.createGoal(currentGoal)
-                    _uiState.value = _uiState.value.copy(isGoalCreated = true)
-                } catch (e: Exception) {
-                    _uiState.value = _uiState.value.copy(error = "Failed to save goal: ${e.message}")
-                } finally {
-                    _isLoading.value = false
-                }
-            }
-        }
-    }
 
     fun clearGenerated() {
         _uiState.value = _uiState.value.copy(generatedGoal = null)
     }
 
     fun createGoal() {
-        viewModelScope.launch {
-            if (_uiState.value.title.isBlank()) {
-                _uiState.value = _uiState.value.copy(error = "Goal title cannot be empty")
-                return@launch
-            }
+        if (_uiState.value.title.isBlank()) return
 
-            _isLoading.value = true
-            _uiState.value = _uiState.value.copy(error = null)
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(
+                isLoading = true,
+                error = null
+            )
 
             try {
                 val goal = Goal(
                     id = UUID.randomUUID().toString(),
                     title = _uiState.value.title,
                     description = _uiState.value.description,
-                    progress = 0.0f,
-                    startDate = LocalDateTime.now(),
                     targetDate = LocalDateTime.now().plusDays(30),
-                    status = Goal.Status.ACTIVE,
-                    category = Goal.Category.PERSONAL,
-                    priority = Goal.Priority.MEDIUM,
-                    completedAt = null,
-                    userId = "user123"
+                    status = "ACTIVE",
+                    category = "PERSONAL",
+                    priority = "MEDIUM",
+                    roadmap = "",
+                    progress = 0,
+                    createdAt = LocalDateTime.now(),
+                    updatedAt = LocalDateTime.now()
                 )
 
-                goalRepository.createGoal(goal)
-                _uiState.value = _uiState.value.copy(isGoalCreated = true)
+                goalRepository.insertGoal(goal)
+
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false,
+                    isGoalCreated = true
+                )
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(error = "Failed to create goal: ${e.message}")
-            } finally {
-                _isLoading.value = false
+                _uiState.value = _uiState.value.copy(
+                    error = "Failed to create goal: ${e.message}",
+                    isLoading = false
+                )
             }
         }
     }
