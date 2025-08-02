@@ -12,9 +12,12 @@ import com.example.goalguru.data.model.User
 import com.example.goalguru.data.model.UserSettings
 import android.content.Context
 import com.example.goalguru.data.util.Converters
+import com.example.goalguru.data.model.DailyTask
+import com.example.goalguru.data.dao.UserDao
+import com.example.goalguru.data.dao.UserSettingsDao
 
 @Database(
-    entities = [Goal::class, Task::class, User::class, UserSettings::class],
+    entities = [Goal::class, Task::class, User::class, DailyTask::class, UserSettings::class],
     version = 3,
     exportSchema = false,
 )

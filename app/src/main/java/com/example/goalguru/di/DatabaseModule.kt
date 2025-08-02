@@ -31,10 +31,14 @@ object DatabaseModule {
     }
 
     @Provides
-    fun provideGoalDao(database: GoalGuruDatabase): GoalDao = database.goalDao()
+    fun provideGoalDao(database: GoalGuruDatabase): GoalDao {
+        return database.goalDao()
+    }
 
     @Provides
-    fun provideTaskDao(database: GoalGuruDatabase): TaskDao = database.taskDao()
+    fun provideTaskDao(database: GoalGuruDatabase): TaskDao {
+        return database.taskDao()
+    }
 
     @Provides
     fun provideUserSettingsDao(database: GoalGuruDatabase): UserSettingsDao {
