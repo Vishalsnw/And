@@ -11,7 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -47,8 +47,10 @@ class DashboardViewModel @Inject constructor(
                 }
 
                 // Load user data
-                userRepository.getCurrentUser().collect { user ->
-                    _currentUser.value = user
+                viewModelScope.launch {
+                    userRepository.getCurrentUserFromDb().collect { user ->
+                        _currentUser.value = user
+                    }
                 }
             } catch (e: Exception) {
                 _error.value = e.message ?: "Failed to load dashboard data"
