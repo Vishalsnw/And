@@ -5,9 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.goalguru.data.model.Goal
 import com.example.goalguru.data.repository.GoalRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -15,14 +16,11 @@ class DashboardViewModel @Inject constructor(
     private val goalRepository: GoalRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(DashboardUiState())
-    val uiState = _uiState.asStateFlow()
-
     private val _goals = MutableStateFlow<List<Goal>>(emptyList())
-    val goals = _goals.asStateFlow()
+    val goals: StateFlow<List<Goal>> = _goals.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
-    val isLoading = _isLoading.asStateFlow()
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
     init {
         loadGoals()
@@ -31,56 +29,31 @@ class DashboardViewModel @Inject constructor(
     private fun loadGoals() {
         viewModelScope.launch {
             _isLoading.value = true
-            _uiState.value = _uiState.value.copy(isLoading = true, error = null)
-            
             try {
-                goalRepository.getAllGoals().collectLatest { goalsList ->
-                    _goals.value = goalsList
-                    _uiState.value = _uiState.value.copy(
-                        goals = goalsList,
-                        isLoading = false,
-                        error = null
-                    )
-                    _isLoading.value = false
+                goalRepository.getAllGoals().collect { goalList ->
+                    _goals.value = goalList
                 }
             } catch (e: Exception) {
-                _goals.value = emptyList()
-                _uiState.value = _uiState.value.copy(
-                    goals = emptyList(),
-                    isLoading = false,
-                    error = "Failed to load goals: ${e.message}"
-                )
+                e.printStackTrace()
+            } finally {
                 _isLoading.value = false
+            }
+        }
+    }
+
+    fun markGoalCompleted(goalId: String) {
+        viewModelScope.launch {
+            try {
+                goalRepository.updateGoalProgress(goalId, 1.0f)
+                goalRepository.updateGoalStatus(goalId, Goal.Status.COMPLETED)
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
 
     fun refreshGoals() {
         loadGoals()
-    }
-
-    fun markGoalAsCompleted(goalId: String) {
-        viewModelScope.launch {
-            _isLoading.value = true
-            try {
-                val currentGoals = _goals.value
-                val goalToUpdate = currentGoals.find { it.id == goalId }
-                if (goalToUpdate != null) {
-                    val updatedGoal = goalToUpdate.copy(
-                        status = Goal.Status.COMPLETED,
-                        progress = 1.0f,
-                        completedAt = LocalDateTime.now()
-                    )
-                    goalRepository.updateGoal(updatedGoal)
-                }
-            } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    error = "Failed to update goal: ${e.message}"
-                )
-            } finally {
-                _isLoading.value = false
-            }
-        }
     }
 
     fun updateGoalProgress(goalId: String, progress: Float) {
@@ -101,9 +74,10 @@ class DashboardViewModel @Inject constructor(
                     updatedGoals.first { it.id == goalId }
                 )
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    error = "Failed to update progress: ${e.message}"
-                )
+                //_uiState.value = _uiState.value.copy(
+                //    error = "Failed to update progress: ${e.message}"
+                //)
+                e.printStackTrace()
             } finally {
                 _isLoading.value = false
             }
@@ -118,9 +92,10 @@ class DashboardViewModel @Inject constructor(
                 val updatedGoals = _goals.value.filter { it.id != goal.id }
                 _goals.value = updatedGoals
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(
-                    error = "Failed to delete goal: ${e.message}"
-                )
+                //_uiState.value = _uiState.value.copy(
+                //    error = "Failed to delete goal: ${e.message}"
+                //)
+                e.printStackTrace()
             } finally {
                 _isLoading.value = false
             }
