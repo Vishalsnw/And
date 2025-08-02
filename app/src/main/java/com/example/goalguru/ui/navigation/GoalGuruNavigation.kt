@@ -1,50 +1,73 @@
+
 package com.example.goalguru.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.example.goalguru.ui.screens.dashboard.DashboardScreen
 import com.example.goalguru.ui.screens.goal.CreateGoalScreen
 import com.example.goalguru.ui.screens.goal.GoalDetailScreen
+import com.example.goalguru.ui.screens.onboarding.OnboardingScreen
+import com.example.goalguru.ui.screens.settings.SettingsScreen
 
 @Composable
 fun GoalGuruNavigation(
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController,
+    startDestination: String = "onboarding"
 ) {
     NavHost(
         navController = navController,
-        startDestination = "dashboard"
+        startDestination = startDestination
     ) {
-        composable("dashboard") {
-            DashboardScreen(
-                onCreateGoal = {
-                    navController.navigate("create_goal")
-                },
-                onGoalClick = { goalId ->
-                    navController.navigate("goal_detail/$goalId")
+        composable("onboarding") {
+            OnboardingScreen(
+                onNavigateToDashboard = {
+                    navController.navigate("dashboard") {
+                        popUpTo("onboarding") { inclusive = true }
+                    }
                 }
             )
         }
-
-        composable("create_goal") {
-            CreateGoalScreen(
-                onNavigateBack = { navController.popBackStack() },
-                onGoalCreated = { navController.popBackStack() }
+        
+        composable("dashboard") {
+            DashboardScreen(
+                onNavigateToCreateGoal = {
+                    navController.navigate("create_goal")
+                },
+                onNavigateToGoalDetail = { goalId ->
+                    navController.navigate("goal_detail/$goalId")
+                },
+                onNavigateToSettings = {
+                    navController.navigate("settings")
+                }
             )
         }
-
-        composable(
-            "goal_detail/{goalId}",
-            arguments = listOf(navArgument("goalId") { type = NavType.StringType })
-        ) { backStackEntry ->
+        
+        composable("create_goal") {
+            CreateGoalScreen(
+                onNavigateBack = {
+                    navController.popBackStack()
+                },
+                onGoalCreated = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        
+        composable("goal_detail/{goalId}") { backStackEntry ->
             val goalId = backStackEntry.arguments?.getString("goalId") ?: ""
             GoalDetailScreen(
                 goalId = goalId,
-                onBackPressed = {
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        
+        composable("settings") {
+            SettingsScreen(
+                onNavigateBack = {
                     navController.popBackStack()
                 }
             )
