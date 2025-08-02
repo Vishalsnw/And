@@ -1,4 +1,3 @@
-
 package com.example.goalguru.ui.screens.goal
 
 import androidx.lifecycle.ViewModel
@@ -14,6 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
+import com.example.goalguru.data.model.Goal.Status as GoalStatus
 
 data class CreateGoalUiState(
     val isGenerating: Boolean = false,
@@ -23,32 +23,55 @@ data class CreateGoalUiState(
 
 @HiltViewModel
 class CreateGoalViewModel @Inject constructor(
-    private val aiRepository: AIRepository,
-    private val goalRepository: GoalRepository
+    private val goalRepository: GoalRepository,
+    private val aiRepository: AIRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CreateGoalUiState())
     val uiState: StateFlow<CreateGoalUiState> = _uiState.asStateFlow()
 
+    private val _title = MutableStateFlow("")
+    val title: StateFlow<String> = _title.asStateFlow()
+
+    private val _description = MutableStateFlow("")
+    val description: StateFlow<String> = _description.asStateFlow()
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
+    private val _error = MutableStateFlow<String?>(null)
+    val error: StateFlow<String?> = _error.asStateFlow()
+
+    private val _isGoalCreated = MutableStateFlow(false)
+    val isGoalCreated: StateFlow<Boolean> = _isGoalCreated.asStateFlow()
+
+    fun updateTitle(newTitle: String) {
+        _title.value = newTitle
+    }
+
+    fun updateDescription(newDescription: String) {
+        _description.value = newDescription
+    }
+
     fun generateGoalRoadmap(goalInput: String, onComplete: () -> Unit) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isGenerating = true, error = null)
-            
+
             try {
                 val prompt = """
                     Create a structured goal plan for: "$goalInput"
-                    
+
                     Please provide:
                     1. A clear, specific title for this goal
                     2. A detailed description explaining the goal and its benefits
                     3. Key milestones or steps to achieve this goal
                     4. Estimated timeline
-                    
+
                     Format the response as a structured plan that motivates and guides the user.
                 """.trimIndent()
-                
+
                 val aiResponse = aiRepository.generateGoalSuggestions(prompt)
-                
+
                 if (aiResponse != null) {
                     val goal = parseAIResponseToGoal(goalInput, aiResponse)
                     _uiState.value = _uiState.value.copy(
@@ -97,10 +120,10 @@ class CreateGoalViewModel @Inject constructor(
     private fun parseAIResponseToGoal(originalInput: String, aiResponse: String): Goal {
         val currentUser = FirebaseConfig.auth.currentUser
         val userId = currentUser?.uid ?: "anonymous"
-        
+
         // Extract title from AI response or use original input
         val title = extractTitle(aiResponse) ?: originalInput.take(50)
-        
+
         return Goal(
             id = UUID.randomUUID().toString(),
             userId = userId,
@@ -126,7 +149,7 @@ class CreateGoalViewModel @Inject constructor(
     private fun calculateTargetDate(aiResponse: String): Date? {
         // Simple extraction of timeline from AI response
         val calendar = Calendar.getInstance()
-        
+
         when {
             aiResponse.contains("month", ignoreCase = true) -> {
                 val months = extractNumber(aiResponse, "month") ?: 3
@@ -144,12 +167,41 @@ class CreateGoalViewModel @Inject constructor(
                 calendar.add(Calendar.MONTH, 3) // Default 3 months
             }
         }
-        
+
         return calendar.time
     }
 
     private fun extractNumber(text: String, unit: String): Int? {
         val regex = "\\b(\\d+)\\s*$unit".toRegex(RegexOption.IGNORE_CASE)
         return regex.find(text)?.groups?.get(1)?.value?.toIntOrNull()
+    }
+
+    fun createGoal() {
+        viewModelScope.launch {
+            _isLoading.value = true
+            _error.value = null
+
+            try {
+                val goal = Goal(
+                    id = UUID.randomUUID().toString(),
+                    title = _title.value,
+                    description = _description.value,
+                    status = GoalStatus.ACTIVE,
+                    progress = 0.0f,
+                    createdAt = java.time.LocalDateTime.now(),
+                    updatedAt = java.time.LocalDateTime.now(),
+                    category = "General",
+                    priority = "Medium",
+                    completedAt = null
+                )
+
+                goalRepository.createGoal(goal)
+                _isGoalCreated.value = true
+            } catch (e: Exception) {
+                _error.value = "Failed to create goal: ${e.message}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
     }
 }

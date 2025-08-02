@@ -1,4 +1,3 @@
-
 package com.example.goalguru.ui.navigation
 
 import androidx.compose.runtime.Composable
@@ -30,10 +29,10 @@ fun GoalGuruNavigation(
                 }
             )
         }
-        
+
         composable("create_goal") {
             CreateGoalScreen(
-                onNavigateBack = {
+                onBackPressed = {
                     navController.popBackStack()
                 },
                 onGoalCreated = {
@@ -41,7 +40,7 @@ fun GoalGuruNavigation(
                 }
             )
         }
-        
+
         composable(
             "goal_detail/{goalId}",
             arguments = listOf(navArgument("goalId") { type = NavType.StringType })
@@ -49,7 +48,7 @@ fun GoalGuruNavigation(
             val goalId = backStackEntry.arguments?.getString("goalId") ?: ""
             GoalDetailScreen(
                 goalId = goalId,
-                onNavigateBack = {
+                onBackPressed = {
                     navController.popBackStack()
                 }
             )
