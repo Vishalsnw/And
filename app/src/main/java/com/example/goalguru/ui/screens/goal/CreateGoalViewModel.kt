@@ -86,38 +86,41 @@ class CreateGoalViewModel @Inject constructor(
         }
     }
 
-    // Adding the missing method
     fun generateGoalRoadmap(goalInput: String) {
+        if (goalInput.trim().isEmpty()) {
+            _uiState.value = _uiState.value.copy(error = "Please enter a goal description")
+            return
+        }
+
         viewModelScope.launch {
             try {
-                _uiState.value = _uiState.value.copy(error = null)
+                _uiState.value = _uiState.value.copy(
+                    error = null,
+                    isGenerating = true,
+                    generatedRoadmap = null
+                )
                 _isLoading.value = true
 
-                val prompt = "Create a roadmap for: $goalInput"
+                val prompt = "Create a detailed roadmap for: $goalInput"
                 val aiResponse = aiRepository.generateGoalSuggestions(prompt)
 
                 if (aiResponse != null) {
-                    val goal = Goal(
-                        id = UUID.randomUUID().toString(),
-                        title = _uiState.value.title,
-                        description = _uiState.value.description,
-                        category = "General",
-                        targetDate = LocalDateTime.now().plusDays(30),
-                        status = Goal.Status.NOT_STARTED,
-                        priority = Goal.Priority.MEDIUM,
-                        progress = 0.0f,
-                        createdAt = LocalDateTime.now(),
-                        updatedAt = LocalDateTime.now(),
-                        userId = "default_user",
-                        completedAt = null
+                    _uiState.value = _uiState.value.copy(
+                        generatedRoadmap = aiResponse,
+                        title = goalInput.take(50), // Auto-fill title
+                        description = goalInput,
+                        isGenerating = false
                     )
-                    _uiState.value = _uiState.value.copy(generatedGoal = goal)
                 } else {
-                    _uiState.value = _uiState.value.copy(error = "Failed to generate goal roadmap")
+                    _uiState.value = _uiState.value.copy(
+                        error = "Unable to generate roadmap. Please try again.",
+                        isGenerating = false
+                    )
                 }
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
-                    error = "Failed to generate goal roadmap: ${e.message}"
+                    error = "Generation failed: ${e.localizedMessage}",
+                    isGenerating = false
                 )
             } finally {
                 _isLoading.value = false

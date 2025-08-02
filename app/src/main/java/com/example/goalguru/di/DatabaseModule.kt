@@ -45,5 +45,9 @@ object DatabaseModule {
 
     @Provides
     @Singleton
+    fun provideAIRepository(impl: AIRepositoryImpl): AIRepository = impl
+
+    @Provides
+    @Singleton
     fun provideAIRepository(): AIRepository = AIRepository()
 }

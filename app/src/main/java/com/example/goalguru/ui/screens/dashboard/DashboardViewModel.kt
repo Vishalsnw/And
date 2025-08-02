@@ -31,6 +31,8 @@ class DashboardViewModel @Inject constructor(
     private fun loadGoals() {
         viewModelScope.launch {
             _isLoading.value = true
+            _uiState.value = _uiState.value.copy(isLoading = true, error = null)
+            
             try {
                 goalRepository.getAllGoals().collectLatest { goalsList ->
                     _goals.value = goalsList
@@ -39,13 +41,15 @@ class DashboardViewModel @Inject constructor(
                         isLoading = false,
                         error = null
                     )
+                    _isLoading.value = false
                 }
             } catch (e: Exception) {
+                _goals.value = emptyList()
                 _uiState.value = _uiState.value.copy(
+                    goals = emptyList(),
                     isLoading = false,
                     error = "Failed to load goals: ${e.message}"
                 )
-            } finally {
                 _isLoading.value = false
             }
         }
