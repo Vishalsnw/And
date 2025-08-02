@@ -51,10 +51,9 @@ fun GoalCard(
                     text = goal.priority.name,
                     style = MaterialTheme.typography.labelMedium,
                     color = when (goal.priority) {
-                        com.example.goalguru.data.model.Priority.HIGH -> MaterialTheme.colorScheme.error
-                        com.example.goalguru.data.model.Priority.MEDIUM -> MaterialTheme.colorScheme.primary
-                        com.example.goalguru.data.model.Priority.LOW -> MaterialTheme.colorScheme.secondary
-                        com.example.goalguru.data.model.Priority.OPTIONAL -> MaterialTheme.colorScheme.outline
+                        Goal.Priority.HIGH -> MaterialTheme.colorScheme.error
+                        Goal.Priority.MEDIUM -> MaterialTheme.colorScheme.primary
+                        Goal.Priority.LOW -> MaterialTheme.colorScheme.secondary
                     }
                 )
             }
