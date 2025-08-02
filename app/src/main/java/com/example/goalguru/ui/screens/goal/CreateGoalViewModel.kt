@@ -6,11 +6,12 @@ import com.example.goalguru.data.model.Goal
 import com.example.goalguru.data.repository.GoalRepository
 import com.example.goalguru.data.repository.AIRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
-import java.util.*
 import javax.inject.Inject
+import java.time.LocalDateTime
+import java.util.UUID
 
 @HiltViewModel
 class CreateGoalViewModel @Inject constructor(
@@ -78,6 +79,45 @@ class CreateGoalViewModel @Inject constructor(
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     error = "Failed to generate goal: ${e.message}"
+                )
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    // Adding the missing method
+    fun generateGoalRoadmap(goalInput: String) {
+        viewModelScope.launch {
+            try {
+                _uiState.value = _uiState.value.copy(error = null)
+                _isLoading.value = true
+
+                val prompt = "Create a roadmap for: $goalInput"
+                val aiResponse = aiRepository.generateGoalSuggestions(prompt)
+
+                if (aiResponse != null) {
+                    val goal = Goal(
+                        id = UUID.randomUUID().toString(),
+                        title = _uiState.value.title,
+                        description = _uiState.value.description,
+                        category = "General",
+                        targetDate = LocalDateTime.now().plusDays(30),
+                        status = Goal.Status.NOT_STARTED,
+                        priority = Goal.Priority.MEDIUM,
+                        progress = 0.0f,
+                        createdAt = LocalDateTime.now(),
+                        updatedAt = LocalDateTime.now(),
+                        userId = "default_user",
+                        completedAt = null
+                    )
+                    _uiState.value = _uiState.value.copy(generatedGoal = goal)
+                } else {
+                    _uiState.value = _uiState.value.copy(error = "Failed to generate goal roadmap")
+                }
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    error = "Failed to generate goal roadmap: ${e.message}"
                 )
             } finally {
                 _isLoading.value = false
