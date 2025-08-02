@@ -42,7 +42,7 @@ class AIRepositoryImpl @Inject constructor() : AIRepository {
                     Message(role = "user", content = prompt)
                 ),
                 temperature = 0.7,
-                max_tokens = 1000
+                maxTokens = 1000
             )
             val response = apiService.generateCompletion("Bearer $apiKey", request)
             response.choices.firstOrNull()?.message?.content
@@ -55,106 +55,125 @@ class AIRepositoryImpl @Inject constructor() : AIRepository {
 
     override suspend fun generateRoadmap(goal: String): List<String> {
         return try {
-            val prompt = "Create a detailed roadmap for achieving this goal: $goal. Break it down into 5-8 major milestones with specific timeframes."
-            val response = generateGoalSuggestions(prompt)
-            response?.split("\n")?.filter { it.isNotBlank() && it.length > 10 } ?: generateMockRoadmap(goal)
+            val request = DeepSeekRequest(
+                model = "deepseek-chat",
+                messages = listOf(
+                    Message(role = "system", content = "Create a detailed step-by-step roadmap for achieving this goal. Provide 5-8 specific, actionable steps."),
+                    Message(role = "user", content = "Goal: $goal")
+                ),
+                temperature = 0.7,
+                maxTokens = 1000
+            )
+            val response = apiService.generateCompletion("Bearer $apiKey", request)
+            val content = response.choices.firstOrNull()?.message?.content
+            content?.split("\n")?.filter { it.isNotBlank() } ?: generateMockRoadmap(goal)
         } catch (e: Exception) {
+            e.printStackTrace()
             generateMockRoadmap(goal)
         }
     }
 
     override suspend fun generateDailyTasks(goal: String, roadmapStep: String): List<String> {
         return try {
-            val prompt = "For the goal '$goal' and current step '$roadmapStep', suggest 3-5 specific daily tasks that can be completed today."
-            val response = generateGoalSuggestions(prompt)
-            response?.split("\n")?.filter { it.isNotBlank() && it.length > 5 }?.take(5) ?: generateMockDailyTasks(roadmapStep)
+            val request = DeepSeekRequest(
+                model = "deepseek-chat",
+                messages = listOf(
+                    Message(role = "system", content = "Break down this roadmap step into 3-5 daily tasks that are specific and actionable."),
+                    Message(role = "user", content = "Goal: $goal\nRoadmap Step: $roadmapStep")
+                ),
+                temperature = 0.7,
+                maxTokens = 500
+            )
+            val response = apiService.generateCompletion("Bearer $apiKey", request)
+            val content = response.choices.firstOrNull()?.message?.content
+            content?.split("\n")?.filter { it.isNotBlank() } ?: generateMockDailyTasks(roadmapStep)
         } catch (e: Exception) {
+            e.printStackTrace()
             generateMockDailyTasks(roadmapStep)
         }
     }
 
     override suspend fun generateHumorousReminder(taskTitle: String, userName: String): String {
         return try {
-            val prompt = "Create a funny, motivational reminder for $userName to complete this task: $taskTitle. Keep it light-hearted and encouraging."
-            generateGoalSuggestions(prompt) ?: generateMockHumorousReminder(taskTitle, userName)
+            val request = DeepSeekRequest(
+                model = "deepseek-chat",
+                messages = listOf(
+                    Message(role = "system", content = "Generate a funny, motivational reminder for a user about their task. Keep it light-hearted and encouraging."),
+                    Message(role = "user", content = "Task: $taskTitle, User: $userName")
+                ),
+                temperature = 0.8,
+                maxTokens = 100
+            )
+            val response = apiService.generateCompletion("Bearer $apiKey", request)
+            response.choices.firstOrNull()?.message?.content ?: generateMockHumorousReminder(taskTitle, userName)
         } catch (e: Exception) {
+            e.printStackTrace()
             generateMockHumorousReminder(taskTitle, userName)
         }
     }
 
     override suspend fun generateRoastMessage(taskTitle: String, userName: String): String {
         return try {
-            val prompt = "Create a playful roast message for $userName who didn't complete this task: $taskTitle. Keep it funny but not harsh."
-            generateGoalSuggestions(prompt) ?: generateMockRoastMessage(taskTitle, userName)
+            val request = DeepSeekRequest(
+                model = "deepseek-chat",
+                messages = listOf(
+                    Message(role = "system", content = "Generate a playful roast message for a user who didn't complete their task. Be funny but not mean."),
+                    Message(role = "user", content = "Task: $taskTitle, User: $userName")
+                ),
+                temperature = 0.9,
+                maxTokens = 100
+            )
+            val response = apiService.generateCompletion("Bearer $apiKey", request)
+            response.choices.firstOrNull()?.message?.content ?: generateMockRoastMessage(taskTitle, userName)
         } catch (e: Exception) {
+            e.printStackTrace()
             generateMockRoastMessage(taskTitle, userName)
         }
     }
 
-    private fun generateMockResponse(prompt: String): String {
+    // Mock/Fallback methods
+    private suspend fun generateMockResponse(prompt: String): String {
+        delay(1000) // Simulate API call
         return when {
-            prompt.contains("fitness", ignoreCase = true) || 
-            prompt.contains("health", ignoreCase = true) -> {
-                "Here's your fitness roadmap:\n\n" +
-                "Week 1-2: Start with 20-minute daily walks\n" +
-                "Week 3-4: Add bodyweight exercises (push-ups, squats)\n" +
-                "Week 5-8: Increase workout intensity and duration\n" +
-                "Week 9-12: Join a gym or fitness class\n\n" +
-                "Remember to track your progress and stay consistent!"
-            }
-            
-            prompt.contains("career", ignoreCase = true) || 
-            prompt.contains("job", ignoreCase = true) -> {
-                "Your career development roadmap:\n\n" +
-                "Month 1: Update resume and LinkedIn profile\n" +
-                "Month 2: Network with industry professionals\n" +
-                "Month 3: Apply for relevant positions\n" +
-                "Month 4: Prepare for interviews\n" +
-                "Month 5-6: Negotiate offers and transition\n\n" +
-                "Focus on continuous learning and skill development!"
-            }
-            
-            else -> {
-                "Here's your personalized goal roadmap:\n\n" +
-                "Phase 1: Planning and preparation\n" +
-                "Phase 2: Initial implementation\n" +
-                "Phase 3: Building momentum\n" +
-                "Phase 4: Optimization and refinement\n" +
-                "Phase 5: Achieving your goal\n\n" +
-                "Stay focused and celebrate small wins along the way!"
-            }
+            prompt.contains("learn", ignoreCase = true) -> 
+                "Great choice! Learning new skills is always rewarding. Start with small, daily practice sessions."
+            prompt.contains("fitness", ignoreCase = true) || prompt.contains("exercise", ignoreCase = true) -> 
+                "Awesome fitness goal! Remember, consistency beats intensity. Start with 15-20 minutes daily."
+            prompt.contains("business", ignoreCase = true) || prompt.contains("startup", ignoreCase = true) -> 
+                "Entrepreneurial spirit! Focus on solving a real problem and start small to validate your idea."
+            else -> "Excellent goal! Break it down into smaller, manageable steps and celebrate small wins along the way."
         }
     }
 
     private fun generateMockRoadmap(goal: String): List<String> {
         return listOf(
-            "Phase 1: Research and planning",
-            "Phase 2: Set up foundations",
-            "Phase 3: Begin implementation",
-            "Phase 4: Build consistency",
-            "Phase 5: Overcome challenges",
-            "Phase 6: Refine approach",
-            "Phase 7: Final push to completion"
+            "1. Define specific, measurable objectives",
+            "2. Research and gather necessary resources",
+            "3. Create a detailed action plan",
+            "4. Start with the first small step",
+            "5. Track progress and adjust as needed",
+            "6. Build consistent daily habits",
+            "7. Celebrate milestones and stay motivated"
         )
     }
 
     private fun generateMockDailyTasks(roadmapStep: String): List<String> {
         return listOf(
-            "Spend 15 minutes on planning",
-            "Complete one small action step",
-            "Review progress from yesterday",
-            "Set tomorrow's priorities",
-            "Take a 5-minute break to reflect"
+            "• Spend 30 minutes on core activity",
+            "• Review progress from yesterday",
+            "• Plan tomorrow's actions",
+            "• Practice or study for 15 minutes",
+            "• Connect with others in this field"
         )
     }
 
     private fun generateMockHumorousReminder(taskTitle: String, userName: String): String {
         val reminders = listOf(
-            "Hey $userName! Your task '$taskTitle' is waiting for you like a loyal puppy! 🐕",
-            "$userName, your future self called - they want you to complete '$taskTitle' today! 📞",
-            "Knock knock! Who's there? Your task '$taskTitle' that's been patiently waiting! 🚪",
-            "$userName, your task '$taskTitle' is feeling lonely. Show it some love! ❤️",
-            "Breaking news: $userName has the power to complete '$taskTitle' today! 📰"
+            "Hey $userName! '$taskTitle' is waiting for you like a patient puppy! 🐶",
+            "$userName, time to tackle '$taskTitle' - your future self will thank you! 🚀",
+            "Knock knock! It's '$taskTitle' reminding $userName it exists! 🚪",
+            "$userName, '$taskTitle' misses you! Time for a reunion? 💕",
+            "Breaking news: $userName about to crush '$taskTitle'! 📰"
         )
         return reminders.random()
     }
