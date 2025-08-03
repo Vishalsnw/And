@@ -1,10 +1,11 @@
+
 package com.example.goalguru.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.goalguru.data.database.GoalDao
 import com.example.goalguru.data.database.GoalGuruDatabase
-import com.example.goalguru.data.dao.GoalDao
-import com.example.goalguru.data.dao.TaskDao
+import com.example.goalguru.data.database.TaskDao
 import com.example.goalguru.data.database.UserDao
 import com.example.goalguru.data.database.UserSettingsDao
 import com.example.goalguru.data.repository.AIRepository
@@ -29,18 +30,14 @@ object DatabaseModule {
             context.applicationContext,
             GoalGuruDatabase::class.java,
             "goal_guru_database"
-        ).fallbackToDestructiveMigration().build()
+        ).build()
     }
 
     @Provides
-    fun provideGoalDao(database: GoalGuruDatabase): GoalDao {
-        return database.goalDao()
-    }
+    fun provideGoalDao(database: GoalGuruDatabase): GoalDao = database.goalDao()
 
     @Provides
-    fun provideTaskDao(database: GoalGuruDatabase): TaskDao {
-        return database.taskDao()
-    }
+    fun provideTaskDao(database: GoalGuruDatabase): TaskDao = database.taskDao()
 
     @Provides
     fun provideUserSettingsDao(database: GoalGuruDatabase): UserSettingsDao {

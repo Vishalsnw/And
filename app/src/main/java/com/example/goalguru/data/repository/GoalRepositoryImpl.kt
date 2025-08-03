@@ -19,8 +19,8 @@ class GoalRepositoryImpl @Inject constructor(
         return goalDao.getAllGoals()
     }
 
-    override suspend fun getGoal(id: String): Goal? {
-        return goalDao.getGoalById(id)
+    override suspend fun getGoalById(goalId: String): Goal? {
+        return goalDao.getGoalById(goalId)
     }
 
     override suspend fun insertGoal(goal: Goal) {
@@ -31,33 +31,28 @@ class GoalRepositoryImpl @Inject constructor(
         goalDao.updateGoal(goal)
     }
 
-    override suspend fun deleteGoal(goalId: String) {
+    override suspend fun deleteGoal(goal: Goal) {
+        goalDao.deleteGoal(goal)
+    }
+
+    override suspend fun deleteGoalById(goalId: String) {
         goalDao.deleteGoalById(goalId)
-        taskDao.deleteTasksForGoal(goalId)
     }
 
-    override suspend fun markGoalCompleted(goalId: String) {
-        val goal = goalDao.getGoalById(goalId)
-        if (goal != null) {
-            val updatedGoal = goal.copy(
-                isCompleted = true,
-                completedAt = System.currentTimeMillis(),
-                progress = 1.0f
-            )
-            goalDao.updateGoal(updatedGoal)
-        }
+    override fun getActiveGoals(): Flow<List<Goal>> {
+        return goalDao.getActiveGoals()
     }
 
-    override suspend fun updateGoalProgress(goalId: String, progress: Float) {
-        val goal = goalDao.getGoalById(goalId)
-        if (goal != null) {
-            val updatedGoal = goal.copy(progress = progress)
-            goalDao.updateGoal(updatedGoal)
-        }
+    override fun getCompletedGoals(): Flow<List<Goal>> {
+        return goalDao.getCompletedGoals()
     }
 
-    override fun getDailyTasksForGoal(goalId: String): Flow<List<DailyTask>> {
+    override fun getTasksForGoal(goalId: String): Flow<List<DailyTask>> {
         return taskDao.getTasksForGoal(goalId)
+    }
+
+    override suspend fun getTaskById(taskId: String): DailyTask? {
+        return taskDao.getTaskById(taskId)
     }
 
     override suspend fun insertDailyTask(task: DailyTask) {

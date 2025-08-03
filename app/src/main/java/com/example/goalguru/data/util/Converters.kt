@@ -5,7 +5,7 @@ import androidx.room.TypeConverter
 import com.example.goalguru.data.model.Goal
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.Date
+import java.util.*
 
 class Converters {
     private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
