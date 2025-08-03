@@ -1,64 +1,32 @@
-
 package com.example.goalguru.data.util
 
 import androidx.room.TypeConverter
-import com.example.goalguru.data.model.Goal
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 class Converters {
-    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+    private val gson = Gson()
 
     @TypeConverter
-    fun fromLocalDateTime(dateTime: LocalDateTime?): String? {
-        return dateTime?.format(formatter)
+    fun fromLocalDateTime(value: LocalDateTime?): String? {
+        return value?.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
     }
 
     @TypeConverter
-    fun toLocalDateTime(dateTimeString: String?): LocalDateTime? {
-        return dateTimeString?.let {
-            LocalDateTime.parse(it, formatter)
-        }
+    fun toLocalDateTime(value: String?): LocalDateTime? {
+        return value?.let { LocalDateTime.parse(it, DateTimeFormatter.ISO_LOCAL_DATE_TIME) }
     }
 
     @TypeConverter
-    fun fromDate(date: Date?): Long? {
-        return date?.time
+    fun fromStringList(value: List<String>?): String? {
+        return gson.toJson(value)
     }
 
     @TypeConverter
-    fun toDate(timestamp: Long?): Date? {
-        return timestamp?.let { Date(it) }
-    }
-
-    @TypeConverter
-    fun fromPriority(priority: Goal.Priority): String {
-        return priority.name
-    }
-
-    @TypeConverter
-    fun toPriority(priority: String): Goal.Priority {
-        return Goal.Priority.valueOf(priority)
-    }
-
-    @TypeConverter
-    fun fromStatus(status: Goal.Status): String {
-        return status.name
-    }
-
-    @TypeConverter
-    fun toStatus(status: String): Goal.Status {
-        return Goal.Status.valueOf(status)
-    }
-
-    @TypeConverter
-    fun fromStringList(value: List<String>): String {
-        return value.joinToString(",")
-    }
-
-    @TypeConverter
-    fun toStringList(value: String): List<String> {
-        return if (value.isEmpty()) emptyList() else value.split(",")
+    fun toStringList(value: String?): List<String>? {
+        val listType = object : TypeToken<List<String>>() {}.type
+        return gson.fromJson(value, listType)
     }
 }

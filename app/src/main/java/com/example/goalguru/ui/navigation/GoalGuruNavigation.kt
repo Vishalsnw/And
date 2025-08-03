@@ -74,3 +74,51 @@ fun GoalGuruNavigation(
         }
     }
 }
+package com.example.goalguru.ui.navigation
+
+import androidx.compose.runtime.Composable
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.goalguru.ui.screens.dashboard.DashboardScreen
+import com.example.goalguru.ui.screens.goal.CreateGoalScreen
+import com.example.goalguru.ui.screens.onboarding.OnboardingScreen
+
+@Composable
+fun GoalGuruNavigation() {
+    val navController = rememberNavController()
+    
+    NavHost(
+        navController = navController,
+        startDestination = "onboarding"
+    ) {
+        composable("onboarding") {
+            OnboardingScreen(
+                onGetStarted = {
+                    navController.navigate("dashboard") {
+                        popUpTo("onboarding") { inclusive = true }
+                    }
+                }
+            )
+        }
+        
+        composable("dashboard") {
+            DashboardScreen(
+                onCreateGoal = {
+                    navController.navigate("create_goal")
+                }
+            )
+        }
+        
+        composable("create_goal") {
+            CreateGoalScreen(
+                onGoalCreated = {
+                    navController.popBackStack()
+                },
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+    }
+}

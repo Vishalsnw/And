@@ -198,3 +198,94 @@ private fun getEstimatedCompletion(goal: Goal): String {
     val formatter = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
     return "ETA: ${formatter.format(calendar.time)}"
 }
+package com.example.goalguru.ui.screens.dashboard
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DashboardScreen(
+    onCreateGoal: () -> Unit,
+    viewModel: DashboardViewModel = hiltViewModel()
+) {
+    val goals by viewModel.goals.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.loadGoals()
+    }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Goal Guru") }
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onCreateGoal
+            ) {
+                Icon(Icons.Default.Add, contentDescription = "Add Goal")
+            }
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(16.dp)
+        ) {
+            if (isLoading) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            } else if (goals.isEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "No goals yet. Create your first goal!",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+            } else {
+                LazyColumn {
+                    items(goals) { goal ->
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp)
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(16.dp)
+                            ) {
+                                Text(
+                                    text = goal.title,
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                                Text(
+                                    text = goal.description,
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
