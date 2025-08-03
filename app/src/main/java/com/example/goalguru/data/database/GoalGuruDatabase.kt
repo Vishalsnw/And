@@ -8,6 +8,7 @@ import com.example.goalguru.data.model.Goal
 import com.example.goalguru.data.model.DailyTask
 import com.example.goalguru.data.model.User
 import com.example.goalguru.data.model.UserSettings
+import com.example.goalguru.data.util.Converters
 
 @Database(
     entities = [Goal::class, DailyTask::class, User::class, UserSettings::class],

@@ -40,6 +40,9 @@ object DatabaseModule {
     fun provideTaskDao(database: GoalGuruDatabase): TaskDao = database.taskDao()
 
     @Provides
+    fun provideUserDao(database: GoalGuruDatabase): UserDao = database.userDao()
+
+    @Provides
     fun provideUserSettingsDao(database: GoalGuruDatabase): UserSettingsDao {
         return database.userSettingsDao()
     }
