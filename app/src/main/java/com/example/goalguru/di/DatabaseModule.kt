@@ -1,4 +1,3 @@
-
 package com.example.goalguru.di
 
 import android.content.Context
@@ -55,9 +54,6 @@ object DatabaseModule {
     ): GoalRepository {
         return GoalRepositoryImpl(goalDao, taskDao)
     }
-
-    @Provides
-    fun provideUserDao(database: GoalGuruDatabase): UserDao = database.userDao()
 
     @Provides
     @Singleton
