@@ -26,17 +26,17 @@ class DashboardViewModel @Inject constructor(
         loadGoals()
     }
 
-    private fun loadGoals() {
+    fun loadGoals() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                goalRepository.getAllGoals().collect { goalList ->
-                    _goals.value = goalList
+                goalRepository.getAllGoals().collect { goalsList ->
+                    _goals.value = goalsList
+                    _isLoading.value = false
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
                 _isLoading.value = false
+                // Handle error if needed
             }
         }
     }

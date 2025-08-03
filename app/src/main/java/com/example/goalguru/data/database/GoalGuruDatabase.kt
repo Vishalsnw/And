@@ -1,7 +1,6 @@
 package com.example.goalguru.data.database
 
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.goalguru.data.model.Goal
@@ -11,11 +10,13 @@ import com.example.goalguru.data.model.UserSettings
 import com.example.goalguru.data.util.Converters
 import com.example.goalguru.data.dao.GoalDao
 import com.example.goalguru.data.dao.TaskDao
+import com.example.goalguru.data.dao.UserDao
+import com.example.goalguru.data.dao.UserSettingsDao
 
 @Database(
     entities = [Goal::class, DailyTask::class, User::class, UserSettings::class],
     version = 2,
-    exportSchema = false,
+    exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class GoalGuruDatabase : RoomDatabase() {

@@ -1,11 +1,7 @@
+
 package com.example.goalguru.data.database
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.example.goalguru.data.model.Goal
 import kotlinx.coroutines.flow.Flow
 
@@ -16,9 +12,6 @@ interface GoalDao {
 
     @Query("SELECT * FROM goals WHERE id = :goalId")
     suspend fun getGoalById(goalId: String): Goal?
-
-    @Query("SELECT * FROM goals WHERE userId = :userId ORDER BY createdAt DESC")
-    fun getGoalsByUserId(userId: String): Flow<List<Goal>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertGoal(goal: Goal)
@@ -32,6 +25,9 @@ interface GoalDao {
     @Query("DELETE FROM goals WHERE id = :goalId")
     suspend fun deleteGoalById(goalId: String)
 
-    @Query("SELECT COUNT(*) FROM goals WHERE userId = :userId")
-    suspend fun getGoalCountByUserId(userId: String): Int
+    @Query("SELECT * FROM goals WHERE isCompleted = 0 ORDER BY createdAt DESC")
+    fun getActiveGoals(): Flow<List<Goal>>
+
+    @Query("SELECT * FROM goals WHERE isCompleted = 1 ORDER BY completedAt DESC")
+    fun getCompletedGoals(): Flow<List<Goal>>
 }

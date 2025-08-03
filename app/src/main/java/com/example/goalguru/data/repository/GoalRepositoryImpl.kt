@@ -1,14 +1,11 @@
+
 package com.example.goalguru.data.repository
 
-import com.example.goalguru.data.dao.GoalDao
-import com.example.goalguru.data.dao.TaskDao
-import com.example.goalguru.data.model.DailyTask
+import com.example.goalguru.data.database.GoalDao
+import com.example.goalguru.data.database.TaskDao
 import com.example.goalguru.data.model.Goal
+import com.example.goalguru.data.model.DailyTask
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,35 +15,60 @@ class GoalRepositoryImpl @Inject constructor(
     private val taskDao: TaskDao
 ) : GoalRepository {
 
-    override suspend fun insertGoal(goal: Goal) = goalDao.insertGoal(goal)
+    override fun getAllGoals(): Flow<List<Goal>> {
+        return goalDao.getAllGoals()
+    }
 
-    override suspend fun updateGoal(goal: Goal) = goalDao.updateGoal(goal)
+    override suspend fun getGoal(id: String): Goal? {
+        return goalDao.getGoalById(id)
+    }
 
-    override suspend fun deleteGoal(goalId: String) = goalDao.deleteGoal(goalId)
+    override suspend fun insertGoal(goal: Goal) {
+        goalDao.insertGoal(goal)
+    }
 
-    override suspend fun getGoal(goalId: String): Goal? = goalDao.getGoal(goalId)
+    override suspend fun updateGoal(goal: Goal) {
+        goalDao.updateGoal(goal)
+    }
 
-    override fun getAllGoals(): Flow<List<Goal>> = goalDao.getAllGoals()
+    override suspend fun deleteGoal(goalId: String) {
+        goalDao.deleteGoalById(goalId)
+        taskDao.deleteTasksForGoal(goalId)
+    }
 
-    override suspend fun updateGoalProgress(goalId: String, progress: Float) =
-        goalDao.updateGoalProgress(goalId, progress)
+    override suspend fun markGoalCompleted(goalId: String) {
+        val goal = goalDao.getGoalById(goalId)
+        if (goal != null) {
+            val updatedGoal = goal.copy(
+                isCompleted = true,
+                completedAt = System.currentTimeMillis(),
+                progress = 1.0f
+            )
+            goalDao.updateGoal(updatedGoal)
+        }
+    }
 
-    override suspend fun updateGoalStatus(goalId: String, status: Goal.Status) =
-        goalDao.updateGoalStatus(goalId, status)
+    override suspend fun updateGoalProgress(goalId: String, progress: Float) {
+        val goal = goalDao.getGoalById(goalId)
+        if (goal != null) {
+            val updatedGoal = goal.copy(progress = progress)
+            goalDao.updateGoal(updatedGoal)
+        }
+    }
 
-    // Daily tasks using TaskDao
-    override suspend fun insertDailyTask(task: DailyTask) = taskDao.insertDailyTask(task)
+    override fun getDailyTasksForGoal(goalId: String): Flow<List<DailyTask>> {
+        return taskDao.getTasksForGoal(goalId)
+    }
 
-    override suspend fun updateDailyTask(task: DailyTask) = taskDao.updateDailyTask(task)
+    override suspend fun insertDailyTask(task: DailyTask) {
+        taskDao.insertTask(task)
+    }
 
-    override suspend fun deleteDailyTask(taskId: String) = taskDao.deleteDailyTask(taskId)
-
-    override fun getDailyTasksForGoal(goalId: String): Flow<List<DailyTask>> = 
-        taskDao.getDailyTasksForGoal(goalId)
-
-    override fun getTodaysTasks(): Flow<List<DailyTask>> = taskDao.getTodaysTasks()
+    override suspend fun updateDailyTask(task: DailyTask) {
+        taskDao.updateTask(task)
+    }
 
     override suspend fun markTaskCompleted(taskId: String) {
-        taskDao.markTaskCompleted(taskId, Date())
+        taskDao.markTaskCompleted(taskId, System.currentTimeMillis())
     }
 }

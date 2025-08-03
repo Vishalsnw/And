@@ -1,36 +1,24 @@
-
 package com.example.goalguru.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Date
-import java.util.UUID
+import java.util.*
 
 @Entity(tableName = "goals")
 data class Goal(
-    @PrimaryKey
-    val id: String = UUID.randomUUID().toString(),
-    val userId: String = "default_user",
+    @PrimaryKey val id: String = UUID.randomUUID().toString(),
     val title: String,
     val description: String,
-    val roadmap: String,
+    val roadmap: String = "",
     val targetDate: Date,
+    val priority: Priority = Priority.MEDIUM,
+    val estimatedDuration: Int, // in days
     val createdAt: Date = Date(),
-    val progress: Float = 0.0f,
-    val status: Status = Status.NOT_STARTED,
-    val estimatedDuration: Int = 30, // in days
-    val priority: Priority = Priority.MEDIUM
+    val isCompleted: Boolean = false,
+    val completedAt: Long? = null,
+    val progress: Float = 0.0f
 ) {
-    enum class Status {
-        NOT_STARTED,
-        IN_PROGRESS, 
-        COMPLETED,
-        PAUSED
-    }
-    
     enum class Priority {
-        LOW,
-        MEDIUM,
-        HIGH
+        LOW, MEDIUM, HIGH
     }
 }

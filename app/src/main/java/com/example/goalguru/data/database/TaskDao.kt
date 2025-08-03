@@ -1,35 +1,33 @@
+
 package com.example.goalguru.data.database
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import androidx.room.Update
-import com.example.goalguru.data.model.Task
+import androidx.room.*
+import com.example.goalguru.data.model.DailyTask
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TaskDao {
+    @Query("SELECT * FROM daily_tasks WHERE goalId = :goalId ORDER BY createdAt DESC")
+    fun getTasksForGoal(goalId: String): Flow<List<DailyTask>>
 
-    @Query("SELECT * FROM tasks WHERE goalId = :goalId ORDER BY createdAt DESC")
-    fun getTasksForGoal(goalId: String): Flow<List<Task>>
-
-    @Query("SELECT * FROM tasks WHERE goalId = :goalId ORDER BY createdAt DESC")
-    suspend fun getTasksForGoalSync(goalId: String): List<Task>
-
-    @Query("SELECT * FROM tasks WHERE id = :taskId")
-    suspend fun getTaskById(taskId: String): Task?
+    @Query("SELECT * FROM daily_tasks WHERE id = :taskId")
+    suspend fun getTaskById(taskId: String): DailyTask?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTask(task: Task)
+    suspend fun insertTask(task: DailyTask)
 
     @Update
-    suspend fun updateTask(task: Task)
+    suspend fun updateTask(task: DailyTask)
 
     @Delete
-    suspend fun deleteTask(task: Task)
+    suspend fun deleteTask(task: DailyTask)
 
-    @Query("DELETE FROM tasks WHERE goalId = :goalId")
+    @Query("DELETE FROM daily_tasks WHERE goalId = :goalId")
     suspend fun deleteTasksForGoal(goalId: String)
+
+    @Query("SELECT * FROM daily_tasks WHERE isCompleted = 0 ORDER BY createdAt DESC")
+    fun getActiveTasks(): Flow<List<DailyTask>>
+
+    @Query("UPDATE daily_tasks SET isCompleted = 1, completedAt = :completedAt WHERE id = :taskId")
+    suspend fun markTaskCompleted(taskId: String, completedAt: Long)
 }

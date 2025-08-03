@@ -184,16 +184,21 @@ class CreateGoalViewModel @Inject constructor(
     }
 
     fun createGoal() {
+        if (_uiState.value.title.isBlank()) {
+            _uiState.value = _uiState.value.copy(error = "Please enter a goal title")
+            return
+        }
+
         viewModelScope.launch {
             try {
                 _uiState.value = _uiState.value.copy(error = null)
                 _isLoading.value = true
 
-                val goal = Goal(
+                val newGoal = Goal(
                     id = UUID.randomUUID().toString(),
                     title = _uiState.value.title,
                     description = _uiState.value.description,
-					roadmap = "",
+                    roadmap = _uiState.value.roadmap,
                     targetDate = Date.from(_uiState.value.targetDate.atZone(ZoneId.systemDefault()).toInstant()),
                     priority = _uiState.value.priority,
                     estimatedDuration = _uiState.value.estimatedDuration,
@@ -201,12 +206,13 @@ class CreateGoalViewModel @Inject constructor(
                     progress = 0.0f
                 )
 
-                goalRepository.insertGoal(goal)
-                _uiState.value = _uiState.value.copy(isGoalCreated = true)
-            } catch (e: Exception) {
+                goalRepository.insertGoal(newGoal)
                 _uiState.value = _uiState.value.copy(
-                    error = "Failed to create goal: ${e.message}"
+                    isGoalCreated = true,
+                    generatedGoal = newGoal
                 )
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(error = "Failed to create goal: ${e.message}")
             } finally {
                 _isLoading.value = false
             }
