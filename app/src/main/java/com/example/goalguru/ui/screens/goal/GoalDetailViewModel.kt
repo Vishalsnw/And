@@ -14,6 +14,21 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
+package com.example.goalguru.ui.screens.goal
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.goalguru.data.model.Goal
+import com.example.goalguru.data.model.DailyTask
+import com.example.goalguru.data.repository.GoalRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
 class GoalDetailViewModel @Inject constructor(
     private val goalRepository: GoalRepository
 ) : ViewModel() {

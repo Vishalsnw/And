@@ -1,4 +1,3 @@
-
 package com.example.goalguru.data.repository
 
 import com.example.goalguru.data.database.GoalDao
@@ -15,16 +14,16 @@ class GoalRepositoryImpl @Inject constructor(
     private val taskDao: TaskDao
 ) : GoalRepository {
 
+    override suspend fun insertGoal(goal: Goal): Long {
+        return goalDao.insertGoal(goal)
+    }
+
+    override suspend fun getGoal(id: String): Goal? {
+        return goalDao.getGoal(id)
+    }
+
     override fun getAllGoals(): Flow<List<Goal>> {
         return goalDao.getAllGoals()
-    }
-
-    override suspend fun getGoalById(goalId: String): Goal? {
-        return goalDao.getGoalById(goalId)
-    }
-
-    override suspend fun insertGoal(goal: Goal) {
-        goalDao.insertGoal(goal)
     }
 
     override suspend fun updateGoal(goal: Goal) {
@@ -35,24 +34,16 @@ class GoalRepositoryImpl @Inject constructor(
         goalDao.deleteGoal(goal)
     }
 
-    override suspend fun deleteGoalById(goalId: String) {
-        goalDao.deleteGoalById(goalId)
+    override suspend fun updateGoalProgress(goalId: String, progress: Float) {
+        goalDao.updateGoalProgress(goalId, progress)
     }
 
-    override fun getActiveGoals(): Flow<List<Goal>> {
-        return goalDao.getActiveGoals()
+    override suspend fun updateGoalStatus(goalId: String, status: Goal.Status) {
+        goalDao.updateGoalStatus(goalId, status)
     }
 
-    override fun getCompletedGoals(): Flow<List<Goal>> {
-        return goalDao.getCompletedGoals()
-    }
-
-    override fun getTasksForGoal(goalId: String): Flow<List<DailyTask>> {
+    override fun getDailyTasksForGoal(goalId: String): Flow<List<DailyTask>> {
         return taskDao.getTasksForGoal(goalId)
-    }
-
-    override suspend fun getTaskById(taskId: String): DailyTask? {
-        return taskDao.getTaskById(taskId)
     }
 
     override suspend fun insertDailyTask(task: DailyTask) {
@@ -61,9 +52,5 @@ class GoalRepositoryImpl @Inject constructor(
 
     override suspend fun updateDailyTask(task: DailyTask) {
         taskDao.updateTask(task)
-    }
-
-    override suspend fun markTaskCompleted(taskId: String) {
-        taskDao.markTaskCompleted(taskId, System.currentTimeMillis())
     }
 }

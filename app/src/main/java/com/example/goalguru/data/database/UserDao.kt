@@ -43,3 +43,22 @@ interface UserDao {
     @Update
     suspend fun updateUserSettings(userSettings: UserSettings)
 }
+package com.example.goalguru.data.database
+
+import androidx.room.*
+import com.example.goalguru.data.model.User
+
+@Dao
+interface UserDao {
+    @Query("SELECT * FROM users WHERE id = :id")
+    suspend fun getUser(id: String): User?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertUser(user: User)
+
+    @Update
+    suspend fun updateUser(user: User)
+
+    @Delete
+    suspend fun deleteUser(user: User)
+}

@@ -49,3 +49,17 @@ class UserRepository @Inject constructor(
         } ?: flowOf(null)
     }
 }
+package com.example.goalguru.data.repository
+
+import com.example.goalguru.data.model.User
+import com.example.goalguru.data.model.UserSettings
+import kotlinx.coroutines.flow.Flow
+
+interface UserRepository {
+    suspend fun insertUser(user: User)
+    suspend fun getUser(id: String): User?
+    suspend fun updateUser(user: User)
+    suspend fun getCurrentUser(): User?
+    fun getUserSettings(userId: String): Flow<UserSettings?>
+    suspend fun updateUserSettings(settings: UserSettings)
+}
