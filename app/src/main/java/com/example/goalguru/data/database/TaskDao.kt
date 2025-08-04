@@ -33,6 +33,6 @@ interface TaskDao {
     @Query("SELECT * FROM daily_tasks WHERE isCompleted = 0 ORDER BY date ASC")
     fun getActiveTasks(): Flow<List<DailyTask>>
 
-    @Query("UPDATE daily_tasks SET isCompleted = :isCompleted WHERE id = :taskId")
-    suspend fun updateTaskCompletion(taskId: String, isCompleted: Boolean)
+    @Query("UPDATE daily_tasks SET isCompleted = :isCompleted, completedAt = :completedAt WHERE id = :taskId")
+    suspend fun updateTaskCompletion(taskId: String, isCompleted: Boolean, completedAt: Long?)
 }

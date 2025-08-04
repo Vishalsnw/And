@@ -1,23 +1,17 @@
+
 package com.example.goalguru.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Date
-import java.util.UUID
+import java.time.LocalDateTime
 
 @Entity(tableName = "users")
 data class User(
     @PrimaryKey
-    val id: String = UUID.randomUUID().toString(),
+    val id: String,
     val email: String,
     val displayName: String,
-    val profilePictureUrl: String? = null,
-    val createdAt: Date = Date(),
-    val lastLoginAt: Date = Date()
+    val createdAt: LocalDateTime = LocalDateTime.now(),
+    val lastLoginAt: LocalDateTime? = null,
+    val isActive: Boolean = true
 )
-
-
-
-enum class Gender {
-    MALE, FEMALE, OTHER, PREFER_NOT_TO_SAY
-}

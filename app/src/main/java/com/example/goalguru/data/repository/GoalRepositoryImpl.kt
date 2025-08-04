@@ -14,43 +14,24 @@ class GoalRepositoryImpl @Inject constructor(
     private val taskDao: TaskDao
 ) : GoalRepository {
 
-    override suspend fun insertGoal(goal: Goal): Long {
-        return goalDao.insertGoal(goal)
-    }
+    override fun getAllGoals(): Flow<List<Goal>> = goalDao.getAllGoals()
 
-    override suspend fun getGoal(id: String): Goal? {
-        return goalDao.getGoal(id)
-    }
+    override fun getGoalById(goalId: String): Flow<Goal?> = goalDao.getGoalById(goalId)
 
-    override fun getAllGoals(): Flow<List<Goal>> {
-        return goalDao.getAllGoals()
-    }
+    override fun getTasksForGoal(goalId: String): Flow<List<DailyTask>> = taskDao.getTasksForGoal(goalId)
 
-    override suspend fun updateGoal(goal: Goal) {
-        goalDao.updateGoal(goal)
-    }
+    override suspend fun insertGoal(goal: Goal) = goalDao.insertGoal(goal)
 
-    override suspend fun deleteGoal(goal: Goal) {
-        goalDao.deleteGoal(goal)
-    }
+    override suspend fun updateGoal(goal: Goal) = goalDao.updateGoal(goal)
 
-    override suspend fun updateGoalProgress(goalId: String, progress: Float) {
+    override suspend fun deleteGoal(goal: Goal) = goalDao.deleteGoal(goal)
+
+    override suspend fun updateGoalProgress(goalId: String, progress: Float) = 
         goalDao.updateGoalProgress(goalId, progress)
-    }
 
-    override suspend fun updateGoalStatus(goalId: String, status: Goal.Status) {
+    override suspend fun updateGoalStatus(goalId: String, status: Goal.Status) = 
         goalDao.updateGoalStatus(goalId, status)
-    }
 
-    override fun getDailyTasksForGoal(goalId: String): Flow<List<DailyTask>> {
-        return taskDao.getTasksForGoal(goalId)
-    }
-
-    override suspend fun insertDailyTask(task: DailyTask) {
-        taskDao.insertTask(task)
-    }
-
-    override suspend fun updateDailyTask(task: DailyTask) {
-        taskDao.updateTask(task)
-    }
+    override suspend fun markTaskCompleted(taskId: String, completedAt: Long?) = 
+        taskDao.updateTaskCompletion(taskId, true, completedAt)
 }
