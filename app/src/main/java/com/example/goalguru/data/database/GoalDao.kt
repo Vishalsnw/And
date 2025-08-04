@@ -1,7 +1,6 @@
 
 package com.example.goalguru.data.database
 
-import androidx.room.*
 import com.example.goalguru.data.model.Goal
 import kotlinx.coroutines.flow.Flow
 
@@ -33,7 +32,6 @@ interface GoalDao {
 }
 package com.example.goalguru.data.database
 
-import androidx.room.*
 import com.example.goalguru.data.model.Goal
 import kotlinx.coroutines.flow.Flow
 

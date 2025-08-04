@@ -2,7 +2,6 @@ package com.example.goalguru.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.*
 
 @Entity(tableName = "goals")
 data class Goal(
