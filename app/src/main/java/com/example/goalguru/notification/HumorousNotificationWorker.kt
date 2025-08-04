@@ -1,4 +1,3 @@
-
 package com.example.goalguru.notification
 
 import android.app.NotificationChannel
@@ -18,7 +17,6 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.firstOrNull
 import java.util.Calendar
-import java.util.Date
 
 @HiltWorker
 class HumorousNotificationWorker @AssistedInject constructor(
@@ -54,69 +52,44 @@ class HumorousNotificationWorker @AssistedInject constructor(
 
     private fun showMotivationalNotification(taskCount: Int) {
         val messages = listOf(
-            "🌟 Rise and grind! You've got $taskCount tasks waiting to be conquered!",
-            "☕ Time to turn that coffee into productivity! $taskCount tasks are calling your name!",
-            "🎯 Your future self is counting on present you! Let's tackle those $taskCount tasks!",
-            "🚀 Houston, we have $taskCount missions to complete today!"
+            "Rise and grind! You've got $taskCount tasks waiting to be conquered! 💪",
+            "Good morning, goal crusher! Time to tackle those $taskCount tasks! 🌟",
+            "Your future self is counting on you! $taskCount tasks to complete today! 🚀"
         )
-        
-        sendNotification(
-            "Daily Motivation 💪",
-            messages.random(),
-            "daily_motivation"
+        showNotification("Morning Motivation", messages.random())
+    }
+
+    private fun showRoastNotification(taskCount: Int) {
+        val messages = listOf(
+            "Still got $taskCount tasks left? The day called, it wants its productivity back! 😏",
+            "Those $taskCount tasks aren't going to complete themselves while you scroll social media! 📱",
+            "Procrastination level: Expert. Task completion level: Needs work. $taskCount tasks remaining! ⏰"
         )
+        showNotification("Reality Check", messages.random())
     }
 
     private fun showHumorousReminder(taskCount: Int) {
         val messages = listOf(
-            "👀 Your tasks are getting lonely... They've been waiting all day!",
-            "🐌 At this pace, snails are faster than your progress today!",
-            "📱 Your phone has more battery than your motivation right now!",
-            "🍕 Even pizza delivery is faster than your task completion!",
-            "⏰ Time is ticking... and so are your uncompleted tasks!"
+            "Your tasks are getting lonely! They miss being completed. $taskCount still waiting! 😢",
+            "Breaking news: $taskCount tasks still unchecked. Scientists baffled! 📰",
+            "Task update: $taskCount items are still hoping for your attention! 🤞"
         )
-        
-        sendNotification(
-            "Friendly Reminder 😅",
-            messages.random(),
-            "humorous_reminder"
-        )
+        showNotification("Friendly Reminder", messages.random())
     }
 
-    private fun showRoastNotification(taskCount: Int) {
-        val roastMessages = listOf(
-            "🔥 ROAST TIME: You had ALL day and still have $taskCount tasks left? Really?",
-            "😤 Your procrastination game is STRONG! $taskCount tasks are crying right now!",
-            "🙄 Netflix: 8 hours, Tasks completed: 0. Math doesn't lie!",
-            "💀 RIP productivity. Cause of death: $taskCount incomplete tasks.",
-            "🤡 Congratulations! You've unlocked the 'Professional Procrastinator' achievement!",
-            "😂 Your tasks called... they want a different owner!",
-            "🍿 Your tasks had more entertainment watching you avoid them all day!"
-        )
-        
-        sendNotification(
-            "Time for Some Truth 🔥",
-            roastMessages.random(),
-            "roast_notification"
-        )
-    }
-
-    private fun sendNotification(title: String, message: String, channelId: String) {
+    private fun showNotification(title: String, message: String) {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                channelId,
-                title,
+                "humorous_reminders",
+                "Humorous Reminders",
                 NotificationManager.IMPORTANCE_DEFAULT
             )
             notificationManager.createNotificationChannel(channel)
         }
 
-        val intent = Intent(context, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
-
+        val intent = Intent(context, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(
             context,
             0,
@@ -124,129 +97,10 @@ class HumorousNotificationWorker @AssistedInject constructor(
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val notification = NotificationCompat.Builder(context, channelId)
-            .setSmallIcon(R.drawable.ic_notification)
+        val notification = NotificationCompat.Builder(context, "humorous_reminders")
             .setContentTitle(title)
             .setContentText(message)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
-            .build()
-
-        notificationManager.notify(System.currentTimeMillis().toInt(), notification)
-    }
-}
-
-class HumorousNotificationWorker @AssistedInject constructor(
-    @Assisted context: Context,
-    @Assisted workerParams: WorkerParameters,
-    private val goalRepository: GoalRepository
-) : CoroutineWorker(context, workerParams) {
-
-    override suspend fun doWork(): Result {
-        return try {
-            val goals = goalRepository.getAllGoals().firstOrNull() ?: emptyList()
-            val incompleteTasks = goals.sumOf { goal ->
-                goal.tasks?.count { !it.isCompleted } ?: 0
-            }
-
-            if (incompleteTasks > 0) {
-                val isEvening = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) >= 18
-                if (isEvening) {
-                    showRoastNotification(incompleteTasks)
-                } else {
-                    showMotivationalReminder(incompleteTasks)
-                }
-            }
-
-            Result.success()
-        } catch (e: Exception) {
-            Result.failure()
-        }
-    }
-
-    private fun showMotivationalReminder(taskCount: Int) {
-        val motivationalMessages = listOf(
-            "✨ You've got $taskCount tasks waiting for your magic touch!",
-            "🚀 Time to turn those $taskCount tasks into victories!",
-            "💪 $taskCount tasks = $taskCount opportunities to be awesome!",
-            "🎯 Focus mode: activated! $taskCount tasks to conquer!",
-            "⭐ Your future self will thank you for completing these $taskCount tasks!"
-        )
-        
-        sendNotification(
-            "Goal Guru Reminder 🎯",
-            motivationalMessages.random(),
-            "motivational_reminder"
-        )
-    }
-
-    private fun showRoastNotification(taskCount: Int) {
-        val roastMessages = listOf(
-            "🔥 ROAST TIME: You had ALL day and still have $taskCount tasks left? Really?",
-            "😤 Your procrastination game is STRONG! $taskCount tasks are crying right now!",
-            "🙄 Netflix: 8 hours, Tasks completed: 0. Math doesn't lie!",
-            "💀 RIP productivity. Cause of death: $taskCount incomplete tasks.",
-            "🤡 Congratulations! You've unlocked the 'Professional Procrastinator' achievement!",
-            "😂 Your tasks called... they want a different owner!",
-            "🍿 Your tasks had more entertainment watching you avoid them all day!"
-        )
-        
-        sendNotification(
-            "Time for Some Truth 🔥",
-            roastMessages.random(),
-            "roast_notification"
-        )
-    }
-
-    private fun sendNotification(title: String, message: String, channelId: String) {
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                channelId,
-                title,
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-            notificationManager.createNotificationChannel(channel)
-        }
-
-        val intent = Intent(context, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
-
-        val pendingIntent = PendingIntent.getActivity(
-            context,
-            0,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-
-        val notification = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle(title)
-            .setContentText(message)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
-            .build()
-
-        notificationManager.notify(System.currentTimeMillis().toInt(), notification)
-    }Y_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
-
-        val pendingIntent = PendingIntent.getActivity(
-            context,
-            0,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-
-        val notification = NotificationCompat.Builder(context, channelId)
-            .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle(title)
-            .setContentText(message)
-            .setStyle(NotificationCompat.BigTextStyle().bigText(message))
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .build()
