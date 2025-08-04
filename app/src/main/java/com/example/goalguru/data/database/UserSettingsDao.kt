@@ -1,3 +1,4 @@
+
 package com.example.goalguru.data.database
 
 import androidx.room.Dao
@@ -11,18 +12,15 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserSettingsDao {
-    @Query("SELECT * FROM user_settings WHERE userId = :userId LIMIT 1")
+    @Query("SELECT * FROM user_settings WHERE userId = :userId")
     fun getUserSettings(userId: String): Flow<UserSettings?>
 
-    @Query("SELECT * FROM user_settings WHERE userId = :userId LIMIT 1")
-    suspend fun getUserSettingsById(userId: String): UserSettings?
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertUserSettings(userSettings: UserSettings)
+    suspend fun insertUserSettings(settings: UserSettings)
 
     @Update
-    suspend fun updateUserSettings(userSettings: UserSettings)
+    suspend fun updateUserSettings(settings: UserSettings)
 
     @Delete
-    suspend fun deleteUserSettings(userSettings: UserSettings)
+    suspend fun deleteUserSettings(settings: UserSettings)
 }
