@@ -1,0 +1,282 @@
+2m 46s
+[INFO] dagger.hilt.android.processor.internal.androidentrypoint.AndroidEntryPointProcessor: total sources: 31, sources per round: 19, 12, 0, 0
+[INFO] dagger.hilt.android.processor.internal.bindvalue.BindValueProcessor: total sources: 0, sources per round: 
+[INFO] dagger.internal.codegen.ComponentProcessor: total sources: 52, sources per round: 34, 18, 0, 0
+[INFO] Annotation processing took 3823 ms
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/MainActivity.kt:20:13 Overload resolution ambiguity: 
+public fun GoalGuruTheme(darkTheme: Boolean = ..., dynamicColor: Boolean = ..., content: () -> Unit): Unit defined in com.example.goalguru.ui.theme in file GoalGuruTheme.kt
+public fun GoalGuruTheme(darkTheme: Boolean = ..., dynamicColor: Boolean = ..., content: () -> Unit): Unit defined in com.example.goalguru.ui.theme in file Theme.kt
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/MainActivity.kt:21:17 @Composable invocations can only happen from the context of a @Composable function
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/MainActivity.kt:23:43 @Composable invocations can only happen from the context of a @Composable function
+> Task :app:compileDebugKotlin FAILED
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/notification/HumorousNotificationWorker.kt:31:46 Unresolved reference: getTodaysTasks
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/notification/HumorousNotificationWorker.kt:32:57 Unresolved reference: it
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/notification/NotificationWorker.kt:38:48 Type mismatch: inferred type is Unit but Boolean was expected
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/notification/NotificationWorker.kt:38:53 Unresolved reference: progress
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:51:33 Unresolved reference: priority
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:53:29 'when' expression must be exhaustive, add necessary 'else' branch
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:53:40 Unresolved reference: priority
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:54:30 Unresolved reference: Priority
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:55:30 Unresolved reference: Priority
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:56:30 Unresolved reference: Priority
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:73:37 Unresolved reference: progress
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:78:37 Unresolved reference: progress
+utes ago in 3m 55s
+1s
+2s
+0s
+1s
+18s
+2s
+41s
+2m 46s
+[INFO] dagger.hilt.android.processor.internal.androidentrypoint.AndroidEntryPointProcessor: total sources: 31, sources per round: 19, 12, 0, 0
+[INFO] dagger.hilt.android.processor.internal.bindvalue.BindValueProcessor: total sources: 0, sources per round: 
+[INFO] dagger.internal.codegen.ComponentProcessor: total sources: 52, sources per round: 34, 18, 0, 0
+[INFO] Annotation processing took 3823 ms
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/MainActivity.kt:20:13 Overload resolution ambiguity: 
+public fun GoalGuruTheme(darkTheme: Boolean = ..., dynamicColor: Boolean = ..., content: () -> Unit): Unit defined in com.example.goalguru.ui.theme in file GoalGuruTheme.kt
+public fun GoalGuruTheme(darkTheme: Boolean = ..., dynamicColor: Boolean = ..., content: () -> Unit): Unit defined in com.example.goalguru.ui.theme in file Theme.kt
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/MainActivity.kt:21:17 @Composable invocations can only happen from the context of a @Composable function
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/MainActivity.kt:23:43 @Composable invocations can only happen from the context of a @Composable function
+> Task :app:compileDebugKotlin FAILED
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/notification/HumorousNotificationWorker.kt:31:46 Unresolved reference: getTodaysTasks
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/notification/HumorousNotificationWorker.kt:32:57 Unresolved reference: it
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/notification/NotificationWorker.kt:38:48 Type mismatch: inferred type is Unit but Boolean was expected
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/notification/NotificationWorker.kt:38:53 Unresolved reference: progress
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:51:33 Unresolved reference: priority
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:53:29 'when' expression must be exhaustive, add necessary 'else' branch
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:53:40 Unresolved reference: priority
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:54:30 Unresolved reference: Priority
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:55:30 Unresolved reference: Priority
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:56:30 Unresolved reference: Priority
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:73:37 Unresolved reference: progress
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:78:37 Unresolved reference: progress
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/SettingToggleCard.kt:9:8 Unresolved reference: ExperimentalMaterial3Api
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/SettingToggleCard.kt:9:8 An annotation argument must be a compile-time constant
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/SettingToggleCard.kt:18:5 Unresolved reference: Card
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/SettingToggleCard.kt:19:29 Unresolved reference: fillMaxWidth
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/SettingToggleCard.kt:20:21 Unresolved reference: CardDefaults
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/SettingToggleCard.kt:22:9 Unresolved reference: Row
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/SettingToggleCard.kt:24:18 Unresolved reference: fillMaxWidth
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/SettingToggleCard.kt:26:37 Unresolved reference: Arrangement
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/SettingToggleCard.kt:29:13 Unresolved reference: Column
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/SettingToggleCard.kt:30
+: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/SettingToggleCard.kt:32:17 Unresolved reference: Text
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/SettingToggleCard.kt:34:29 Unresolved reference: MaterialTheme
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/SettingToggleCard.kt:36:17 Unresolved reference: Text
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/SettingToggleCard.kt:38:29 Unresolved reference: MaterialTheme
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/SettingToggleCard.kt:39:29 Unresolved reference: MaterialTheme
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/SettingToggleCard.kt:43:13 Unresolved reference: Switch
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/navigation/GoalGuruNavigation.kt:25:17 Cannot find a parameter with this name: onContinue
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/navigation/GoalGuruNavigation.kt:25:17 No value passed for parameter 'onGetStarted'
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/navigation/GoalGuruNavigation.kt:62:17 Cannot find a parameter with this name: onNavigateBack
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/navigation/GoalGuruNavigation.kt:62:17 No value passed for parameter 'onBackPressed'
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/navigation/GoalGuruNavigation.kt:70:17 Cannot find a parameter with this name: onNavigateBack
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/navigation/GoalGuruNavigation.kt:70:17 No value passed for parameter 'onBackPressed'
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:36:30 Unresolved reference: uiState
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:37:32 Unresolved reference: isLoading
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:39:5 Unresolved reference: LaunchedEffect
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:52:9 Unresolved reference: Row
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:56:13 @Composable invocations can only happen from the context of a @Composable function
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:59:13 @Composable invocations can only happen from the context of a @Composable function
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:61:25 Unresolved reference: MaterialTheme
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:67:30 Cannot infer a type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:68:13 Unresolved reference: Card
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:70:26 Unresolved reference: CardDefaults
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:70:67 Unresolved reference: MaterialTheme
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:75:29 Unresolved reference: MaterialTheme
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:81:9 None of the following functions can be called with the arguments supplied: 
+public fun OutlinedTextField(value: TextFieldValue, onValueChange: (TextFieldValue) -> Unit, modifier: Modifier = ..., enabled: Boolean = ..., readOnly: Boolean = ..., textStyle: TextStyle = ..., label: (() -> Unit)? = ..., placeholder: (() -> Unit)? = ..., leadingIcon: (() -> Unit)? = ..., trailingIcon: (() -> Unit)? = ..., prefix: (() -> Unit)? = ..., suffix: (() -> Unit)? = ..., supportingText: (() -> Unit)? = ..., isError: Boolean = ..., visualTransformation: VisualTransformation = ..., keyboardOptions: KeyboardOptions = ..., keyboardActions: KeyboardActions = ..., singleLine: Boolean = ..., maxLines: Int = ..., minLines: Int = ..., interactionSource: MutableInteractionSource = ..., shape: Shape = ..., colors: TextFieldColors = ...): Unit defined in androidx.compose.material3
+public fun OutlinedTextField(value: String, onValueChange: (String) -> Unit, modifier: Modifier = ..., enabled: Boolean = ..., readOnly: Boolean = ..., textStyle: TextStyle = ..., label: (() -> Unit)? = ..., placeholder: (() -> Unit)? = ..., leadingIcon: (() -> Unit)? = ..., trailingIcon: (() -> Unit)? = ..., prefix: (() -> Unit)? = ..., suffix: (() -> Unit)? = ..., supportingText: (() -> Unit)? = ..., isError: Boolean = ..., visualTransformation: VisualTransformation = ..., keyboardOptions: KeyboardOptions = ..., keyboardActions: KeyboardActions = ..., singleLine: Boolean = ..., maxLines: Int = ..., minLines: Int = ..., interactionSource: MutableInteractionSource = ..., shape: Shape = ..., colors: TextFieldColors = ...): Unit defined in androidx.compose.material3
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:84:23 @Composable invocations can only happen from the context of a @Composable function
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:89:9 None of the following functions can be called with the arguments supplied: 
+public fun OutlinedTextField(value: TextFieldValue, onValueChange: (TextFieldValue) -> Unit, modifier: Modifier = ..., enabled: Boolean = ..., readOnly: Boolean = ..., textStyle: TextStyle = ..., label: (() -> Unit)? = ..., placeholder: (() -> Unit)? = ..., leadingIcon: (() -> Unit)? = ..., trailingIcon: (() -> Unit)? = ..., prefix: (() -> Unit)? = ..., suffix: (() -> Unit)? = ..., supportingText: (() -> Unit)? = ..., isError: Boolean = ..., visualTransformation: VisualTransformation = ..., keyboardOptions: KeyboardOptions = ..., keyboardActions: KeyboardActions = ..., singleLine: Boolean = ..., maxLines: Int = ..., minLines: Int = ..., interactionSource: MutableInteractionSource = ..., shape: Shape = ..., colors: TextFieldColors = ...): Unit defined in androidx.compose.material3
+public fun OutlinedTextField(value: String, onValueChange: (String) -> Unit, modifier: Modifier = ..., enabled: Boolean = ..., readOnly: Boolean = ..., textStyle: TextStyle = ..., label: (() -> Unit)? = ..., placeholder: (() -> Unit)? = ..., leadingIcon: (() -> Unit)? = ..., trailingIcon: (() -> Unit)? = ..., prefix: (() -> Unit)? = ..., suffix: (() -> Unit)? = ..., supportingText: (() -> Unit)? = ..., isError: Boolean = ..., visualTransformation: VisualTransformation = ..., keyboardOptions: KeyboardOptions = ..., keyboardActions: KeyboardActions = ..., singleLine: Boolean = ..., maxLines: Int = ..., minLines: Int = ..., interactionSource: MutableInteractionSource = ..., shape: Shape = ..., colors: TextFieldColors = ...): Unit defined in androidx.compose.material3
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:92:23 @Composable invocations can only happen from the context of a @Composable function
+2m 46s
+Run ./gradlew assembleDebug --no-daemon --stacktrace | tee build.log
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.2/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Configure project :
+Build was configured to prefer settings repositories over project repositories but repository 'Google' was added by build file 'build.gradle'
+Build was configured to prefer settings repositories over project repositories but repository 'MavenRepo' was added by build file 'build.gradle'
+Checking the license for package Android SDK Build-Tools 33.0.1 in /usr/local/lib/android/sdk/licenses
+License for package Android SDK Build-Tools 33.0.1 accepted.
+Preparing "Install Android SDK Build-Tools 33.0.1 v.33.0.1".
+"Install Android SDK Build-Tools 33.0.1 v.33.0.1" ready.
+Installing Android SDK Build-Tools 33.0.1 in /usr/local/lib/android/sdk/build-tools/33.0.1
+"Install Android SDK Build-Tools 33.0.1 v.33.0.1" complete.
+"Install Android SDK Build-Tools 33.0.1 v.33.0.1" finished.
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkDebugAarMetadata
+> Task :app:generateDebugResValues
+> Task :app:injectCrashlyticsMappingFileIdDebug
+> Task :app:processDebugGoogleServices
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:mergeDebugResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:parseDebugLocalResources
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:javaPreCompileDebug
+> Task :app:processDebugManifestForPackage
+> Task :app:mergeDebugShaders
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :app:desugarDebugFileDependencies
+> Task :app:processDebugResources
+> Task :app:checkDebugDuplicateClasses
+> Task :app:kaptGenerateStubsDebugKotlin
+> Task :app:mergeExtDexDebug
+> Task :app:mergeLibDexDebug
+> Task :app:kaptDebugKotlin
+[INFO] All Javac options: {-Akapt.kotlin.generated=/home/runner/work/And/And/app/build/generated/source/kaptKotlin/debug=-Akapt.kotlin.generated=/home/runner/work/And/And/app/build/generated/source/kaptKotlin/debug, -Adagger.fastInit=enabled=-Adagger.fastInit=enabled, -Adagger.hilt.android.internal.disableAndroidSuperclassValidation=true=-Adagger.hilt.android.internal.disableAndroidSuperclassValidation=true, -Adagger.hilt.android.internal.projectType=APP=-Adagger.hilt.android.internal.projectType=APP, -Adagger.hilt.internal.useAggregatingRootProcessor=false=-Adagger.hilt.internal.useAggregatingRootProcessor=false, --source=17, -proc:=only, accessInternalAPI=true, --class-path=/home/runner/work/And/And/app/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debug/R.jar:/home/runner/.gradle/caches/transforms-3/8da9b09cdf80c845cb112ae545075672/transformed/jetified-accompanist-systemuicontroller-0.30.1-api.jar:/home/runner/.gradle/caches/transforms-3/a4592d81ba40263b2259c2221d81b26d/transformed/jet
+> Task :app:mergeDebugJniLibFolders
+> Task :app:mergeDebugNativeLibs NO-SOURCE
+> Task :app:stripDebugDebugSymbols NO-SOURCE
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:kaptDebugKotlin
+[INFO] Kapt3 is enabled (stand-alone mode).
+Annotation processing mode: apt
+Memory leak detection mode: none
+Show processor stats: false
+Verbose mode: true
+Info as warnings: false
+Use light analysis: false
+Correct error types: false
+Dump default parameter values: false
+Map diagnostic locations: false
+Strict mode: false
+Detect annotation processors in compile classpath: true
+Incremental annotation processing (apt mode): false
+Strip @Metadata annotations from stubs: false
+Keep KDoc comments in stubs: false
+Use JVM IR backend: false
+Project base dir: /home/runner/work/And/And/app
+Compile classpath: /home/runner/work/And/And/app/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debug/R.jar, /home/runner/.gradle/caches/transforms-3/8da9b09cdf80c845cb112ae545075672/transformed/jetified-accompanist-systemuicontroller-0.30.1-api.jar, /home/runner/.gradle/caches/transforms-3/a4592d81ba40263b2259c2221d81b26d/transformed/jetified-firebase-crashlytics-ktx-18.4.3-api.jar, /home/runner/.gradle/caches/transforms-3/bc48b1a85700a727d4442c6aef4c9df8/transformed/jetified-logging-interceptor-4.11.0.jar, /home/runner/.gradle/caches/transforms-3/b2f44b80c71d707ec88f7c628e3851e7/transformed/material-1.11.0-api.jar, /home/runner/.gradle/caches/transforms-3/29918959b633c9193fbeb3bc5a09eaef/transformed/jetified-material3-1.1.1-api.jar, /home/runner/.gradle/caches/transforms-3/92480db93817708f77844a775ac1fd1d/transformed/jetified-hilt-navigation-compose-1.1.0-api.jar, /home/runner/.gradle/caches/transforms-3/c2fcc21469ec828bfb8b49344fb47740/transformed/jetified-hilt-navigation-1.1.0-api.jar,
+Java source roots: /home/runner/work/And/And/app/build/tmp/kapt3/stubs/debug/com/example/goalguru/notification/HumorousNotificationWorker.java, /home/runner/work/And/And/app/build/tmp/kapt3/stubs/debug/com/example/goalguru/notification/NotificationWorker.java, /home/runner/work/And/And/app/build/tmp/kapt3/stubs/debug/com/example/goalguru/ui/navigation/GoalGuruNavigationKt.java, /home/runner/work/And/And/app/build/tmp/kapt3/stubs/debug/com/example/goalguru/ui/screens/goal/GoalDetailViewModel.java, /home/runner/work/And/And/app/build/tmp/kapt3/stubs/debug/com/example/goalguru/ui/screens/goal/GoalDetailScreenKt.java, /home/runner/work/And/And/app/build/tmp/kapt3/stubs/debug/com/example/goalguru/ui/screens/goal/CreateGoalScreenKt.java, /home/runner/work/And/And/app/build/tmp/kapt3/stubs/debug/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.java, /home/runner/work/And/And/app/build/tmp/kapt3/stubs/debug/com/example/goalguru/ui/screens/onboarding/OnboardingScreenKt.java, /home/runner/work/And/And/app/build
+Sources output directory: /home/runner/work/And/And/app/build/generated/source/kapt/debug
+Class files output directory: /home/runner/work/And/And/app/build/tmp/kapt3/classes/debug
+Stubs output directory: /home/runner/work/And/And/app/build/tmp/kapt3/stubs/debug
+Incremental data output directory: /home/runner/work/And/And/app/build/tmp/kapt3/stubs/debug
+Annotation processing classpath: /home/runner/.gradle/caches/transforms-3/2c4c05055b5d55ac4b4cd29abc616c96/transformed/jetified-hilt-compiler-1.1.0.jar, /home/runner/.gradle/caches/modules-2/files-2.1/androidx.room/room-migration/2.6.1/8d8218e4ccfe9b34485619a8ca68f8760840301d/room-migration-2.6.1.jar, /home/runner/.gradle/caches/transforms-3/a92846bfb576f85719e0374973f4b937/transformed/jetified-room-compiler-processing-2.6.1.jar, /home/runner/.gradle/caches/modules-2/files-2.1/androidx.room/room-common/2.6.1/ff1b9580850a9b7eef56554e356628d225785265/room-common-2.6.1.jar, /home/runner/.gradle/caches/modules-2/files-2.1/androidx.room/room-compiler/2.6.1/d789379e27b40fa5cc6e17f4c56988d6500a4036/room-compiler-2.6.1.jar, /home/runner/.gradle/caches/transforms-3/f7a743a0a1b097c821bc0dda30ce4221/transformed/jetified-hilt-compiler-2.48.jar, /home/runner/.gradle/caches/transforms-3/24b20ebb07228903aed402a4af618177/transformed/jetified-auto-common-0.11.jar, /home/runner/.gradle/caches/transforms-3/28bc7f9bfdad65a49b84b
+Annotation processors: 
+AP options: {kapt.kotlin.generated=/home/runner/work/And/And/app/build/generated/source/kaptKotlin/debug, dagger.fastInit=enabled=, dagger.hilt.android.internal.disableAndroidSuperclassValidation=true=, dagger.hilt.android.internal.projectType=APP=, dagger.hilt.internal.useAggregatingRootProcessor=false=}
+Javac options: {--source=17}
+[incremental apt] Changed files: []
+[incremental apt] Compiled sources directories: /home/runner/work/And/And/app/build/tmp/kotlin-classes/debug, /home/runner/work/And/And/app/build/intermediates/javac/debug/classes
+[incremental apt] Cache directory for incremental compilation: /home/runner/work/And/And/app/build/tmp/kapt3/incApCache/debug
+[incremental apt] Changed classpath names: 
+[INFO] Need to discovery annotation processors in the AP classpath
+[INFO] Use own ClassLoader for processor 'androidx.hilt.AndroidXHiltProcessor'
+[INFO] Use own ClassLoader for processor 'androidx.room.RoomProcessor'
+[INFO] Use own ClassLoader for processor 'dagger.hilt.processor.internal.uninstallmodules.UninstallModulesProcessor'
+[INFO] Use own ClassLoader for processor 'dagger.hilt.android.processor.internal.viewmodel.ViewModelProcessor'
+[INFO] Use own ClassLoader for processor 'dagger.hilt.android.processor.internal.customtestapplication.CustomTestApplicationProcessor'
+[INFO] Use own ClassLoader for processor 'dagger.hilt.processor.internal.root.RootProcessor'
+[INFO] Use own ClassLoader for processor 'dagger.hilt.processor.internal.earlyentrypoint.EarlyEntryPointProcessor'
+[INFO] Use own ClassLoader for processor 'dagger.hilt.processor.internal.generatesrootinput.GeneratesRootInputProcessor'
+[INFO] Use own ClassLoader for processor 'dagger.hilt.processor.internal.aliasof.AliasOfProcessor'
+[INFO] Use own ClassLoader for processor 'dagger.hilt.processor.internal.definecomponent.DefineComponentProcessor'
+[INFO] Use own ClassLoader for processor 'dagger.hilt.processor.internal.aggregateddeps.AggregatedDepsProcessor'
+[INFO] Use own ClassLoader for processor 'dagger.hilt.processor.internal.originatingelement.OriginatingElementProcessor'
+[INFO] Use own ClassLoader for processor 'dagger.hilt.processor.internal.root.ComponentTreeDepsProcessor'
+[INFO] Use own ClassLoader for processor 'dagger.hilt.android.processor.internal.androidentrypoint.AndroidEntryPointProcessor'
+[INFO] Use own ClassLoader for processor 'dagger.hilt.android.processor.internal.bindvalue.BindValueProcessor'
+[INFO] Use own ClassLoader for processor 'dagger.internal.codegen.ComponentProcessor'
+[INFO] Annotation processors: androidx.hilt.AndroidXHiltProcessor, androidx.room.RoomProcessor, dagger.hilt.processor.internal.uninstallmodules.UninstallModulesProcessor, dagger.hilt.android.processor.internal.viewmodel.ViewModelProcessor, dagger.hilt.android.processor.internal.customtestapplication.CustomTestApplicationProcessor, dagger.hilt.processor.internal.root.RootProcessor, dagger.hilt.processor.internal.earlyentrypoint.EarlyEntryPointProcessor, dagger.hilt.processor.internal.generatesrootinput.GeneratesRootInputProcessor, dagger.hilt.processor.internal.aliasof.AliasOfProcessor, dagger.hilt.processor.internal.definecomponent.DefineComponentProcessor, dagger.hilt.processor.internal.aggregateddeps.AggregatedDepsProcessor, dagger.hilt.processor.internal.originatingelement.OriginatingElementProcessor, dagger.hilt.processor.internal.root.ComponentTreeDepsProcessor, dagger.hilt.android.processor.internal.androidentrypoint.AndroidEntryPointProcessor, dagger.hilt.android.processor.internal.bindvalue.BindValueP
+[INFO] Processing java sources with annotation processors: /home/runner/work/And/And/app/build/tmp/kapt3/stubs/debug/com/example/goalguru/notification/HumorousNotificationWorker.java, /home/runner/work/And/And/app/build/tmp/kapt3/stubs/debug/com/example/goalguru/notification/NotificationWorker.java, /home/runner/work/And/And/app/build/tmp/kapt3/stubs/debug/com/example/goalguru/ui/navigation/GoalGuruNavigationKt.java, /home/runner/work/And/And/app/build/tmp/kapt3/stubs/debug/com/example/goalguru/ui/screens/goal/GoalDetailViewModel.java, /home/runner/work/And/And/app/build/tmp/kapt3/stubs/debug/com/example/goalguru/ui/screens/goal/GoalDetailScreenKt.java, /home/runner/work/And/And/app/build/tmp/kapt3/stubs/debug/com/example/goalguru/ui/screens/goal/CreateGoalScreenKt.java, /home/runner/work/And/And/app/build/tmp/kapt3/stubs/debug/com/example/goalguru/ui/screens/goal/CreateGoalViewModel.java, /home/runner/work/And/And/app/build/tmp/kapt3/stubs/debug/com/example/goalguru/ui/screens/onboarding/OnboardingScreenKt.j
+[INFO] Processing types with annotation processors: 
+[INFO] Analyzing sources structure took 68[ms].
+[INFO] Annotation processing complete, errors: 0, warnings: 0
+[INFO] Annotation processor stats:
+[INFO] androidx.hilt.AndroidXHiltProcessor: total: 336 ms, init: 59 ms, 4 round(s): 277 ms, 0 ms, 0 ms, 0 ms
+[INFO] androidx.room.RoomProcessor: total: 730 ms, init: 18 ms, 4 round(s): 712 ms, 0 ms, 0 ms, 0 ms
+[INFO] dagger.hilt.processor.internal.uninstallmodules.UninstallModulesProcessor: total: 10 ms, init: 10 ms, 0 round(s): 
+[INFO] dagger.hilt.android.processor.internal.viewmodel.ViewModelProcessor: total: 130 ms, init: 1 ms, 4 round(s): 129 ms, 0 ms, 0 ms, 0 ms
+[INFO] dagger.hilt.android.processor.internal.customtestapplication.CustomTestApplicationProcessor: total: 1 ms, init: 1 ms, 0 round(s): 
+[INFO] dagger.hilt.processor.internal.root.RootProcessor: total: 43 ms, init: 5 ms, 4 round(s): 31 ms, 3 ms, 4 ms, 0 ms
+[INFO] dagger.hilt.processor.internal.earlyentrypoint.EarlyEntryPointProcessor: total: 1 ms, init: 1 ms, 0 round(s): 
+[INFO] dagger.hilt.processor.internal.generatesrootinput.GeneratesRootInputProcessor: total: 0 ms, init: 0 ms, 0 round(s): 
+[INFO] dagger.hilt.processor.internal.aliasof.AliasOfProcessor: total: 0 ms, init: 0 ms, 0 round(s): 
+[INFO] dagger.hilt.processor.internal.definecomponent.DefineComponentProcessor: total: 0 ms, init: 0 ms, 0 round(s): 
+File Object History : []
+[INFO] dagger.hilt.processor.internal.aggregateddeps.AggregatedDepsProcessor: total: 68 ms, init: 1 ms, 4 round(s): 38 ms, 28 ms, 1 ms, 0 ms
+Open Type Names     : []
+Gen. Src Names      : []
+Gen. Cls Names      : []
+Agg. Gen. Src Names : []
+Agg. Gen. Cls Names : []
+[INFO] dagger.hilt.processor.internal.originatingelement.OriginatingElementProcessor: total: 2 ms, init: 0 ms, 3 round(s): 2 ms, 0 ms, 0 ms
+[INFO] dagger.hilt.processor.internal.root.ComponentTreeDepsProcessor: total: 0 ms, init: 0 ms, 0 round(s): 
+[INFO] dagger.hilt.android.processor.internal.androidentrypoint.AndroidEntryPointProcessor: total: 39 ms, init: 0 ms, 4 round(s): 39 ms, 0 ms, 0 ms, 0 ms
+[INFO] dagger.hilt.android.processor.internal.bindvalue.BindValueProcessor: total: 3 ms, init: 3 ms, 0 round(s): 
+[INFO] dagger.internal.codegen.ComponentProcessor: total: 514 ms, init: 75 ms, 4 round(s): 334 ms, 97 ms, 7 ms, 1 ms
+[INFO] Generated files report:
+[INFO] androidx.hilt.AndroidXHiltProcessor: total sources: 4, sources per round: 4, 0, 0, 0
+[INFO] androidx.room.RoomProcessor: total sources: 9, sources per round: 9, 0, 0, 0
+[INFO] dagger.hilt.processor.internal.uninstallmodules.UninstallModulesProcessor: total sources: 0, sources per round: 
+[INFO] dagger.hilt.android.processor.internal.viewmodel.ViewModelProcessor: total sources: 13, sources per round: 13, 0, 0, 0
+[INFO] dagger.hilt.android.processor.internal.customtestapplication.CustomTestApplicationProcessor: total sources: 0, sources per round: 
+[INFO] dagger.hilt.processor.internal.root.RootProcessor: total sources: 14, sources per round: 14, 0, 0, 0
+[INFO] dagger.hilt.processor.internal.earlyentrypoint.EarlyEntryPointProcessor: total sources: 0, sources per round: 
+[INFO] dagger.hilt.processor.internal.generatesrootinput.GeneratesRootInputProcessor: total sources: 0, sources per round: 
+[INFO] dagger.hilt.processor.internal.aliasof.AliasOfProcessor: total sources: 0, sources per round: 
+[INFO] dagger.hilt.processor.internal.definecomponent.DefineComponentProcessor: total sources: 0, sources per round: 
+[INFO] dagger.hilt.processor.internal.aggregateddeps.AggregatedDepsProcessor: total sources: 28, sources per round: 16, 12, 0, 0
+[INFO] dagger.hilt.processor.internal.originatingelement.OriginatingElementProcessor: total sources: 12, sources per round: 12, 0, 0
+[INFO] dagger.hilt.processor.internal.root.ComponentTreeDepsProcessor: total sources: 0, sources per round: 
+[INFO] dagger.hilt.android.processor.internal.androidentrypoint.AndroidEntryPointProcessor: total sources: 31, sources per round: 19, 12, 0, 0
+[INFO] dagger.hilt.android.processor.internal.bindvalue.BindValueProcessor: total sources: 0, sources per round: 
+[INFO] dagger.internal.codegen.ComponentProcessor: total sources: 52, sources per round: 34, 18, 0, 0
+[INFO] Annotation processing took 3823 ms
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/MainActivity.kt:20:13 Overload resolution ambiguity: 
+public fun GoalGuruTheme(darkTheme: Boolean = ..., dynamicColor: Boolean = ..., content: () -> Unit): Unit defined in com.example.goalguru.ui.theme in file GoalGuruTheme.kt
+public fun GoalGuruTheme(darkTheme: Boolean = ..., dynamicColor: Boolean = ..., content: () -> Unit): Unit defined in com.example.goalguru.ui.theme in file Theme.kt
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/MainActivity.kt:21:17 @Composable invocations can only happen from the context of a @Composable function
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/MainActivity.kt:23:43 @Composable invocations can only happen from the context of a @Composable function
+> Task :app:compileDebugKotlin FAILED
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/notification/HumorousNotificationWorker.kt:31:46 Unresolved reference: getTodaysTasks
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/notification/HumorousNotificationWorker.kt:32:57 Unresolved reference: it
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/notification/NotificationWorker.kt:38:48 Type mismatch: inferred type is Unit but Boolean was expected
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/notification/NotificationWorker.kt:38:53 Unresolved reference: progress
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:51:33 Unresolved reference: priority
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:53:29 'when' expression must be exhaustive, add necessary 'else' branch
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:53:40 Unresolved reference: priority
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:54:30 Unresolved reference: Priority
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:55:30 Unresolved reference: Priority
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:56:30 Unresolved reference: Priority
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:73:37 Unresolved reference: progress
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/GoalCard.kt:78:37 Unresolved reference: progress
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/SettingToggleCard.kt:9:8 Unresolved reference: ExperimentalMaterial3Api
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/SettingToggleCard.kt:9:8 An annotation argument must be a compile-time constant
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/SettingToggleCard.kt:18:5 Unresolved reference: Card
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/SettingToggleCard.kt:19:29 Unresolved reference: fillMaxWidth
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/SettingToggleCard.kt:20:21 Unresolved reference: CardDefaults
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/components/SettingToggleCard.kt:22:9 Unresolved reference: Row
+e: file:///home/runner/work/And/And/app/src/main/java/com/exa
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/settings/SettingsScreen.kt:100:29 Unresolved reference: MaterialTheme
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/settings/SettingsScreen.kt:103:13 Unresolved reference: Switch
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/settings/SettingsViewModel.kt:20:62 No value passed for parameter 'userId'
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/settings/SettingsViewModel.kt:42:55 Unresolved reference: darkModeEnabled
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/settings/SettingsViewModel.kt:43:57 Unresolved reference: reminderFrequency
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/settings/SettingsViewModel.kt:75:17 Cannot find a parameter with this name: darkModeEnabled
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/settings/SettingsViewModel.kt:76:17 Cannot find a parameter with this name: reminderFrequency
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/theme/GoalGuruTheme.kt:31:1 Conflicting overloads: public fun GoalGuruTheme(darkTheme: Boolean = ..., dynamicColor: Boolean = ..., content: () -> Unit): Unit defined in com.example.goalguru.ui.theme in file GoalGuruTheme.kt, public fun GoalGuruTheme(darkTheme: Boolean = ..., dynamicColor: Boolean = ..., content: () -> Unit): Unit defined in com.example.goalguru.ui.theme in file Theme.kt
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/theme/Theme.kt:30:1 Conflicting overloads: public fun GoalGuruTheme(darkTheme: Boolean = ..., dynamicColor: Boolean = ..., content: () -> Unit): Unit defined in com.example.goalguru.ui.theme in file GoalGuruTheme.kt, public fun GoalGuruTheme(darkTheme: Boolean = ..., dynamicColor: Boolean = ..., content: () -> Unit): Unit defined in com.example.goalguru.ui.theme in file Theme.kt
+FAILURE: Build failed with an exception.
+* What went wrong:
+Execution failed for task ':app:compileDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+* Try:
