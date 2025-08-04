@@ -128,6 +128,124 @@ class HumorousNotificationWorker @AssistedInject constructor(
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(title)
             .setContentText(message)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+            .build()
+
+        notificationManager.notify(System.currentTimeMillis().toInt(), notification)
+    }
+}
+
+class HumorousNotificationWorker @AssistedInject constructor(
+    @Assisted context: Context,
+    @Assisted workerParams: WorkerParameters,
+    private val goalRepository: GoalRepository
+) : CoroutineWorker(context, workerParams) {
+
+    override suspend fun doWork(): Result {
+        return try {
+            val goals = goalRepository.getAllGoals().firstOrNull() ?: emptyList()
+            val incompleteTasks = goals.sumOf { goal ->
+                goal.tasks?.count { !it.isCompleted } ?: 0
+            }
+
+            if (incompleteTasks > 0) {
+                val isEvening = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) >= 18
+                if (isEvening) {
+                    showRoastNotification(incompleteTasks)
+                } else {
+                    showMotivationalReminder(incompleteTasks)
+                }
+            }
+
+            Result.success()
+        } catch (e: Exception) {
+            Result.failure()
+        }
+    }
+
+    private fun showMotivationalReminder(taskCount: Int) {
+        val motivationalMessages = listOf(
+            "✨ You've got $taskCount tasks waiting for your magic touch!",
+            "🚀 Time to turn those $taskCount tasks into victories!",
+            "💪 $taskCount tasks = $taskCount opportunities to be awesome!",
+            "🎯 Focus mode: activated! $taskCount tasks to conquer!",
+            "⭐ Your future self will thank you for completing these $taskCount tasks!"
+        )
+        
+        sendNotification(
+            "Goal Guru Reminder 🎯",
+            motivationalMessages.random(),
+            "motivational_reminder"
+        )
+    }
+
+    private fun showRoastNotification(taskCount: Int) {
+        val roastMessages = listOf(
+            "🔥 ROAST TIME: You had ALL day and still have $taskCount tasks left? Really?",
+            "😤 Your procrastination game is STRONG! $taskCount tasks are crying right now!",
+            "🙄 Netflix: 8 hours, Tasks completed: 0. Math doesn't lie!",
+            "💀 RIP productivity. Cause of death: $taskCount incomplete tasks.",
+            "🤡 Congratulations! You've unlocked the 'Professional Procrastinator' achievement!",
+            "😂 Your tasks called... they want a different owner!",
+            "🍿 Your tasks had more entertainment watching you avoid them all day!"
+        )
+        
+        sendNotification(
+            "Time for Some Truth 🔥",
+            roastMessages.random(),
+            "roast_notification"
+        )
+    }
+
+    private fun sendNotification(title: String, message: String, channelId: String) {
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                title,
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        val intent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val notification = NotificationCompat.Builder(context, channelId)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle(title)
+            .setContentText(message)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+            .build()
+
+        notificationManager.notify(System.currentTimeMillis().toInt(), notification)
+    }Y_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val notification = NotificationCompat.Builder(context, channelId)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle(title)
+            .setContentText(message)
             .setStyle(NotificationCompat.BigTextStyle().bigText(message))
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
