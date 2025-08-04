@@ -22,7 +22,7 @@ fun GoalGuruNavigation(
     ) {
         composable("onboarding") {
             OnboardingScreen(
-                onContinue = {
+                onGetStarted = {
                     navController.navigate("dashboard") {
                         popUpTo("onboarding") { inclusive = true }
                     }
@@ -46,7 +46,7 @@ fun GoalGuruNavigation(
 
         composable("create_goal") {
             CreateGoalScreen(
-                onNavigateBack = {
+                onBackPressed = {
                     navController.popBackStack()
                 },
                 onGoalCreated = {
@@ -67,7 +67,7 @@ fun GoalGuruNavigation(
 
         composable("settings") {
             SettingsScreen(
-                onNavigateBack = {
+                onBackPressed = {
                     navController.popBackStack()
                 }
             )

@@ -6,3 +6,10 @@ enum class Priority {
     HIGH,
     URGENT,
 }
+package com.example.goalguru.data.model
+
+enum class Priority {
+    LOW,
+    MEDIUM,
+    HIGH
+}

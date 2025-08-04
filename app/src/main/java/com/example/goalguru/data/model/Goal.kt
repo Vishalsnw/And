@@ -16,9 +16,16 @@ data class Goal(
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now(),
     val roadmap: List<String> = emptyList(),
-    val completedAt: LocalDateTime? = null
+    val completedAt: LocalDateTime? = null,
+    val priority: Priority = Priority.MEDIUM,
+    val progress: Float = 0f,
+    val estimatedDuration: Int = 30
 ) {
     enum class Status {
         ACTIVE, COMPLETED, PAUSED, CANCELLED
+    }
+
+    enum class Priority {
+        LOW, MEDIUM, HIGH
     }
 }
