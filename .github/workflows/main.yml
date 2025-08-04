@@ -42,27 +42,45 @@ jobs:
             -validity 10000 \
             -dname "CN=Android Debug, O=Android, C=US"
 
-      - name: 🏗️ Build APK (Capture Full Logs)
+      - name: 🏗️ Build APK (Error-Focused Logging)
         id: build_apk
         continue-on-error: true
         run: |
           chmod +x ./gradlew
-          ./gradlew clean assembleRelease --stacktrace --info > build_output.txt 2>&1 || true
-          grep -Ei 'error:|Unresolved reference|cannot find symbol|resource linking failed|Caused by|Exception|Execution failed' \
-            build_output.txt > errors_only.txt || true
+          echo "🔨 Starting build process..."
+          if ./gradlew clean assembleRelease --quiet --stacktrace 2>&1 | \
+             tee build_output.txt | \
+             grep -v -E '^(Download|> Task|BUILD SUCCESSFUL|> Configure|Starting a Gradle Daemon)' | \
+             grep -E -i '(error|exception|failed|unresolved|cannot find|duplicate|missing|fatal)'; then
+            echo "❌ Build completed with errors"
+          else
+            echo "✅ Build completed successfully"
+          fi
 
-      - name: 📄 Print Error Summary
+      - name: 📄 Extract and Display Errors Only
+        if: always()
         run: |
-          echo "🧨 Top Build Errors:" > error_summary.txt
-          head -n 50 errors_only.txt >> error_summary.txt
-          echo "..." >> error_summary.txt
+          echo "🔍 Extracting errors from build log..."
+          grep -E -i -A 2 -B 1 '(error:|exception|failed|unresolved|cannot find|duplicate class|missing|fatal)' \
+            build_output.txt > errors_only.txt || echo "No errors found in build log"
+          
+          if [ -s errors_only.txt ]; then
+            echo "🚨 BUILD ERRORS FOUND:"
+            echo "===================="
+            cat errors_only.txt
+            echo "===================="
+          else
+            echo "✅ No build errors detected"
+          fi
 
-      - name: 🚨 Annotate Build Errors (if any)
+      - name: 🚨 Annotate Critical Errors
         if: failure()
         run: |
-          while read -r line; do
-            echo "::error::$line"
-          done < errors_only.txt
+          if [ -s errors_only.txt ]; then
+            head -n 20 errors_only.txt | while read -r line; do
+              echo "::error::$line"
+            done
+          fi
 
       - name: 🧾 Upload Build Logs
         if: always()
