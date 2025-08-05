@@ -14,4 +14,6 @@ interface GoalRepository {
     suspend fun updateGoalProgress(goalId: String, progress: Float)
     suspend fun updateGoalStatus(goalId: String, status: Goal.Status)
     suspend fun markTaskCompleted(taskId: String, completedAt: Long?)
+    
+    suspend fun getTasksForDate(date: String): List<DailyTask>
 }

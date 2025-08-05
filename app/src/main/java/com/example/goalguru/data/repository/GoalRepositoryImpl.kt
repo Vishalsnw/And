@@ -34,4 +34,15 @@ class GoalRepositoryImpl @Inject constructor(
 
     override suspend fun markTaskCompleted(taskId: String, completedAt: Long?) = 
         taskDao.updateTaskCompletion(taskId, true, completedAt)
+    
+    override suspend fun getTasksForDate(date: String): List<DailyTask> {
+        return try {
+            // For now, return all tasks - you can implement date filtering in TaskDao later
+            getAllGoals().firstOrNull()?.flatMap { goal ->
+                getTasksForGoal(goal.id).firstOrNull() ?: emptyList()
+            } ?: emptyList()
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
 }
