@@ -1,4 +1,3 @@
-
 package com.example.goalguru.ui.screens.goal
 
 import androidx.compose.foundation.layout.Arrangement
@@ -275,7 +274,7 @@ fun CreateGoalScreen(
                             val finalTitle = titleInput.ifEmpty { roadmap.title }
                             val finalDescription = descriptionInput.ifEmpty { roadmap.description }
                             val finalTargetDays = targetDaysInput.ifEmpty { roadmap.targetDays.toString() }.toIntOrNull() ?: roadmap.targetDays
-                            
+
                             viewModel.createGoal(
                                 title = finalTitle,
                                 description = finalDescription,

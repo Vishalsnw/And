@@ -13,6 +13,7 @@ import androidx.work.WorkerParameters
 import com.example.goalguru.MainActivity
 import com.example.goalguru.R
 import com.example.goalguru.data.repository.GoalRepository
+import com.example.goalguru.ui.model.DailyTask
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.firstOrNull
@@ -28,7 +29,7 @@ class HumorousNotificationWorker @AssistedInject constructor(
     override suspend fun doWork(): Result {
         return try {
             val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-            val todaysTasks = goalRepository.getTodaysTasks().firstOrNull().orEmpty()
+            val todaysTasks = getTodaysTasks()
             val incompleteTasks = todaysTasks.filter { !it.isCompleted }
 
             when {
@@ -47,6 +48,16 @@ class HumorousNotificationWorker @AssistedInject constructor(
         } catch (e: Exception) {
             e.printStackTrace()
             Result.failure()
+        }
+    }
+
+    private suspend fun getTodaysTasks(): List<DailyTask> {
+        return try {
+            // Get today's date and fetch tasks for today
+            val today = java.time.LocalDate.now()
+            goalRepository.getTasksForDate(today.toString())
+        } catch (e: Exception) {
+            emptyList()
         }
     }
 

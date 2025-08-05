@@ -46,9 +46,7 @@ fun GoalGuruNavigation(
 
         composable("create_goal") {
             CreateGoalScreen(
-                onBackPressed = {
-                    navController.popBackStack()
-                },
+                onNavigateBack = { navController.popBackStack() },
                 onGoalCreated = {
                     navController.popBackStack()
                 }
@@ -59,9 +57,7 @@ fun GoalGuruNavigation(
             val goalId = backStackEntry.arguments?.getString("goalId") ?: ""
             GoalDetailScreen(
                 goalId = goalId,
-                onNavigateBack = {
-                    navController.popBackStack()
-                }
+                onBackPressed = { navController.popBackStack() }
             )
         }
 
