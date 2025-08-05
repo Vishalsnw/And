@@ -1,6 +1,8 @@
 
 package com.example.goalguru.di
 
+import com.example.goalguru.data.repository.AIRepository
+import com.example.goalguru.data.repository.AIRepositoryImpl
 import com.example.goalguru.data.repository.GoalRepository
 import com.example.goalguru.data.repository.GoalRepositoryImpl
 import com.example.goalguru.data.repository.UserRepository
@@ -26,4 +28,10 @@ abstract class RepositoryModule {
     abstract fun bindUserRepository(
         userRepositoryImpl: UserRepositoryImpl
     ): UserRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindAIRepository(
+        aiRepositoryImpl: AIRepositoryImpl
+    ): AIRepository
 }
