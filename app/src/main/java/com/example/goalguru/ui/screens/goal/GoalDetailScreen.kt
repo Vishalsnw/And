@@ -1,4 +1,3 @@
-
 package com.example.goalguru.ui.screens.goal
 
 import androidx.compose.foundation.layout.Arrangement
@@ -39,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.goalguru.data.model.DailyTask
 import com.example.goalguru.data.model.Goal
+import androidx.compose.material3.LinearProgressIndicator
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -87,15 +87,15 @@ fun GoalDetailScreen(
                     item {
                         GoalHeader(goal = goalData)
                     }
-                    
+
                     item {
                         ProgressSection(goal = goalData)
                     }
-                    
+
                     item {
                         RoadmapSection(roadmap = goalData.roadmap)
                     }
-                    
+
                     item {
                         Text(
                             text = "Daily Tasks",
@@ -103,7 +103,7 @@ fun GoalDetailScreen(
                             fontWeight = FontWeight.Bold
                         )
                     }
-                    
+
                     items(dailyTasks) { task ->
                         TaskCard(
                             task = task,

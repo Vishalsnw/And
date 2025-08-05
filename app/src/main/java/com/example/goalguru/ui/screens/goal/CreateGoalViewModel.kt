@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.goalguru.data.model.Goal
 import com.example.goalguru.data.model.DailyTask
+import com.example.goalguru.data.model.Priority
 import com.example.goalguru.data.repository.GoalRepository
 import com.example.goalguru.data.repository.AIRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -80,4 +81,31 @@ class CreateGoalViewModel @Inject constructor(
             }
         }
     }
+
+    fun createGoalWithTasks(
+        title: String,
+        description: String,
+        targetDays: Int,
+        tasks: List<String>
+    ) {
+        viewModelScope.launch {
+            _isCreating.value = true
+            val goal = Goal(
+                id = "",
+                title = title,
+                description = description,
+                targetDate = System.currentTimeMillis() + (targetDays * 24 * 60 * 60 * 1000L),
+                progress = 0f,
+                isCompleted = false,
+                createdAt = System.currentTimeMillis(),
+                dailyTasks = tasks,
+                priority = Priority.MEDIUM
+            )
+            goalRepository.insertGoal(goal)
+            _isCreating.value = false
+        }
+    }
+
+    private val _isCreating = MutableStateFlow(false)
+    val isCreating: StateFlow<Boolean> = _isCreating.asStateFlow()
 }
