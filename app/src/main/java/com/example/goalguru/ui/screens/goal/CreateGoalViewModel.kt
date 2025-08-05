@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.goalguru.data.model.Goal
 import com.example.goalguru.data.model.DailyTask
 import com.example.goalguru.data.repository.GoalRepository
-import com.example.goalguru.data.repository.AiRepository
+import com.example.goalguru.data.repository.AIRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
