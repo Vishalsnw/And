@@ -26,7 +26,7 @@ data class CreateGoalUiState(
 @HiltViewModel
 class CreateGoalViewModel @Inject constructor(
     private val goalRepository: GoalRepository,
-    private val aiRepository: AiRepository
+    private val aiRepository: AIRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CreateGoalUiState())
