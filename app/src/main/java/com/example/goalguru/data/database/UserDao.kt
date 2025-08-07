@@ -30,3 +30,32 @@ interface UserDao {
     @Query("UPDATE users SET lastLoginAt = :lastLoginAt WHERE id = :userId")
     suspend fun updateLastLogin(userId: String, lastLoginAt: Long)
 }
+package com.example.goalguru.data.database
+
+import androidx.room.*
+import com.example.goalguru.data.database.entities.UserEntity
+import kotlinx.coroutines.flow.Flow
+
+@Dao
+interface UserDao {
+    @Query("SELECT * FROM users WHERE id = :userId")
+    fun getUserById(userId: String): Flow<UserEntity?>
+
+    @Query("SELECT * FROM users WHERE email = :email")
+    fun getUserByEmail(email: String): Flow<UserEntity?>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertUser(user: UserEntity)
+
+    @Update
+    suspend fun updateUser(user: UserEntity)
+
+    @Delete
+    suspend fun deleteUser(user: UserEntity)
+
+    @Query("UPDATE users SET name = :name WHERE id = :userId")
+    suspend fun updateUserName(userId: String, name: String)
+
+    @Query("UPDATE users SET profileImageUrl = :imageUrl WHERE id = :userId")
+    suspend fun updateUserProfileImage(userId: String, imageUrl: String?)
+}
