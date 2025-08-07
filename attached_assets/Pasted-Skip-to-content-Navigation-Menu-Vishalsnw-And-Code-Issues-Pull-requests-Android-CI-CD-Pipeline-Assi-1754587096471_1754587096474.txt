@@ -1,0 +1,53 @@
+Skip to content
+Navigation Menu
+Vishalsnw
+And
+
+Code
+Issues
+Pull requests
+Android CI/CD Pipeline
+Assistant checkpoint: Fix DAO syntax errors #351
+Annotations
+1 error and 1 warning
+build
+failed 4 minutes ago in 4m 38s
+2s
+3s
+0s
+0s
+23s
+2s
+45s
+2m 52s
+29s
+0s
+Run echo "📋 CRITICAL BUILD ERRORS:" >> $GITHUB_STEP_SUMMARY
+🚨 ERRORS FOUND:
+> Task :app:checkDebugDuplicateClasses
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/converters/DateConverter.kt:23:1 Expecting a top level declaration
+grep: write error: Broken pipe
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/converters/DateConverter.kt:23:9 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/converters/DateConverter.kt:23:12 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/converters/DateConverter.kt:23:13 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/converters/DateConverter.kt:23:20 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/converters/DateConverter.kt:23:21 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/converters/DateConverter.kt:23:29 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/converters/DateConverter.kt:23:34 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/converters/DateConverter.kt:23:35 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/converters/DateConverter.kt:23:43 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/converters/DateConverter.kt:23:44 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/converters/DateConverter.kt:23:54 imports are only allowed in the beginning of file
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/converters/ListStringConverter.kt:20:1 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/converters/ListStringConverter.kt:20:9 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/converters/ListStringConverter.kt:20:12 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/converters/ListStringConverter.kt:20:13 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/converters/ListStringConverter.kt:20:20 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/converters/ListStringConverter.kt:20:21 Expecting a top level declaration
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/data/database/converters/ListStringConverter.kt:20:29 Expecting a top level declaration
+0s
+0s
+0s
+1s
+0s
+0s
