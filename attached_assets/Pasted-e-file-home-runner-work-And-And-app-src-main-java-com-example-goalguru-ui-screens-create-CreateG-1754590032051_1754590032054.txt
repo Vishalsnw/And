@@ -1,0 +1,12 @@
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:51:38 Type mismatch: inferred type is ViewModel but CreateGoalViewModel was expected
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:51:38 Type mismatch: inferred type is ViewModel but CreateGoalViewModel was expected
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/create/CreateGoalScreen.kt:53:30 Unresolved reference: uiState
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:47:34 Unresolved reference: domain
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:48:34 Unresolved reference: domain
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:55:38 Type mismatch: inferred type is ViewModel but CreateGoalViewModel was expected
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:55:38 Type mismatch: inferred type is ViewModel but CreateGoalViewModel was expected
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:163:37 Cannot infer a type for this parameter. Please specify it explicitly.
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:263:33 None of the following functions can be called with the arguments supplied: 
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:326:7 Redeclaration: CreateGoalViewModel
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:327:53 Unresolved reference: MutableStateFlow
+e: file:///home/runner/work/And/And/app/src/main/java/com/example/goalguru/ui/screens/goal/CreateGoalScreen.kt:328:49 Unresolved reference: MutableStateFlow
