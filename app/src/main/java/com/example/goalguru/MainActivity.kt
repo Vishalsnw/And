@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
             GoalGuruTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background,
+                    color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
                     GoalGuruNavigation(navController = navController)
