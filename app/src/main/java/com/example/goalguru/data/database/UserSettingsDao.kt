@@ -24,6 +24,9 @@ interface UserSettingsDao {
     @Query("SELECT * FROM user_settings WHERE userId = :userId")
     suspend fun getUserSettingsById(userId: String): UserSettingsEntity?
 
+    @Query("SELECT * FROM user_settings WHERE userId = :userId")
+    fun getUserSettings(userId: String): Flow<UserSettingsEntity?>
+
     @Query("SELECT * FROM user_settings")
     fun getAllUserSettings(): Flow<List<UserSettingsEntity>>
 }
