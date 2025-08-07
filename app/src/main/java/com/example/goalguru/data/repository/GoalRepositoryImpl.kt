@@ -4,6 +4,10 @@ import com.example.goalguru.data.database.GoalDao
 import com.example.goalguru.data.database.TaskDao
 import com.example.goalguru.data.model.Goal
 import com.example.goalguru.data.model.DailyTask
+import com.example.goalguru.data.mappers.toGoal
+import com.example.goalguru.data.mappers.toGoalEntity
+import com.example.goalguru.data.mappers.toDailyTask
+import com.example.goalguru.data.mappers.toTaskEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
