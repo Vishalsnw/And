@@ -41,6 +41,10 @@ import com.example.goalguru.data.model.Goal
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clip
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.ExperimentalStdlib2Api
+import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.StrokeCap
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -168,9 +172,10 @@ private fun ProgressSection(goal: Goal) {
             }
             Spacer(modifier = Modifier.height(8.dp))
             LinearProgressIndicator(
-                progress = goal.progress,
-                modifier = Modifier.fillMaxWidth(),
-                trackColor = MaterialTheme.colorScheme.surfaceVariant
+                progress = { goal.progress },
+                modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp)),
+                color = MaterialTheme.colorScheme.primary,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant,
             )
         }
     }
@@ -242,7 +247,7 @@ private fun TaskCard(
                 }
             }
             Text(
-                text = "${task.estimatedDuration} days estimated",
+                text = "Task scheduled for completion",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
