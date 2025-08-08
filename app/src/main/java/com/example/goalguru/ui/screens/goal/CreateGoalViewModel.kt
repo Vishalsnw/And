@@ -91,15 +91,14 @@ class CreateGoalViewModel @Inject constructor(
         viewModelScope.launch {
             _isCreating.value = true
             val goal = Goal(
-                id = "",
+                id = UUID.randomUUID().toString(),
                 title = title,
                 description = description,
-                targetDate = System.currentTimeMillis() + (targetDays * 24 * 60 * 60 * 1000L),
+                targetDays = targetDays,
                 progress = 0f,
-                isCompleted = false,
-                createdAt = System.currentTimeMillis(),
-                dailyTasks = tasks,
-                priority = Priority.MEDIUM
+                createdAt = LocalDateTime.now(),
+                roadmap = tasks,
+                priority = Goal.Priority.MEDIUM
             )
             goalRepository.insertGoal(goal)
             _isCreating.value = false

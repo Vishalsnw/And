@@ -39,6 +39,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.goalguru.data.model.DailyTask
 import com.example.goalguru.data.model.Goal
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clip
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

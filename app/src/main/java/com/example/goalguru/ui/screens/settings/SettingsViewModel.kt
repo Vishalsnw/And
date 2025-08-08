@@ -39,8 +39,8 @@ class SettingsViewModel @Inject constructor(
                 if (settings != null) {
                     _userSettings.value = settings
                     _notificationsEnabled.value = settings.notificationsEnabled
-                    _darkModeEnabled.value = settings.darkModeEnabled
-                    _reminderFrequency.value = settings.reminderFrequency
+                    _darkModeEnabled.value = settings.isDarkModeEnabled
+                    _reminderFrequency.value = settings.notificationFrequency
                 }
             }
         }
@@ -71,9 +71,8 @@ class SettingsViewModel @Inject constructor(
         val currentSettings = userSettingsRepository.getCurrentSettings()
 
         val updatedSettings = currentSettings.copy(
-                notificationsEnabled = _notificationsEnabled.value,
-                darkModeEnabled = _darkModeEnabled.value,
-                reminderFrequency = _reminderFrequency.value
+                isDarkModeEnabled = _darkModeEnabled.value,
+                notificationFrequency = _reminderFrequency.value
             )
 
         userSettingsRepository.updateUserSettings(updatedSettings)
