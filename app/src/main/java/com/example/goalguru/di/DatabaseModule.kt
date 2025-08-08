@@ -24,16 +24,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 abstract class DatabaseModule {
 
-    @Binds
-    abstract fun bindGoalRepository(
-        goalRepositoryImpl: GoalRepositoryImpl
-    ): GoalRepository
-
-    @Binds
-    abstract fun bindUserRepository(
-        userRepositoryImpl: UserRepositoryImpl
-    ): UserRepository
-
     companion object {
         @Provides
         @Singleton
