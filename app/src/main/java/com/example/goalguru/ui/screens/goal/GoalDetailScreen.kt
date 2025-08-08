@@ -107,7 +107,7 @@ fun GoalDetailScreen(
                     items(dailyTasks) { task ->
                         TaskCard(
                             task = task,
-                            onTaskToggle = { viewModel.toggleTaskCompletion(task.id) }
+                            onTaskToggle = { /* TODO: Implement task completion toggle */ }
                         )
                     }
                 }
@@ -175,7 +175,7 @@ private fun ProgressSection(goal: Goal) {
 }
 
 @Composable
-private fun RoadmapSection(roadmap: String) {
+private fun RoadmapSection(roadmap: List<String>) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp)
@@ -189,11 +189,15 @@ private fun RoadmapSection(roadmap: String) {
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = roadmap,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            Column {
+                roadmap.forEach { step ->
+                    Text(
+                        text = "• $step",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(vertical = 2.dp)
+                    )
+                }
+            }
         }
     }
 }
@@ -236,7 +240,7 @@ private fun TaskCard(
                 }
             }
             Text(
-                text = "${task.estimatedDuration}min",
+                text = "${task.estimatedDuration} days estimated",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
