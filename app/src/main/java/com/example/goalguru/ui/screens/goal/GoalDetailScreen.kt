@@ -41,9 +41,7 @@ import com.example.goalguru.data.model.Goal
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clip
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.ExperimentalStdlib2Api
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.StrokeCap
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -172,10 +170,11 @@ private fun ProgressSection(goal: Goal) {
             }
             Spacer(modifier = Modifier.height(8.dp))
             LinearProgressIndicator(
-                progress = { goal.progress },
+                progress = goal.progress,
                 modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp)),
                 color = MaterialTheme.colorScheme.primary,
                 trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                strokeCap = StrokeCap.Round
             )
         }
     }
